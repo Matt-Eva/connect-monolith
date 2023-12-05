@@ -41,7 +41,7 @@ app.use(sessionMiddleware)
 
 app.use(express.json())
 
-app.use(express.static('../client/dist'))
+app.use(express.static(process.env.PATH_TO_DIST))
 
 const io = new Server(server,{
     cors: {

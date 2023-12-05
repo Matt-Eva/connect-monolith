@@ -720,5 +720,5 @@ app.get("/user/:id", async (req, res) =>{
 })
 
 app.get("*", (req, res) =>{
-   return res.sendFile(path.resolve(__dirname, "../client/dist/index.html"))
+   return res.sendFile(path.resolve(__dirname, process.env.PATH_TO_DIST + "/index.html"))
 })
