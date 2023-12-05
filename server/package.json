@@ -1,0 +1,36 @@
+{
+  "name": "connect-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx nodemon -r dotenv/config src/index.js",
+    "start": "node -r dotenv/config src/index.js",
+    "seed": "node seeds/seeds.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Matt-Eva/connect-express.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Matt-Eva/connect-express/issues"
+  },
+  "homepage": "https://github.com/Matt-Eva/connect-express#readme",
+  "dependencies": {
+    "argon2": "^0.31.2",
+    "connect-neo4j": "^1.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "neo4j-driver": "^5.14.0",
+    "socket.io": "^4.7.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.2.0",
+    "nodemon": "^3.0.1"
+  }
+}
