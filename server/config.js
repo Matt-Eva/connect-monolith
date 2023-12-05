@@ -32,10 +32,10 @@ const sessionMiddleware = session({
 
 console.log(process.env.FRONTEND_URL)
 
-// app.use(cors({
-//     origin: process.env.FRONTEND_URL,
-//     credentials: true
-// }))
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}))
 
 app.use(sessionMiddleware)
 
