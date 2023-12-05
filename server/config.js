@@ -2,6 +2,7 @@ const neo = require("neo4j-driver")
 const express = require("express")
 const cors = require("cors")
 const session = require("express-session")
+const path = require("path")
 const http = require("http")
 const { Server } = require("socket.io")
 let Neo4jStore = require('connect-neo4j')(session)
@@ -41,7 +42,7 @@ app.use(sessionMiddleware)
 
 app.use(express.json())
 
-app.use(express.static(process.env.PATH_TO_DIST))
+app.use(express.static(path.join(__dirname, "../client/dist") ))
 
 const io = new Server(server,{
     cors: {
