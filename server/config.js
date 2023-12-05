@@ -43,7 +43,12 @@ app.use(express.json())
 
 app.use(express.static('../client/dist'))
 
-const io = new Server(server)
+const io = new Server(server,{
+    cors: {
+        origin: process.env.FRONTEND_URL,
+        credentials: true
+    }
+})
 
 io.engine.use(sessionMiddleware)
 
