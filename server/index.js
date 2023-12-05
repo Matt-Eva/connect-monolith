@@ -1,6 +1,7 @@
 const { server, driver, io, app } = require("./config.js")
 const argon2 = require('argon2')
 const { v4 } = require("uuid")
+const path = require("path")
 const uuid = v4
 
 server.listen(process.env.PORT, () =>{
@@ -73,7 +74,7 @@ io.on("connection", async (socket) =>{
     })
 })
 
-app.post("/login", async (req, res) =>{
+app.post("/api/login", async (req, res) =>{
     const {email, password} = req.body
     const session = driver.session()
     try {
@@ -122,7 +123,7 @@ app.delete("/logout", async (req, res) =>{
     })
 })
 
-app.get("/me", (req, res) =>{
+app.get("/api/me", (req, res) =>{
     console.log(req.session.user)
     if (req.session.user){
         res.status(200).send(req.session.user)
@@ -716,4 +717,8 @@ app.get("/user/:id", async (req, res) =>{
     } finally {
         await session.close()
     }
+})
+
+app.get("*", (req, res) =>{
+   return res.sendFile(path.resolve(__dirname, "../client/dist/index.html"))
 })

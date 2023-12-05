@@ -12,7 +12,7 @@ function Root() {
 
   useEffect(() =>{
     const getMe = async () =>{
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/me", {
+      const res = await fetch("/api" + "/me", {
         credentials: "include"
       })
 
@@ -30,7 +30,7 @@ function Root() {
   }, [])
 
   const login = async (email, password) =>{
-    const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/login", {
+    const res = await fetch("/api" + "/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -54,7 +54,7 @@ function Root() {
   }
 
   const logout = async () => {
-    await fetch(import.meta.env.VITE_BACKEND_URL + "/logout", {
+    await fetch("/api" + "/logout", {
       method: "DELETE",
       credentials: "include"
     })
@@ -65,7 +65,7 @@ function Root() {
 
   const createAccount = async (newUser) => {
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/new-account", {
+      const res = await fetch("/api" + "/new-account", {
         method: "POST",
         credentials: "include",
         headers: {

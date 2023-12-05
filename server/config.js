@@ -27,30 +27,23 @@ const sessionMiddleware = session({
     store: new Neo4jStore({ client: driver }),
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
-    resave: false,
-    cookie: {
-        sameSite: 'none',
-        secure: true,
-    }
+    resave: false
 })
 
 console.log(process.env.FRONTEND_URL)
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}))
+// app.use(cors({
+//     origin: process.env.FRONTEND_URL,
+//     credentials: true
+// }))
 
 app.use(sessionMiddleware)
 
 app.use(express.json())
 
-const io = new Server(server, {
-    cors: {
-        origin: process.env.FRONTEND_URL,
-        credentials: true
-    }
-})
+app.use(express.static('../client/dist'))
+
+const io = new Server(server)
 
 io.engine.use(sessionMiddleware)
 
