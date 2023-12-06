@@ -24,19 +24,39 @@ testDriverConnectivity(driver)
 const app = express()
 const server = http.createServer(app)
 
-const sessionMiddleware = session({
-    store: new Neo4jStore({ client: driver }),
-    secret: process.env.SESSION_SECRET,
-    saveUninitialized: false,
-    resave: false
-})
 
-console.log(process.env.FRONTEND_URL)
+let sessionMiddleware;
 
-// app.use(cors({
-//     origin: process.env.FRONTEND_URL,
-//     credentials: true
-// }))
+if (process.env.NODE_ENV === 'development'){
+    sessionMiddleware = session({
+        store: new Neo4jStore({ 
+            client: driver,
+            ttl: 60 * 60 * 1000
+         }),
+        secret: process.env.SESSION_SECRET,
+        saveUninitialized: false,
+        resave: false,
+        cookie: {
+            httpOnly: true,
+            // maxAge: (24 * 60 * 60 * 1000)
+        }
+    })
+} else {
+    sessionMiddleware = session({
+        store: new Neo4jStore({ 
+            client: driver,
+            ttl: 60 * 60 * 1000
+         }),
+        secret: process.env.SESSION_SECRET,
+        saveUninitialized: false,
+        resave: false,
+        cookie: {
+            secure: true,
+            httpOnly: true,
+            maxAge: 60 * 60 * 1000
+        }
+    })
+}
 
 app.use(sessionMiddleware)
 
@@ -46,7 +66,6 @@ app.use(express.static(path.join(__dirname, "../client/dist") ))
 
 let io;
 
-console.log( "node env", process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'development'){
     io = new Server(server,{
         cors: {
