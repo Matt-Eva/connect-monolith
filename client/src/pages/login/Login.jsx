@@ -17,9 +17,9 @@ function Login() {
 
     return (
     <>
-        <main className="h-screen w-screen mb-[-3rem] max-w-screen-lg overflow-auto flex flex-wrap justify-center content-start p-5">
-            <h1 className="text-3xl text-cyan-600">Connect</h1>
-            <form onSubmit={handleLogin} className="grid grid-rows-5 w-screen justify-center">
+        <main className="h-screen w-screen max-w-screen-lg overflow-auto flex flex-wrap justify-center content-start p-5">
+            <h1 className="text-3xl text-cyan-600 w-screen text-center m-2">Connect</h1>
+            <form onSubmit={handleLogin} className="grid grid-rows-5 w-screen justify-center ">
                 <label htmlFor="email" className="row-span-1 self-end">email</label>
                 <input type='text' autoComplete="username" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className="row-start-2 row-end-3 h-8 w-full max-w-sm rounded"/>
                 <label htmlFor="password" className="row-start-3 row-end-4 self-end">password</label>
