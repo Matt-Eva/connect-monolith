@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'development'){
         resave: false,
         cookie: {
             httpOnly: true,
-            // maxAge: (24 * 60 * 60 * 1000)
+            // maxAge: (60 * 60 * 1000000)
         }
     })
 } else {
