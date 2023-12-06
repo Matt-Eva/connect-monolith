@@ -16,16 +16,16 @@ function Login() {
     }
 
     return (
-    <main className="bg-cyan-50 h-screen w-screen max-w-screen-lg grid grid-cols-1 grid-rows-6 sm:grid-rows-10 justify-items-center">
-        <h1 className="text-3xl text-cyan-500 row-span-1 sm:row-span-1 self-end">Login</h1>
-        <form onSubmit={handleLogin} className="row-start-2 row-end-4 grid grid-rows-5 self-start">
-            <label className="row-span-1 self-end">email</label>
-            <input type='text' autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} className="row-start-2 row-end-3 h-8"/>
-            <label className="row-start-3 row-end-4 self-end">password</label>
-            <input type='password' autoComplete="current-password" value = {password} onChange={(e) => setPassword(e.target.value)} className="row-start-4 row-end-5 h-8"/>
-            <input type='submit' value='Login' className="h-8 w-2/4 m-1 justify-self-center bg-cyan-500"/>
+    <main className="h-screen w-screen max-w-screen-lg overflow-auto flex flex-wrap justify-center content-start p-5">
+        <h1 className="text-3xl text-cyan-600">Connect</h1>
+        <form onSubmit={handleLogin} className="grid grid-rows-5 w-screen justify-center">
+            <label htmlFor="email" className="row-span-1 self-end">email</label>
+            <input type='text' autoComplete="username" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className="row-start-2 row-end-3 h-8 w-full max-w-sm rounded"/>
+            <label htmlFor="password" className="row-start-3 row-end-4 self-end">password</label>
+            <input type='password' autoComplete="current-password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} className="row-start-4 row-end-5 h-8 max-w-sm rounded"/>
+            <input type='submit' value='Login' className="h-8 w-2/4 m-1 justify-self-center bg-cyan-600 rounded text-white"/>
         </form>
-        <nav className="row-span-6 sm:row-start-4 self-start">
+        <nav className="m-5">
             <Link to="/new-account" className="underline">Create Account</Link>
         </nav>
     </main>
