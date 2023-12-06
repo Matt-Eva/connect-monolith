@@ -58,8 +58,6 @@ function CreateAccount() {
                 <input type="password" name="password" value={formState.password} className="h-8 rounded"/>
                 <label htmlFor="confirmPassword" className="self-end">confirm password</label>
                 <input type="password" name="confirmPassword" value={formState.password} className="h-8 rounded"/>
-                <label htmlFor="profileImg" className="self-end">profile image</label>
-                <input type="text" name="profileImg" value={formState.profileImg} className="h-8 rounded"/>
                 <input type="submit" value="Create Account" className="h-8 w-3/4 m-3 justify-self-center bg-cyan-600 rounded text-white"/>
             </form>
             <Link to="/login" className="underline">Login</Link>
