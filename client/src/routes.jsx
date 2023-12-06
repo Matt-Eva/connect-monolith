@@ -11,6 +11,7 @@ import CreateAccount from "./pages/createAccount/CreateAccount.jsx";
 import ProfilePage from "./pages/ProfilePage/ProfilePage.jsx";
 import MyInvitations from "./pages/MyInvitations/MyInvitations.jsx";
 import Account from "./pages/Account/Account.jsx";
+import About from "./pages/About/About.jsx";
 
 const routes = [
     {
@@ -70,6 +71,10 @@ const routes = [
                 element: <Account />
             }
         ]
+    }, 
+    {
+        path: "/about",
+        element: <About />
     }
 ]
 
