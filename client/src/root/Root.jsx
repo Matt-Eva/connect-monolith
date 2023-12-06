@@ -10,6 +10,8 @@ function Root() {
   const location = useLocation()
   const [startingPath, setStartingPath] = useState(location.pathname)
 
+  console.log(import.meta.env.VITE_BACKEND_URL)
+
   useEffect(() =>{
     const getMe = async () =>{
       const res = await fetch("/api" + "/me", {

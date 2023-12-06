@@ -64,6 +64,15 @@ const createUserArray = () =>{
     }, 
     {
       uId: uuid(),
+      firstName: "Wills",
+      lastName: "Wolfen",
+      name: "Wills Woflen",
+      email: "wills@email.com",
+      password: "test",
+      profileImg: faker.image.avatar()
+    },
+    {
+      uId: uuid(),
       firstName: "Jay",
       lastName: "Jubilee",
       name: "Jay Jubilee",
