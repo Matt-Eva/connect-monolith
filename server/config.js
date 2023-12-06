@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === 'development'){
         cookie: {
             secure: true,
             httpOnly: true,
-            maxAge: 60 * 60 * 1000
+            // maxAge: 60 * 60 * 1000
         }
     })
 }
