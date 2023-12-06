@@ -13,7 +13,7 @@ function Login() {
 
     return (
     <main>
-        Login
+        <h1 className="text-3xl font-bold underline">Login</h1>
         <form onSubmit={handleLogin}>
             <label>email</label>
             <input type='text' autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)}/>
