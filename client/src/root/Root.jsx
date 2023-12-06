@@ -14,9 +14,7 @@ function Root() {
 
   useEffect(() =>{
     const getMe = async () =>{
-      const res = await fetch("/api" + "/me", {
-        credentials: "include"
-      })
+      const res = await fetch("/api/me")
 
       if(res.ok){
         const data = await res.json()
@@ -34,7 +32,6 @@ function Root() {
   const login = async (email, password) =>{
     const res = await fetch("/api" + "/login", {
         method: "POST",
-        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },

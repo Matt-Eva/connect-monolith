@@ -33,10 +33,10 @@ const sessionMiddleware = session({
 
 console.log(process.env.FRONTEND_URL)
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}))
+// app.use(cors({
+//     origin: process.env.FRONTEND_URL,
+//     credentials: true
+// }))
 
 app.use(sessionMiddleware)
 
@@ -44,12 +44,19 @@ app.use(express.json())
 
 app.use(express.static(path.join(__dirname, "../client/dist") ))
 
-const io = new Server(server,{
-    cors: {
-        origin: process.env.FRONTEND_URL,
-        credentials: true
-    }
-})
+let io;
+
+console.log( "node env", process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'development'){
+    io = new Server(server,{
+        cors: {
+            origin: process.env.FRONTEND_URL,
+            credentials: true
+        }
+    })
+} else {
+    io = new Server(server)
+}
 
 io.engine.use(sessionMiddleware)
 

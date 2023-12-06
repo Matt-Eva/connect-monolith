@@ -11,7 +11,7 @@ function MyConnections() {
   useEffect(() =>{
     const fetchConnections = async () =>{
       try{
-        const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/my-connections", {
+        const res = await fetch("/api/my-connections", {
           credentials: "include"
         })
         if (res.ok){

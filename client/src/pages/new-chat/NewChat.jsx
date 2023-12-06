@@ -11,7 +11,7 @@ function NewChat() {
 
   useEffect(() =>{
     const fetchConnections = async () =>{
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/my-connections", {
+      const res = await fetch("/api/my-connections", {
         credentials: "include"
       })
       if (res.ok){
@@ -34,7 +34,7 @@ function NewChat() {
       participants: participants
     }
 
-    const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/new-chat", {
+    const res = await fetch("/api/new-chat", {
       method: "POST",
       credentials: "include",
       headers: {

@@ -8,7 +8,7 @@ function MyInvitations() {
     useEffect(() =>{
         const fetchInvitations = async () =>{
             try {
-                const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/my-invitations", {
+                const res = await fetch("/api/my-invitations", {
                     credentials: "include"
                 })
                 if (res.ok){

@@ -13,7 +13,7 @@ function ProfilePage() {
     useEffect(() =>{
         const loadProfile = async () =>{
             try {
-                const res = await fetch(import.meta.env.VITE_BACKEND_URL +`/user/${id}`, {
+                const res = await fetch(`/api/user/${id}`, {
                     credentials: "include"
                 })
                 if (res.ok){
@@ -33,7 +33,7 @@ function ProfilePage() {
     const startChat = async () =>{
         console.log(profile)
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/new-chat", {
+            const res = await fetch("/api/new-chat", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -54,7 +54,7 @@ function ProfilePage() {
 
     const connect = async () => {
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL +"/invite-connection", {
+            const res = await fetch("/api/invite-connection", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -75,7 +75,7 @@ function ProfilePage() {
 
     const accept = async () =>{
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/accept-invitation", {
+            const res = await fetch("/api/accept-invitation", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -94,7 +94,7 @@ function ProfilePage() {
 
     const block = async () =>{
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/block-user", {
+            const res = await fetch("/api/block-user", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -118,7 +118,7 @@ function ProfilePage() {
 
     const unblock = async () => {
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + `/unblock-user/${profile.uId}`, {
+            const res = await fetch(`/api/unblock-user/${profile.uId}`, {
                 method: "DELETE",
                 credentials: "include"
             })
@@ -135,7 +135,7 @@ function ProfilePage() {
  
     const disconnect = async () =>{
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + `/delete-connection/${profile.uId}`, {
+            const res = await fetch(`/api/delete-connection/${profile.uId}`, {
                 method: "DELETE",
                 credentials: "include"
             })

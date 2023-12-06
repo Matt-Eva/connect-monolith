@@ -111,7 +111,7 @@ app.post("/api/login", async (req, res) =>{
     }
 })
 
-app.delete("/logout", async (req, res) =>{
+app.delete("/api/logout", async (req, res) =>{
     console.log("logging out")
     req.session.destroy(err =>{
         console.log("destroying session")
@@ -132,7 +132,7 @@ app.get("/api/me", (req, res) =>{
     }
 })
 
-app.post("/new-account", async (req, res) => {
+app.post("/api/new-account", async (req, res) => {
     console.log(req.body)
     const session = driver.session()
     try {
@@ -182,7 +182,7 @@ app.post("/new-account", async (req, res) => {
     }
 })
 
-app.patch("/my-account", async (req, res) =>{
+app.patch("/api/my-account", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
     
     const selfId = req.session.user.uId
@@ -215,7 +215,7 @@ app.patch("/my-account", async (req, res) =>{
     }
 })
 
-app.patch("/update-password", async (req, res) => {
+app.patch("/api/update-password", async (req, res) => {
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const selfId = req.session.user.uId
@@ -256,7 +256,7 @@ app.patch("/update-password", async (req, res) => {
     }
 })
 
-app.delete("/my-account", async(req, res) =>{
+app.delete("/api/my-account", async(req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const selfId = req.session.user.uId
@@ -280,7 +280,7 @@ app.delete("/my-account", async(req, res) =>{
     }
 })
 
-app.get("/my-chats", async (req, res) =>{
+app.get("/api/my-chats", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const session = driver.session()
@@ -307,7 +307,7 @@ app.get("/my-chats", async (req, res) =>{
     }
 })
 
-app.post("/new-chat", async(req, res) =>{
+app.post("/api/new-chat", async(req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
     
     console.log(req.body.participants)
@@ -354,7 +354,7 @@ app.post("/new-chat", async(req, res) =>{
     }
 })
 
-app.delete("/leave-chat/:chatId", async (req, res) =>{
+app.delete("/api/leave-chat/:chatId", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const selfId = req.session.user.uId
@@ -382,7 +382,7 @@ app.delete("/leave-chat/:chatId", async (req, res) =>{
     }
 })
 
-app.get("/my-connections", async(req, res) =>{
+app.get("/api/my-connections", async(req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const user = req.session.user
@@ -410,7 +410,7 @@ app.get("/my-connections", async(req, res) =>{
     }
 })
 
-app.get("/search-connections/:name", async (req, res) =>{
+app.get("/api/search-connections/:name", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
     
     const name = req.params.name
@@ -456,7 +456,7 @@ app.get("/search-connections/:name", async (req, res) =>{
     }
 })
 
-app.delete("/delete-connection/:connectionId", async (req, res) =>{
+app.delete("/api/delete-connection/:connectionId", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
     const connectionId = req.params.connectionId
     const selfId = req.session.user.uId
@@ -481,7 +481,7 @@ app.delete("/delete-connection/:connectionId", async (req, res) =>{
     }
 })
 
-app.get("/my-invitations", async(req, res) =>{
+app.get("/api/my-invitations", async(req, res) =>{
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
     
     const userId = req.session.user.uId
@@ -515,7 +515,7 @@ app.get("/my-invitations", async(req, res) =>{
     }
 })
 
-app.post("/invite-connection", async (req, res) =>{
+app.post("/api/invite-connection", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const {connectionId} = req.body
@@ -539,7 +539,7 @@ app.post("/invite-connection", async (req, res) =>{
     }
 })
 
-app.post("/accept-invitation", async (req, res) =>{
+app.post("/api/accept-invitation", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
 
     const {connectionId} = req.body
@@ -569,7 +569,7 @@ app.post("/accept-invitation", async (req, res) =>{
     }
 })
 
-app.post("/ignore-invitation", async (req, res) =>{
+app.post("/api/ignore-invitation", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
 
     const {connectionId} = req.body
@@ -593,7 +593,7 @@ app.post("/ignore-invitation", async (req, res) =>{
     }
 })
 
-app.post("/block-user", async (req, res) => {
+app.post("/api/block-user", async (req, res) => {
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
 
     const userId = req.body.userId
@@ -624,7 +624,7 @@ app.post("/block-user", async (req, res) => {
     }
 })
 
-app.get("/blocked-users", async (req, res) =>{
+app.get("/api/blocked-users", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
 
     const selfId = req.session.user.uId
@@ -655,7 +655,7 @@ app.get("/blocked-users", async (req, res) =>{
     }
 })
 
-app.delete("/unblock-user/:userId", async (req, res) =>{
+app.delete("/api/unblock-user/:userId", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({message: "unauthorized"})
 
     const userId = req.params.userId
@@ -683,7 +683,7 @@ app.delete("/unblock-user/:userId", async (req, res) =>{
     }
 })
 
-app.get("/user/:id", async (req, res) =>{
+app.get("/api/user/:id", async (req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
 
     const selfId = req.session.user.uId

@@ -9,7 +9,7 @@ function MyChats() {
   useEffect(() =>{
     console.log("effected")
     const fetchChats = async () =>{
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/my-chats", {
+      const res = await fetch("/api/my-chats", {
         credentials: "include"
       })
       console.log(res.status)

@@ -8,7 +8,7 @@ function AccountInfo({toggleEdit, name, firstName, lastName, email, profileImg})
 
   const fetchBlockedUsers = async () => {
     try{
-      const res = await fetch (import.meta.env.VITE_BACKEND_URL + "/blocked-users",{credentials: "include"})
+      const res = await fetch ("/api/blocked-users",{credentials: "include"})
       if (res.ok){
         const data = await res.json()
         if (data.length !== 0){
