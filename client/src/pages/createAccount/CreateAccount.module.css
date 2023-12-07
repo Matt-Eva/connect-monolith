@@ -1,7 +1,7 @@
 .main {
-    width: 100vw;
     display: grid;
-    grid-template-rows: 5rem 10rem calc(100vh - 20rem);
+    grid-template-rows: 5rem 20rem calc(100vh - 23rem);
+    width: 100vw;
     justify-content: center;
 }
 
@@ -13,20 +13,20 @@
 .form {
     grid-row: 2;
     display: grid;
-    grid-template-rows: 1.3rem 2rem 1.3rem 2rem 1.5rem;
+    grid-template-rows: 1.3rem 2rem 1.3rem 2rem 1.3rem 2rem 1.3rem 2rem 1.3rem 2rem 2rem;
 }
 
 .input {
     margin-bottom: .5rem;
 }
 
-.login {
-    width: 4rem;
+.createAccount {
+    width: 7rem;
     justify-self: center;
+    align-self: end;
+    height: 1.5rem;
 }
 
-.createAccount {
-    grid-row: 3;
+.login {
     text-align: center;
-    align-self: start;
 }
