@@ -4,7 +4,7 @@ import AccountInfo from '../../components/AccountInfo/AccountInfo'
 import EditAccountForm from '../../components/EditAccountForm/EditAccountForm'
 
 function Account() {
-    const {user} = useOutletContext()
+    const {user, logout} = useOutletContext()
     const [editMode, setEditMode] = useState(false)
 
     console.log(user)
@@ -15,7 +15,7 @@ function Account() {
 
     return (
         <div>
-            {editMode ? <EditAccountForm toggleEdit={toggleEdit} {...user}/> : <AccountInfo toggleEdit={toggleEdit} {...user} />}
+            {editMode ? <EditAccountForm toggleEdit={toggleEdit} {...user}/> : <AccountInfo toggleEdit={toggleEdit} logout={logout} {...user} />}
         </div>
     )
 }

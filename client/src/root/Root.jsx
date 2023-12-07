@@ -92,7 +92,7 @@ function Root() {
 
   const destroyUser = () => setUser(false)
 
-  const outletContext = {user, login: login, destroyUser, createAccount: createAccount}
+  const outletContext = {user, login: login, logout, destroyUser, createAccount: createAccount}
 
   if (loading){
     return <h1>Loading...</h1>

@@ -1,11 +1,12 @@
 import { useState } from "react"
+import { useOutletContext } from "react-router-dom"
 import ProfileIcon from "../ProfileIcon/ProfileIcon"
 import BlockedUserCard from "../BlockedUserCard/BlockedUserCard"
 
-function AccountInfo({toggleEdit, name, firstName, lastName, email, profileImg}) {
+function AccountInfo({toggleEdit, name, firstName, lastName, email, profileImg, logout}) {
   const [blockedUsers, setBlockedUsers] = useState([])
   const [showBlockedUsers, setShowBlockedUsers] = useState(false)
-
+console.log(logout)
   const fetchBlockedUsers = async () => {
     try{
       const res = await fetch ("/api/blocked-users",{credentials: "include"})
@@ -28,6 +29,7 @@ function AccountInfo({toggleEdit, name, firstName, lastName, email, profileImg})
   return (
     <div>
         <button onClick={toggleEdit}>Edit Account</button>
+        <button onClick={logout}>logout</button>
         <ProfileIcon profileImg={profileImg} firstName={firstName}/>
         <h2>{name}</h2>
         <p>{email}</p>

@@ -69,12 +69,12 @@ const routes = [
             {
                 path: "/account",
                 element: <Account />
+            }, 
+            {
+                path: "/about",
+                element: <About />
             }
         ]
-    }, 
-    {
-        path: "/about",
-        element: <About />
     }
 ]
 
