@@ -1,0 +1,5 @@
+.root {
+    width: 100vw;
+    display: grid;
+    grid-template-rows: 5rem calc(100vh - 10rem);
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import Header from '../components/Header/Header'
-// import './Root.css'
+import styles from './Root.module.css'
 
 function Root() {
   const [user, setUser] = useState(false)
@@ -99,7 +99,7 @@ function Root() {
   }
 
   return (
-    <div className="">
+    <div className={styles.root}>
       {user ? <Header logout={logout} /> : <Navigate to="/login" />}
       <Outlet context={outletContext}/>
     </div>
