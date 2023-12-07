@@ -1,0 +1,31 @@
+ .header {
+    grid-row: 1;
+    display: grid;
+    grid-template-rows: 1.5rem 2rem;
+ }
+
+ .siteNav {
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 5.6rem 2.7rem 3.1rem calc(100vw - 11.4rem);
+    align-items: end;
+ }
+
+ .title {
+    font-size: 1.5rem;
+ }
+
+ .click {
+    margin-bottom: .2rem;
+ }
+
+ .learnMore {
+    justify-self: end;
+ }
+
+ .myAccount {
+    grid-column: 4;
+    justify-self: end;
+    margin-right: .3rem;
+ }
+

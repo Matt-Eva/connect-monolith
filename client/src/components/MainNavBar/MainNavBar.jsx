@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom"
+import styles from "./MainNavBar.module.css"
 
 function MainNavBar() {
   return (
-    <nav className="col-span-3 flex justify-around items-end">
+    <nav className={styles.nav}>
       <NavLink to="/" className="underline">
         chats
       </NavLink>

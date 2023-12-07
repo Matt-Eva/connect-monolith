@@ -1,0 +1,7 @@
+.nav {
+    grid-row: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2rem;
+}
