@@ -57,14 +57,20 @@ function NewChat() {
   const displayParticipants = participants.map(participant => <span key={participant.uId}>{participant.name}</span>)
 
   return (
-    <div>
-      <label>Search connections</label>
-      <input type="text" value={search} onChange={(e)=>setSearch(e.target.value)}/>
-      {displayParticipants}
-      <button onClick={createChat}>Create Chat</button>
-      <br/>
-      {displayConnections}
-    </div>
+    <section className="grid grid-rows-6">
+      <h2 className="text-lg justify-self-center row-start-1">Create New Chat</h2>
+      <button onClick={createChat} className="w-12 justify-self-center row-start-2">Create Chat</button>
+      <div className="flex flex-wrap w-screen">
+        <label hmtlFor="search">Search connections</label>
+        <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className="w-48"/>
+      </div>
+      <div>
+        {displayParticipants}
+      </div>
+      <div display="flex flex-wrap">
+        {displayConnections}
+      </div>
+    </section>
   )
 }
 
