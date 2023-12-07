@@ -45,20 +45,20 @@ function CreateAccount() {
     }
 
     return (
-        <main className="w-screen h-screen flex flex-wrap justify-center p-5 content-start">
-            <h1 className="text-3xl text-cyan-600 w-screen text-center m-1">Connect</h1>
-            <form onSubmit={handleSubmit} onChange={handleChange} className="w-screen grid grid-rows-12 justify-center h-96">
-                <label htmlFor="email" className="self-end">email</label>
-                <input type="text" name="email" value={formState.email} className="h-8 rounded"/>
-                <label htmlFor="firstName" className="self-end">first name</label>
-                <input type="text" name="firstName" value={formState.firstName} className="h-8 rounded"/>
-                <label htmlFor="lastName" className="self-end">last name</label>
-                <input type="text" name="lastName" value={formState.lastName} className="h-8 rounded"/>
-                <label htmlFor="password" className="self-end">password</label>
-                <input type="password" name="password" value={formState.password} className="h-8 rounded"/>
-                <label htmlFor="confirmPassword" className="self-end">confirm password</label>
-                <input type="password" name="confirmPassword" value={formState.password} className="h-8 rounded"/>
-                <input type="submit" value="Create Account" className="h-8 w-3/4 m-3 justify-self-center bg-cyan-600 rounded text-white"/>
+        <main className="">
+            <h1 className="">Connect</h1>
+            <form onSubmit={handleSubmit} onChange={handleChange} className="">
+                <label htmlFor="email" className="">email</label>
+                <input type="text" name="email" value={formState.email} className=""/>
+                <label htmlFor="firstName" className="">first name</label>
+                <input type="text" name="firstName" value={formState.firstName} className=""/>
+                <label htmlFor="lastName" className="">last name</label>
+                <input type="text" name="lastName" value={formState.lastName} className=""/>
+                <label htmlFor="password" className="">password</label>
+                <input type="password" name="password" value={formState.password} className=""/>
+                <label htmlFor="confirmPassword" className="">confirm password</label>
+                <input type="password" name="confirmPassword" value={formState.password} className=""/>
+                <input type="submit" value="Create Account" className=""/>
             </form>
             <Link to="/login" className="underline">Login</Link>
         </main>
