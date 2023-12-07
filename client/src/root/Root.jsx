@@ -99,10 +99,10 @@ function Root() {
   }
 
   return (
-    <>
+    <div className="w-screen">
       {user ? <Header logout={logout} /> : <Navigate to="/login" />}
       <Outlet context={outletContext}/>
-    </>
+    </div>
   )
 }
 

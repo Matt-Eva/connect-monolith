@@ -8,6 +8,9 @@ export default {
     extend: {
       gridTemplateRows: {
         '10': 'repeat(10, minmax(0, 1fr))'
+      },
+      gridTemplateColumns: {
+        'header': 'calc(100vw - 160px) 100px 60px'
       }
     },
   },

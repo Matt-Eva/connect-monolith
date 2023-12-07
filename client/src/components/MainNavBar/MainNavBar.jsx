@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom"
 
 function MainNavBar() {
   return (
-    <nav>
-      <NavLink to="/">
+    <nav className="col-span-3 flex justify-around items-end border-b shadow-sm">
+      <NavLink to="/" className="underline">
         chats
       </NavLink>
-      <NavLink to="/people">
+      <NavLink to="/people" className="underline">
         people
       </NavLink>
     </nav>
