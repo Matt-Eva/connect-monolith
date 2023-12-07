@@ -6,8 +6,7 @@ function BrowseChats() {
 
   const outletContext = {user: user}
   return (
-    <main>
-        Chats
+    <main className="">
         <ChatNavBar />
         <Outlet context={outletContext}/>
     </main>

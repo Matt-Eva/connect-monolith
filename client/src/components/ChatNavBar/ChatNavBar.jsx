@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom"
 
 function ChatNavBar() {
   return (
-    <nav>
-        <NavLink to="/">
+    <nav className="flex justify-around border-b h-8 items-end">
+        <NavLink to="/" className="underline">
             my chats
         </NavLink>
-        <NavLink to="/new-chat">
+        <NavLink to="/new-chat" className="underline">
             new chat
         </NavLink>
     </nav>

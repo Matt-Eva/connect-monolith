@@ -34,9 +34,11 @@ function MyChats() {
   }
 
   return (
-    <div>
-      MyChats
-    {displayChats}
+    <div className="grid grid-rows-6">
+      <h2 className="row-span-1 text-lg justify-self-center m-1">My Chats</h2>
+      <div className="row-start-2 row-end-6">
+        {displayChats}
+      </div>
     </div>
   )
 }
