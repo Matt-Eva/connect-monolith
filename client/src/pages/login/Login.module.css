@@ -1,0 +1,33 @@
+.main {
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 5rem 10rem calc(100vh - 20rem);
+    justify-content: center;
+}
+
+.title {
+    grid-row: 1;
+    justify-self: center;
+}
+
+.form {
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: 1.3rem 2rem 1.3rem 2rem 1.5rem;
+}
+
+.input {
+    margin-bottom: .5rem;
+}
+
+.login {
+    width: 4rem;
+    justify-self: center;
+}
+
+.createAccount {
+    grid-row: 3;
+    justify-self: center;
+    align-self: start;
+}

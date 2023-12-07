@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useOutletContext, Link, Navigate } from "react-router-dom"
+import styles from "./Login.module.css"
 
 function Login() {
     const {login, user} = useOutletContext()
@@ -16,20 +17,18 @@ function Login() {
     }
 
     return (
-    <>
-        <main className="">
-            <h1 className="">Connect</h1>
-            <form onSubmit={handleLogin} className="">
-                <label htmlFor="email" className="">email</label>
-                <input type='text' autoComplete="username" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className=""/>
+        <main className={styles.main}>
+            <h1 className={styles.title}>Connect</h1>
+            <form onSubmit={handleLogin} className={styles.form}>
+                <label htmlFor="email">email</label>
+                <input type='text' autoComplete="username" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input}/>
                 <label htmlFor="password" className="">password</label>
-                <input type='password' autoComplete="current-password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} className=""/>
-                <input type='submit' value='Login' className=""/>
+                <input type='password' autoComplete="current-password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input}/>
+                <input type='submit' value='Login' className={styles.login}/>
             </form>
-            <Link to="/new-account" className="">Create Account</Link>
+            <Link to="/new-account" className={styles.createAccount}>Create Account</Link>
             {/* <Link to="/about" className="underline">About Connect</Link> */}
         </main>
-    </>
     )
 }
 
