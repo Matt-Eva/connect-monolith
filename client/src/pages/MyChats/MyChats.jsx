@@ -6,6 +6,7 @@ import styles from "./MyChats.module.css"
 function MyChats() {
   const {user} = useOutletContext()
   const [chats, setChats] = useState({})
+  const [loading, setLoading] = useState(true)
 
   useEffect(() =>{
     console.log("effected")
@@ -17,6 +18,9 @@ function MyChats() {
       if(res.ok){
         const chats = await res.json()
         setChats(chats)
+        setLoading(false)
+      } else {
+        alert("Something went wrong when loading your chats.")
       }
     }
     if (user) {
@@ -37,9 +41,13 @@ function MyChats() {
   return (
     <section className={styles.myChats}>
       <h2 className={styles.title}>My Chats</h2>
-      <div className={styles.chatContainer}>
-        {displayChats}
-      </div>
+      { 
+        loading ? 
+          <h3>Loading...</h3> :
+          <div className={styles.chatContainer}>
+            {displayChats}
+          </div>
+      }       
     </section>
   )
 }

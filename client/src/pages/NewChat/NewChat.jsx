@@ -7,6 +7,7 @@ function NewChat() {
   const [connections, setConnections] = useState([])
   const [search, setSearch] = useState("")
   const [participants, setParticipants] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const navigate = useNavigate()
 
@@ -18,6 +19,7 @@ function NewChat() {
       if (res.ok){
         const data = await res.json()
         setConnections(data)
+        setLoading(false)
       } else if (res.status === 401){
         console.log("unauthorized")
       }
@@ -86,14 +88,19 @@ function NewChat() {
         <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className={styles.search}/>
         <button onClick={createChat} className="">Create Chat</button>
       </div>
-      <div>
-        <div className={styles.participantContainer}>
-          {displayParticipants}
-        </div>
-        <div>
-          {displayConnections}
-        </div>
-      </div>
+      {
+        loading ? 
+          <h3>Loading...</h3> 
+          : 
+          <div>
+            <div className={styles.participantContainer}>
+              {displayParticipants}
+            </div>
+            <div>
+              {displayConnections}
+            </div>
+          </div>
+      }
     </section>
   )
 }
