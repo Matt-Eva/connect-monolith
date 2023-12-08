@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import styles from "./ChatCard.module.css"
 
 function ChatCard({chatId, users}) {
   
@@ -12,9 +13,10 @@ function ChatCard({chatId, users}) {
   })
  
   return (
-    <article className="bg-cyan-50 border-y h-8 flex items-center">
-      <p className="w-34 truncate mr-2">{userNames}:</p>
-      <Link to={`/chat/${chatId}`} className="text-ellipsis underline">open ></Link>
+    <article className={styles.card}>
+      <p className="">{userNames}</p>
+      <Link to={`/chat/${chatId}`} className="">open chat</Link>
+      
     </article>
   )
 }

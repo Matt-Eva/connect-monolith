@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom"
+import styles from "./ChatNavBar.module.css"
 
 function ChatNavBar() {
   return (
-    <nav className="flex justify-around border-b h-8 items-end">
+    <nav className={styles.nav}>
         <NavLink to="/" className="underline">
             my chats
         </NavLink>

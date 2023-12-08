@@ -2,7 +2,7 @@ import MainNavBar from "../MainNavBar/MainNavBar"
 import { Link } from "react-router-dom"
 import styles from "./Header.module.css"
 
-function Header({logout}) {
+function Header() {
 
   return (
     <header className={styles.header}>
@@ -11,8 +11,6 @@ function Header({logout}) {
         <Link to="/about" className={`${styles.click} ${styles.learnMore}`}>about</Link>
         {/* <Link className={`${styles.click} ${styles.learnMore}`}>donate</Link> */}
         <Link to="/account" className={`${styles.click} ${styles.myAccount}`}>my account</Link>
-        
-        {/* <button onClick={logout} className={styles.click}>logout</button> */}
       </div>
         <MainNavBar />
     </header>

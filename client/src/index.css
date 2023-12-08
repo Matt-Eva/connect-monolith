@@ -3,6 +3,11 @@
     margin: 0;
 }
 
+body {
+    display: flex;
+    justify-content: center;
+}
+
 a {
     color: black;
 }

@@ -1,6 +1,7 @@
 import { useOutletContext } from "react-router-dom"
 import { useEffect, useState } from "react"
 import ChatCard from "../../components/ChatCard/ChatCard"
+import styles from "./MyChats.module.css"
 
 function MyChats() {
   const {user} = useOutletContext()
@@ -34,9 +35,9 @@ function MyChats() {
   }
 
   return (
-    <div className="">
-      <h2 className="">My Chats</h2>
-      <div className="">
+    <div className={styles.myChats}>
+      <h2 className={styles.title}>My Chats</h2>
+      <div className={styles.chatContainer}>
         {displayChats}
       </div>
     </div>
