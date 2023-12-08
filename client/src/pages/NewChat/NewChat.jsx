@@ -51,15 +51,23 @@ function NewChat() {
     }
   }
 
-  const filteredConnections = connections.filter(connection => connection.name.toLowerCase().includes(search.toLowerCase()))
+  const filteredConnections = connections.filter(connection => {
+    const searchMatch = connection.name.toLowerCase().includes(search.toLowerCase())
+    const isParticipant = participants.find(participant => participant.uId === connection.uId)
+    if (searchMatch && !isParticipant){
+      return true
+    } else {
+      return false
+    }
+  })
 
   const displayConnections = filteredConnections.map(connection => <CreateChatUserCard key={connection.uId} user={connection} addParticipant={addParticipant} />)
 
   const displayParticipants = participants.map(participant => <span key={participant.uId}>{participant.name}</span>)
 
   return (
-    <section className="">
-      <h2 className="">Create New Chat</h2>
+    <section className={styles.newChat}>
+      <h2 className={styles.title}>Create New Chat</h2>
       <button onClick={createChat} className="">Create Chat</button>
       <div className="">
         <label hmtlFor="search">Search connections</label>
