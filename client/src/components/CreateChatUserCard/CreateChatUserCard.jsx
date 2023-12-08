@@ -1,11 +1,11 @@
-
+import styles from "./CreateChatUserCard.module.css"
 
 function CreateChatUserCard({user, addParticipant}) {
     
   return (
-    <div>
-        {user.name}
-        <button onClick={() => addParticipant(user)}>Add</button>
+    <div className={styles.card}>
+        <span className={styles.name}>{user.name}</span>
+        <button onClick={() => addParticipant(user) } className={styles.button}>Add</button>
     </div>
   )
 }

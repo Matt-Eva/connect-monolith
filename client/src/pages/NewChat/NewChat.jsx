@@ -28,6 +28,12 @@ function NewChat() {
   const addParticipant = (user) =>{
     if (participants.find(participant => participant.uId === user.uId)) return
     setParticipants([...participants, user])
+    setSearch("")
+  }
+
+  const removeParticipant = (user) =>{
+    const oneLess = participants.filter( participant => participant.uId !== user.uId)
+    setParticipants(oneLess)
   }
 
   const createChat = async () =>{
@@ -63,21 +69,30 @@ function NewChat() {
 
   const displayConnections = filteredConnections.map(connection => <CreateChatUserCard key={connection.uId} user={connection} addParticipant={addParticipant} />)
 
-  const displayParticipants = participants.map(participant => <span key={participant.uId}>{participant.name}</span>)
+  const displayParticipants = participants.map(participant => {
+    return (
+      <div className={styles.participantCard}>
+        <span key={participant.uId} className={styles.participant}>{participant.name}</span>
+        <button onClick={() => removeParticipant(participant)} className={styles.removeParticipant}>remove</button>
+      </div>
+    )
+  })
 
   return (
     <section className={styles.newChat}>
       <h2 className={styles.title}>Create New Chat</h2>
-      <button onClick={createChat} className="">Create Chat</button>
-      <div className="">
+      <div>
         <label hmtlFor="search">Search connections</label>
-        <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className=""/>
+        <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className={styles.search}/>
+        <button onClick={createChat} className="">Create Chat</button>
       </div>
       <div>
-        {displayParticipants}
-      </div>
-      <div>
-        {displayConnections}
+        <div className={styles.participantContainer}>
+          {displayParticipants}
+        </div>
+        <div>
+          {displayConnections}
+        </div>
       </div>
     </section>
   )

@@ -1,0 +1,12 @@
+.card {
+    margin: .8rem 0;
+    width: 100%;
+}
+
+/* .name {
+    margin-right: .2rem;
+} */
+
+.button {
+    float: right;
+}

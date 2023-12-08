@@ -1,5 +1,8 @@
 .newChat {
     grid-row: 2;
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 2rem 3rem calc(100% - 5rem);
     margin: .7rem .2rem 0 .2rem;
 }
 
@@ -7,4 +10,24 @@
     text-align: center;
     font-size: 1.2rem;
     margin-bottom: .3rem;
+}
+
+.search {
+    margin-right: .2rem;
+}
+
+.participantContainer {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: hsl(0, 0%, 97%);
+    margin-bottom: 1rem;
+    border-radius: .2rem;
+}
+
+.participantCard {
+    margin: .5rem .3rem .5rem 0;
+}
+
+.participant {
+    margin-right: .2rem;
 }
