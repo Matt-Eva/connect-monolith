@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom"
 import CreateChatUserCard from "../../components/CreateChatUserCard/CreateChatUserCard.jsx"
+import styles from "./NewChat.module.css"
 
 function NewChat() {
   const [connections, setConnections] = useState([])
@@ -57,17 +58,17 @@ function NewChat() {
   const displayParticipants = participants.map(participant => <span key={participant.uId}>{participant.name}</span>)
 
   return (
-    <section className="grid grid-rows-6">
-      <h2 className="text-lg justify-self-center row-start-1">Create New Chat</h2>
-      <button onClick={createChat} className="w-12 justify-self-center row-start-2">Create Chat</button>
-      <div className="flex flex-wrap w-screen">
+    <section className="">
+      <h2 className="">Create New Chat</h2>
+      <button onClick={createChat} className="">Create Chat</button>
+      <div className="">
         <label hmtlFor="search">Search connections</label>
-        <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className="w-48"/>
+        <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className=""/>
       </div>
       <div>
         {displayParticipants}
       </div>
-      <div display="flex flex-wrap">
+      <div>
         {displayConnections}
       </div>
     </section>

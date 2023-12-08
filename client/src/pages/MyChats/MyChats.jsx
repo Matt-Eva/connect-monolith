@@ -35,12 +35,12 @@ function MyChats() {
   }
 
   return (
-    <div className={styles.myChats}>
+    <section className={styles.myChats}>
       <h2 className={styles.title}>My Chats</h2>
       <div className={styles.chatContainer}>
         {displayChats}
       </div>
-    </div>
+    </section>
   )
 }
 
