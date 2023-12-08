@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'development'){
         saveUninitialized: false,
         resave: false,
         cookie: {
-            secure: true,
+            // secure: true,
             httpOnly: true,
             // maxAge: 60 * 60 * 1000
         }
