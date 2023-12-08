@@ -32,6 +32,7 @@ function Root() {
   const login = async (email, password) =>{
     const res = await fetch("/api" + "/login", {
         method: "POST",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
