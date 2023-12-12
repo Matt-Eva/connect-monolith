@@ -1,12 +1,10 @@
 .card {
-    margin: .8rem 0;
-    width: 100%;
-    max-width: 20rem
+    height: 2rem;
+    margin: .5rem 0;
+    max-width: 20rem;
+    background-color: hsl(0, 0%, 95%);
+    padding: .5rem;
 }
-
-/* .name {
-    margin-right: .2rem;
-} */
 
 .button {
     float: right;

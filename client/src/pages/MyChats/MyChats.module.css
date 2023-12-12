@@ -1,13 +1,17 @@
 .myChats {
     grid-row: 2;
     margin: .7rem .2rem 0 .2rem;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 2rem calc(100% - 2rem);
+    justify-self: center;
+    width: 100%;
+    max-width: 20rem;
+    padding: .5rem;
 }
 
 .title{
     text-align: center;
     font-size: 1.2rem;
     margin-bottom: .3rem;
-}
-
-.chatContainer {
 }

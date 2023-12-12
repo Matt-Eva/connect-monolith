@@ -1,6 +1,29 @@
 .card {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    height: 2rem;
+    /* display: flex; */
+    /* align-items: center; */
+    min-height: 2rem;
+    /* width: 100%; */
+    max-width: 20rem;
+    background-color: hsl(0, 0%, 95%);
+    border-radius: .2rem;;
+    margin: .5rem 0;
+    padding: .5rem;
 }
+
+.namesTruncated {
+    max-width: 15rem;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.allNames {
+    display: inline-block;
+    max-width: 15rem;
+}
+
+.link {
+    float: right;
+}
+
