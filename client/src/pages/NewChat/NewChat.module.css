@@ -4,7 +4,8 @@
     width: 100%;
     max-width: 20rem;
     display: grid;
-    grid-template-columns: 1;
+    height: calc(100vh - 8.2rem);
+    overflow: auto;
     grid-template-rows: 2rem 3rem calc(100% - 5rem);
     margin: .7rem .2rem 0 .2rem;
     padding: .5rem;
