@@ -1,9 +1,13 @@
 .newChat {
     grid-row: 2;
+    justify-self: center;
+    width: 100%;
+    max-width: 20rem;
     display: grid;
     grid-template-columns: 1;
     grid-template-rows: 2rem 3rem calc(100% - 5rem);
     margin: .7rem .2rem 0 .2rem;
+    padding: .5rem;
 }
 
 .title{
@@ -12,8 +16,24 @@
     margin-bottom: .3rem;
 }
 
+.searchContainer {
+    display: grid;
+    grid-template-rows: 1rem 2rem;
+    grid-template-columns: 60% 40%;
+}
+
+.searchLabel {
+    grid-row: 1;
+}
+
 .search {
-    margin-right: .2rem;
+    grid-row: 2;
+    margin: .2rem 0;
+}
+
+.createChat {
+    grid-row: 2;
+    margin: .2rem 0 .2rem .2rem;
 }
 
 .participantContainer {

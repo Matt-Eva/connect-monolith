@@ -1,6 +1,7 @@
 .card {
     margin: .8rem 0;
     width: 100%;
+    max-width: 20rem
 }
 
 /* .name {
