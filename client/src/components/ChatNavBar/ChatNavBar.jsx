@@ -4,10 +4,10 @@ import styles from "./ChatNavBar.module.css"
 function ChatNavBar() {
   return (
     <nav className={styles.nav}>
-        <NavLink to="/" className="underline">
+        <NavLink to="/">
             my chats
         </NavLink>
-        <NavLink to="/new-chat" className="underline">
+        <NavLink to="/new-chat">
             new chat
         </NavLink>
     </nav>
