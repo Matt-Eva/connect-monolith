@@ -9,7 +9,7 @@ function NewConnections() {
     e.preventDefault()
   
     try{
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + `/search-connections/${search}`, {
+      const res = await fetch(`/api/search-connections/${search}`, {
         credentials: "include"
       })
       if (res.ok){
