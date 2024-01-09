@@ -20,6 +20,8 @@ body {
 
 a {
     color: black;
+    text-decoration: none;
+    text-decoration-thickness: 1px;
 }
 
 button {

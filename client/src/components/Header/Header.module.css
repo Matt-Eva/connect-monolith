@@ -7,9 +7,9 @@
  .siteNav {
     grid-row: 1;
     display: grid;
-    grid-template-columns: 5.6rem 2.7rem 3.1rem calc(100% - 11.4rem);
+    grid-template-columns: 6rem 3.3rem 2.1rem calc(100% - 11.4rem);
     align-items: end;
-    border-bottom: solid .1rem;
+    border-bottom: solid .01rem;
     padding-left: .2rem;
     padding-bottom: .2rem;
  }
@@ -19,11 +19,12 @@
  }
 
  .click {
-    margin-bottom: .2rem;
+    margin-bottom: .05rem;
  }
 
  .learnMore {
-    justify-self: end;
+   grid-column: 2;
+    justify-self: start;
  }
 
  .myAccount {

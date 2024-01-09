@@ -1,0 +1,9 @@
+.nav {
+    width: 100%;
+    justify-self: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 1rem;
+    border-bottom: hsl(0, 0%, 90%) solid 1px;
+}

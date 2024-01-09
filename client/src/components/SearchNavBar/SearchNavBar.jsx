@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom"
+import styles from "./SearchNavBar.module.css"
 
 function SearchNavBar() {
   return (
-    <nav>
+    <nav className={styles.nav}>
         <NavLink to="/people">
             search
         </NavLink>

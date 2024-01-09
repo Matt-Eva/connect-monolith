@@ -1,0 +1,4 @@
+.main {
+    display: grid;
+    grid-template-rows: 2.2rem calc(100vh - 6.2rem);
+}
