@@ -1,8 +1,9 @@
 .main {
-    width: 100vw;
+    width: 100%;
     display: grid;
     grid-template-rows: 5rem 10rem calc(100vh - 20rem);
     justify-content: center;
+    justify-self: center;
 }
 
 .title {
