@@ -1,3 +1,4 @@
 .container {
-    
+    justify-self: center;
+    overflow: auto;
 }

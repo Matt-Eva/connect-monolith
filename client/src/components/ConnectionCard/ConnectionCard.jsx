@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
-import ProfileIcon from "../ProfileIcon/ProfileIcon"
+import styles from "./ConnectionCard.module.css"
 
 function ConnectionCard({name, uId, profileImg}) {
   return (
-    <div>
+    <div className={styles.card}>
       <img src={profileImg} alt={`${name} profile image`}/>
-      {name}
+      <span title={name}>{name}</span>
       <Link to={`/profile/${uId}`}>View Profile</Link>
     </div>
   )

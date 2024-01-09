@@ -1,0 +1,19 @@
+.card {
+    min-height: 2rem;
+    width: 100vw;
+    max-width: 20rem;
+    display: grid;
+    grid-template-columns: 15% 50% 35%;
+    background-color: hsl(0, 0%, 95%);
+    border-radius: .2rem;;
+    margin: .5rem 0;
+    padding: .5rem;
+    align-items: center;
+}
+
+img{
+    height: 2rem;
+    width: 2rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
