@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useOutletContext } from "react-router-dom"
 import ConnectionCard from "../../components/ConnectionCard/ConnectionCard"
+import styles from "./MyConnections.module.css"
 
 function MyConnections() {
   const { user } = useOutletContext()
@@ -29,10 +30,12 @@ function MyConnections() {
     }
   }, [user])
 
+  console.log(connections)
+
   const displayConnections = connections.map(connection => <ConnectionCard key={connection.uId} {...connection} />)
 
   return (
-    <div>
+    <div className={styles.container}>
       {displayConnections}
     </div>
   )
