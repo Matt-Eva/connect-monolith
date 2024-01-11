@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import styles from "./NewConnectionCard.module.css"
 
 function NewConnectionCard({name, uId, pending, invited}) {
     const [pendingInvite, setPendingInvite] = useState(pending)
@@ -45,20 +46,21 @@ function NewConnectionCard({name, uId, pending, invited}) {
     }
 
     return (
-        <article>
-            <p>{name} {uId} </p>
+        <article className={styles.card}>
+            <img className={styles.image}/>
+            <span className={styles.name} title={name}>{name}</span>
             { pendingInvite ? <span> Invitation Pending</span> : 
                 (invited ? 
                     (connected ? 
-                        <span> Connected</span>
+                        <span className={styles.connected}> Connected</span>
                         : 
-                        <button onClick={acceptInvitation}> Accept Invitation</button>
+                        <button onClick={acceptInvitation} className={styles.button}> Accept Invitation</button>
                     )
                     :
-                    <button onClick={addConnection}>connect</button>
+                    <button onClick={addConnection} className={styles.button}>connect</button>
                 )
             }
-            <Link to={`/profile/${uId}`}>View Profile</Link>
+            <Link to={`/profile/${uId}`} className={styles.link}>View Profile</Link>
         </article>
       )
 }

@@ -1,5 +1,6 @@
 import {useState} from "react"
 import NewConnectionCard from "../../components/NewConnectionCard/NewConnectionCard"
+import styles from "./NewConnections.module.css"
 
 function NewConnections() {
   const [search, setSearch] = useState('')
@@ -26,15 +27,20 @@ function NewConnections() {
 
   const displayResults = searchResults.map(result => <NewConnectionCard key={result.uId} {...result}/>)
 
-  console.log(displayResults)
-  return (
-    <div>NewConnections
+  console.log(searchResults)
 
-    <form onSubmit={handleSearch}>
-      <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} />
-      <input type="submit" value="search" />
+  return (
+    <div className={styles.container}>
+      <h2 className={styles.header}>Search</h2>
+
+    <form onSubmit={handleSearch} className={styles.form}>
+      <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className={styles.searchField}/>
+      <input type="submit" value="search" className={styles.searchResults}/>
     </form>
-      {displayResults}
+      <div className={styles.resultsContainer}>
+        {displayResults}
+      </div>
+      
     </div>
   )
 }
