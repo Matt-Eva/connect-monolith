@@ -9,7 +9,7 @@ function InvitationCard({name, uId}) {
 
     const accept = async () => {
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/accept-invitation", {
+            const res = await fetch("/api/accept-invitation", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -28,7 +28,7 @@ function InvitationCard({name, uId}) {
 
     const ignore = async () =>{
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/ignore-invitation", {
+            const res = await fetch("/api/ignore-invitation", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -46,11 +46,26 @@ function InvitationCard({name, uId}) {
     }
 
     const block = async () =>{
-
+        try {
+            const res = await fetch("/api/block-user", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({userId: uId})
+            })
+            if (res.ok){
+                setResponded(true)
+                setBlocked(true)
+            }
+        } catch (e){
+            console.error(e)
+        }
     }
 
   return (
-    <div>
+    <article className={styles.card}>
         {name}
         {responded ?  null :
             <>
@@ -62,7 +77,7 @@ function InvitationCard({name, uId}) {
         {connected ? <span>Connected</span>: null}
         {blocked ? <span>Blocked</span> : null}
         {ignored ? <span>Ignored</span> : null}
-    </div>
+    </article>
   )
 }
 

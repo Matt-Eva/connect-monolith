@@ -1,8 +1,5 @@
 .card {
-    /* display: flex; */
-    /* align-items: center; */
     min-height: 2rem;
-    /* width: 100%; */
     max-width: 20rem;
     background-color: hsl(0, 0%, 95%);
     border-radius: .2rem;;
