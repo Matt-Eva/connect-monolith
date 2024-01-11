@@ -2,7 +2,7 @@
     min-height: 2rem;
     max-width: 20rem;
     margin: .5rem 0;
-    padding: .5rem .5rem .7rem .5rem;
+    padding: .5rem;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 2rem calc(100% - 6rem) 4rem;
