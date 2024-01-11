@@ -430,14 +430,14 @@ app.get("/api/search-connections/:name", async (req, res) =>{
             AND NOT (c) - [:CONNECTED] - (u)
             AND NOT (c) - [:BLOCKED] - (u)
             AND u <> c
-            RETURN c.uId AS uId, c.name AS name, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
+            RETURN c.uId AS uId, c.name AS name, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
             UNION
             MATCH (c:User), (u:User {uId: $userId})
             WHERE c.name STARTS WITH $name
             AND NOT (c) - [:CONNECTED] - (u)
             AND NOT (c) - [:BLOCKED] - (u)
             AND c <> u
-            RETURN c.uId AS uId, c.name AS name, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
+            RETURN c.uId AS uId, c.name AS name, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
             LIMIT 50
         `
         const result = await session.executeRead(tx => tx.run(query, {name: name, userId: userId}))
@@ -448,7 +448,8 @@ app.get("/api/search-connections/:name", async (req, res) =>{
                 uId: record.get("uId"),
                 name: record.get("name"),
                 pending: record.get("pending"),
-                invited: record.get("invited")
+                invited: record.get("invited"),
+                profileImg: record.get("profileImg")
             }
             searchResults.push(user)
         }

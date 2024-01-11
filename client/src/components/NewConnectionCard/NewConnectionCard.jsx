@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import styles from "./NewConnectionCard.module.css"
 
-function NewConnectionCard({name, uId, pending, invited}) {
+function NewConnectionCard({name, uId, pending, invited, profileImg}) {
     const [pendingInvite, setPendingInvite] = useState(pending)
     const [connected, setConnected] = useState(false)
 
@@ -47,7 +47,7 @@ function NewConnectionCard({name, uId, pending, invited}) {
 
     return (
         <article className={styles.card}>
-            <img className={styles.image}/>
+            <img src={profileImg} alt={`${name} profile image`}className={styles.image}/>
             <span className={styles.name} title={name}>{name}</span>
             { pendingInvite ? <span> Invitation Pending</span> : 
                 (invited ? 
