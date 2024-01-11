@@ -4,8 +4,7 @@
     max-width: 20rem;
     display: grid;
     grid-template-columns: 15% 50% 35%;
-    background-color: hsl(0, 0%, 95%);
-    border-radius: .2rem;;
+    border-radius: .2rem;
     margin: .5rem 0;
     padding: .5rem;
     align-items: center;

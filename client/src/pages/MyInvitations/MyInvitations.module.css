@@ -1,0 +1,16 @@
+.container {
+    display: grid;
+    width: 100%;
+    grid-template-rows: 2rem calc(100% - 2rem);
+}
+
+.header {
+    justify-self: center;
+    margin: .5rem 0;
+}
+
+.invitationContainer {
+    width: 100%;
+    max-width: 20rem;
+    justify-self: center;
+}

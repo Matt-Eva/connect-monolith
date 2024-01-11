@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react"
 import InvitationCard from "../../components/InvitationCard/InvitationCard"
+import styles from "./MyInvitations.module.css"
 
 function MyInvitations() {
     const [invitations, setInvitations] = useState([])
@@ -26,8 +27,11 @@ function MyInvitations() {
     const displayInvitations = invitations.map(invitation => <InvitationCard key={invitation.uId} {...invitation}/>)
 
   return (
-    <div>myInvitations
+    <div className={styles.container}>
+        <h2 className={styles.header}>My Invitations</h2>
+        <div className={styles.invitationContainer}>   
         {displayInvitations}
+        </div>
     </div>
   )
 }

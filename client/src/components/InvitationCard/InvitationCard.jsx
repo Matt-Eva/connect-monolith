@@ -1,7 +1,7 @@
 import { useState } from "react"
 import styles from "./InvitationCard.module.css"
 
-function InvitationCard({name, uId}) {
+function InvitationCard({name, uId, profileImg}) {
     const [connected, setConnected] = useState(false)
     const [responded, setResponded] = useState(false)
     const [blocked, setBlocked] = useState(false)
@@ -65,18 +65,23 @@ function InvitationCard({name, uId}) {
     }
 
   return (
-    <article className={styles.card}>
-        {name}
-        {responded ?  null :
-            <>
-                <button onClick={accept}>Accept</button>
-                <button onClick={ignore}>Ignore</button>
-                <button onClick={block}>Block</button>
-            </>
-        }
-        {connected ? <span>Connected</span>: null}
-        {blocked ? <span>Blocked</span> : null}
-        {ignored ? <span>Ignored</span> : null}
+    <article className={`userCard ${styles.card}`}>
+        <div className={styles.infoContainer}>
+            <img src={profileImg} alt={`${name} profile image`} className={styles.image}/>
+            <span className={styles.name}>{name}</span>
+        </div>
+        <div className={styles.responseContainer}>
+            {responded ?  null :
+                <>
+                    <button onClick={accept} className={styles.button}>Accept</button>
+                    <button onClick={ignore} className={styles.button}>Ignore</button>
+                    <button onClick={block} className={styles.button}>Block</button>
+                </>
+            }
+            {connected ? <span className={styles.response}>Connected</span>: null}
+            {blocked ? <span className={styles.response}>Blocked</span> : null}
+            {ignored ? <span className={styles.response}>Ignored</span> : null}
+        </div>
     </article>
   )
 }
