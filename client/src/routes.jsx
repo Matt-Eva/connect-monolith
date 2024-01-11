@@ -2,7 +2,7 @@ import Root from "./root/Root.jsx";
 import BrowseChats from "./pages/BrowseChats/BrowseChats.jsx";
 import MyChats from "./pages/MyChats/MyChats.jsx";
 import NewChat from "./pages/NewChat/NewChat.jsx";
-import Search from "./pages/Search/Search.jsx";
+import People from "./pages/People/People.jsx";
 import MyConnections from "./pages/MyConnections/MyConnections.jsx";
 import NewConnections from "./pages/NewConnections/NewConnections.jsx";
 import Chat from "./pages/Chat/Chat.jsx";
@@ -34,7 +34,7 @@ const routes = [
             },
             {
                 path: '/people',
-                element: <Search />,
+                element: <People />,
                 children: [
                   {
                     path: "/people",

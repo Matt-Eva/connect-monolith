@@ -1,8 +1,8 @@
 import SearchNavBar from "../../components/SearchNavBar/SearchNavBar"
 import { Outlet, useOutletContext } from "react-router-dom"
-import styles from "./Search.module.css"
+import styles from "./People.module.css"
 
-function Search() {
+function People() {
   const { user } = useOutletContext()
 
   const outletContext = {user: user}
@@ -15,4 +15,4 @@ function Search() {
   )
 }
 
-export default Search
+export default People;

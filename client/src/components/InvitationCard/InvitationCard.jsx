@@ -1,4 +1,5 @@
 import { useState } from "react"
+import styles from "./InvitationCard.module.css"
 
 function InvitationCard({name, uId}) {
     const [connected, setConnected] = useState(false)
