@@ -1,8 +1,6 @@
 .card {
     min-height: 2rem;
     max-width: 20rem;
-    background-color: hsl(0, 0%, 95%);
-    border-radius: .2rem;;
     margin: .5rem 0;
     padding: .5rem;
 }

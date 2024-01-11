@@ -1,6 +1,6 @@
 .card {
     min-height: 2rem;
-    width: 100vw;
+    width: 100%;
     max-width: 20rem;
     display: grid;
     grid-template-columns: 15% 50% 35%;
@@ -15,4 +15,8 @@ img{
     width: 2rem;
     object-fit: cover;
     border-radius: 50%;
+}
+
+link {
+    font-size: .8rem;
 }

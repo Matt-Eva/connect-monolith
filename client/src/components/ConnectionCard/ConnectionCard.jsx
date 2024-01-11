@@ -6,7 +6,7 @@ function ConnectionCard({name, uId, profileImg}) {
     <div className={`userCard ${styles.card}`}>
       <img src={profileImg} alt={`${name} profile image`}/>
       <span title={name}>{name}</span>
-      <Link to={`/profile/${uId}`} className={`buttonLink`}>View Profile</Link>
+      <Link to={`/profile/${uId}`} className={`buttonLink ${styles.link}`}>view profile</Link>
     </div>
   )
 }

@@ -1,10 +1,16 @@
 .container {
     justify-self: center;
-    overflow: auto;
+    width: 100%
 }
 
 .header {
     font-size: 1.2rem;
     text-align: center;
     margin: .5rem 0rem ;
+}
+
+.connectionContainer {
+    padding: .5rem;
+    overflow: auto;
+    width: 100%;
 }

@@ -14,7 +14,7 @@ function ChatCard({chatId, users}) {
   console.log(nameClass)
 
   return (
-    <article className={styles.card}>
+    <article className={`userCard ${styles.card}`}>
       <span 
       className={nameClass} 
       title={userNames} 

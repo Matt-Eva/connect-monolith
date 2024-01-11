@@ -3,9 +3,10 @@ import styles from "./CreateChatUserCard.module.css"
 function CreateChatUserCard({user, addParticipant}) {
     
   return (
-    <div className={styles.card}>
+    <div className={`userCard ${styles.card}`}>
+        <img src={user.profileImg} alt={`${user.name} profile image`}/>
         <span className={styles.name}>{user.name}</span>
-        <button onClick={() => addParticipant(user) } className={styles.button}>Add</button>
+        <button onClick={() => addParticipant(user) }>Add</button>
     </div>
   )
 }
