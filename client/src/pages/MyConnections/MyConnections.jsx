@@ -36,6 +36,7 @@ function MyConnections() {
 
   return (
     <div className={styles.container}>
+      <h2 className={styles.header}>My Connections</h2>
       {displayConnections}
     </div>
   )
