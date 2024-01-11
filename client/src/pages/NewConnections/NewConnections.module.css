@@ -25,6 +25,7 @@
 }
 
 .resultsContainer {
+    width: 100%;
     justify-self: center;
     margin-top: 1rem;
     display: flex;
