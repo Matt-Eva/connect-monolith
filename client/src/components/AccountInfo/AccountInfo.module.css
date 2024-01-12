@@ -35,6 +35,7 @@
 .editButton {
     grid-row: span 2;
     height: 2rem;
+    width: 8rem;
     align-self: center;
 }
 

@@ -142,15 +142,13 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
             </form>
         </div>
         <div>
-            <h2>Delete Account</h2>
+            <h2 className={styles.deleteAccountHeader}>Delete Account</h2>
             <button onClick={() => setEnableDelete(true)}>Delete Account</button>
             {enableDelete ?
             <>
-                <p>Are you sure you want to delete your account?</p>
-                <button onClick={deleteAccount}>Yes, Delete my Account</button>
-                <br />
-                <br />
-                <button onClick={() => setEnableDelete(false)}>No, Don't Delete my Account</button>
+                <p className={styles.deleteQuestion}>Are you sure you want to delete your account?</p>
+                <button onClick={() => setEnableDelete(false)} className={styles.deleteAccountButton}>No, Don't Delete my Account</button>
+                <button onClick={deleteAccount} >Yes, Delete my Account</button>
             </> : null}
         </div>
     </main>
