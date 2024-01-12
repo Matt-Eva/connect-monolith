@@ -1,12 +1,11 @@
 import { useState } from "react"
-import { useOutletContext } from "react-router-dom"
-import ProfileIcon from "../ProfileIcon/ProfileIcon"
 import BlockedUserCard from "../BlockedUserCard/BlockedUserCard"
+import styles from "./AccountInfo.module.css"
 
-function AccountInfo({toggleEdit, name, firstName, lastName, email, profileImg, logout}) {
+function AccountInfo({toggleEdit, name, email, profileImg, logout}) {
   const [blockedUsers, setBlockedUsers] = useState([])
   const [showBlockedUsers, setShowBlockedUsers] = useState(false)
-console.log(logout)
+
   const fetchBlockedUsers = async () => {
     try{
       const res = await fetch ("/api/blocked-users",{credentials: "include"})
@@ -27,15 +26,21 @@ console.log(logout)
   const displayBlockedUsers = blockedUsers.map(user => <BlockedUserCard key={user.uId} {...user} />)
   
   return (
-    <div>
-        <button onClick={toggleEdit}>Edit Account</button>
-        <button onClick={logout}>logout</button>
-        <ProfileIcon profileImg={profileImg} firstName={firstName}/>
+    <main className={styles.main}>
+      <div className={styles.imageLogout}>
+        <img src={profileImg} alt={`${name} profile image`} className={styles.profileImage}/>
+        <button onClick={logout} className={styles.logoutButton}>logout</button>
+      </div>
+      <div className={styles.userInfo}>
         <h2>{name}</h2>
-        <p>{email}</p>
+        <p className={styles.email}>{email}</p>
+        <button onClick={toggleEdit} className={styles.editButton}>Edit Account</button>
+      </div>
+      <div>
         {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)}>Hide Blocked Users</button> : <button onClick={fetchBlockedUsers}>Manage Blocked Users</button>}
         {showBlockedUsers ? displayBlockedUsers : null }
-    </div>
+      </div>
+    </main>
   )
 }
 

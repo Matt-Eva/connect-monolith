@@ -10,13 +10,6 @@
     align-items: center;
 }
 
-img{
-    height: 2rem;
-    width: 2rem;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
 link {
     font-size: .8rem;
 }

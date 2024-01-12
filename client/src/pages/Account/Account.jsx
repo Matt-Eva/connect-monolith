@@ -14,9 +14,9 @@ function Account() {
     }
 
     return (
-        <div>
+        <>
             {editMode ? <EditAccountForm toggleEdit={toggleEdit} {...user}/> : <AccountInfo toggleEdit={toggleEdit} logout={logout} {...user} />}
-        </div>
+        </>
     )
 }
 

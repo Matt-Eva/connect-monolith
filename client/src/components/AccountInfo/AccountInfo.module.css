@@ -1,0 +1,39 @@
+.main {
+    display: grid;
+    grid-template-rows: 20% 10% 70%;
+    padding: .5rem;
+}
+
+.imageLogout{
+    display: flex;
+    align-content: flex-start;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+}
+
+.profileImage{
+    height: 100%;
+    border-radius: 50%;
+}
+
+.logoutButton {
+    height: 2rem;
+}
+
+.userInfo {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+    margin-bottom: 1rem;
+}
+
+.email{
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.editButton {
+    grid-row: span 2;
+    height: 2rem;
+    align-self: center;
+}

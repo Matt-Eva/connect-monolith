@@ -4,7 +4,7 @@ import styles from "./ConnectionCard.module.css"
 function ConnectionCard({name, uId, profileImg}) {
   return (
     <div className={`userCard ${styles.card}`}>
-      <img src={profileImg} alt={`${name} profile image`}/>
+      <img src={profileImg} alt={`${name} profile image`} className={`userCardImage`}/>
       <span title={name}>{name}</span>
       <Link to={`/profile/${uId}`} className={`buttonLink ${styles.link}`}>view profile</Link>
     </div>

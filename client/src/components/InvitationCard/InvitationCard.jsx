@@ -67,7 +67,7 @@ function InvitationCard({name, uId, profileImg}) {
   return (
     <article className={`userCard ${styles.card}`}>
         <div className={styles.infoContainer}>
-            <img src={profileImg} alt={`${name} profile image`} className={styles.image}/>
+            <img src={profileImg} alt={`${name} profile image`} className={`userCardImage ${styles.image}`}/>
             <span className={styles.name}>{name}</span>
         </div>
         <div className={styles.responseContainer}>

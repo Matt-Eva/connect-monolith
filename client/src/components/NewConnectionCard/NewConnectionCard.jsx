@@ -47,7 +47,7 @@ function NewConnectionCard({name, uId, pending, invited, profileImg}) {
 
     return (
         <article className={styles.card}>
-            <img src={profileImg} alt={`${name} profile image`}className={styles.image}/>
+            <img src={profileImg} alt={`${name} profile image`}className={`userCardImage ${styles.image}`}/>
             <span className={styles.name} title={name}>{name}</span>
             { pendingInvite ? <span> Invitation Pending</span> : 
                 (invited ? 
