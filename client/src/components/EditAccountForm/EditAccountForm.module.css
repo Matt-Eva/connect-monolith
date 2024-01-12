@@ -1,0 +1,31 @@
+.main {
+    padding: .5rem;
+}
+
+.backButton{
+    margin-bottom: .5rem;
+}
+
+.formContainer{
+    display: grid;
+    grid-template-columns: 10rem calc(100% - 10rem);
+    grid-template-rows: 2rem 10rem;
+    margin-bottom: 2rem;
+}
+
+.form {
+    grid-column: span 2;
+    display: grid;
+    row-gap: .12rem;
+    width: 80%;
+    max-width: 40rem;
+  
+}
+
+.permissionsButton{
+    max-width: 8rem;
+}
+
+.submitButton{
+    width: 6rem;
+}

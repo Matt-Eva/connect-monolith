@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate, useOutletContext } from "react-router-dom"
-import ProfileIcon from "../ProfileIcon/ProfileIcon"
+import styles from "./EditAccountForm.module.css"
 
 function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
     const {destroyUser} = useOutletContext()
@@ -107,49 +107,53 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
     }
 
   return (
-    <div>
-        <button onClick={toggleEdit}>Back</button>
-        <h2>Update Profile Info</h2>
-        <button onClick={() => setDisableChangeInfo(false)}>Change Info</button>
-        <form onSubmit={updateAccount} onChange={handleInfoChange} disabled={true}>
-            <label htmlFor="firstName">First Name</label>
-            <input type="text" name="firstName" value={formState.firstName} disabled={disableChangeInfo}/>
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" name="lastName" value={formState.lastName} disabled={disableChangeInfo} />
-            <label htmlFor="email">Email</label>
-            <input type="text" name="email" value={formState.email} disabled={disableChangeInfo}/>
-            <input type="submit" disabled={disableChangeInfo}/>
-        </form>
-        {disableChangeInfo ? null : <button onClick={() =>{
-            setFormState(initialChangeFormState)
-            setDisableChangeInfo(true)
-        }}>Cancel</button>}
-        <h2>Change password</h2>
-        <button onClick={() => setDisableChangePassword(false)}>Change Password</button>
-        <form onSubmit={updatePassword} onChange={handlePasswordChange}>
-            <label htmlFor="currentPassword">Current Password</label>
-            <input type="password" name="currentPassword" value={passwordState.currentPassword} disabled={disableChangePassword}/>
-            <label htmlFor="newPassword">New Password</label>
-            <input type="password" name="newPassword" value={passwordState.newPassword} disabled={disableChangePassword}/>
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input type="password" name="confirmPassword" value={passwordState.confirmPassword} disabled={disableChangePassword}/>
-            <input type="submit" disabled={disableChangePassword}/>
-        </form>
-        {disableChangePassword ? null : <button onClick={() =>{
-            setPasswordState(initialPasswordState)
-            setDisableChangePassword(true)
-        }}>Cancel</button>}
-        <h2>Delete Account</h2>
-        <button onClick={() => setEnableDelete(true)}>Delete Account</button>
-        {enableDelete ?
-        <>
-            <p>Are you sure you want to delete your account?</p>
-            <button onClick={deleteAccount}>Yes, Delete my Account</button>
-            <br />
-            <br />
-            <button onClick={() => setEnableDelete(false)}>No, Don't Delete my Account</button>
-        </> : null}
-    </div>
+    <main className={styles.main}>
+        <button onClick={toggleEdit} className={styles.backButton}>Back</button>
+        <div className={styles.formContainer}>
+            <h2>Update Profile Info</h2>
+            {disableChangeInfo ? <button onClick={() => setDisableChangeInfo(false)} className={styles.permissionsButton}>Change Info</button> : <button onClick={() =>{
+                setFormState(initialChangeFormState)
+                setDisableChangeInfo(true)
+            }} className={styles.permissionsButton}>Cancel</button>}
+            <form onSubmit={updateAccount} onChange={handleInfoChange} disabled={true} className={styles.form}>
+                <label htmlFor="firstName">First Name</label>
+                <input type="text" name="firstName" value={formState.firstName} disabled={disableChangeInfo}/>
+                <label htmlFor="lastName">Last Name</label>
+                <input type="text" name="lastName" value={formState.lastName} disabled={disableChangeInfo} />
+                <label htmlFor="email">Email</label>
+                <input type="text" name="email" value={formState.email} disabled={disableChangeInfo}/>
+                <input type="submit" disabled={disableChangeInfo} className={styles.submitButton}/>
+            </form>
+        </div>
+        <div className={styles.formContainer}>
+            <h2>Change password</h2>
+            {disableChangePassword ? <button onClick={() => setDisableChangePassword(false)} className={styles.permissionsButton}>Change Password</button> : <button onClick={() =>{
+                setPasswordState(initialPasswordState)
+                setDisableChangePassword(true)
+            }} className={styles.permissionsButton}>Cancel</button>}
+            <form onSubmit={updatePassword} onChange={handlePasswordChange} className={styles.form}>
+                <label htmlFor="currentPassword">Current Password</label>
+                <input type="password" name="currentPassword" value={passwordState.currentPassword} disabled={disableChangePassword}/>
+                <label htmlFor="newPassword">New Password</label>
+                <input type="password" name="newPassword" value={passwordState.newPassword} disabled={disableChangePassword}/>
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" value={passwordState.confirmPassword} disabled={disableChangePassword}/>
+                <input type="submit" disabled={disableChangePassword} className={styles.submitButton}/>
+            </form>
+        </div>
+        <div>
+            <h2>Delete Account</h2>
+            <button onClick={() => setEnableDelete(true)}>Delete Account</button>
+            {enableDelete ?
+            <>
+                <p>Are you sure you want to delete your account?</p>
+                <button onClick={deleteAccount}>Yes, Delete my Account</button>
+                <br />
+                <br />
+                <button onClick={() => setEnableDelete(false)}>No, Don't Delete my Account</button>
+            </> : null}
+        </div>
+    </main>
   )
 }
 
