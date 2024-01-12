@@ -32,7 +32,7 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
     const updateAccount = async (e) =>{
         e.preventDefault()
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/my-account", {
+            const res = await fetch("/api/my-account", {
                 method: "PATCH",
                 credentials: "include",
                 headers: {
@@ -72,7 +72,7 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
         }
 
         try{
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/update-password", {
+            const res = await fetch("/api/update-password", {
                 method: "PATCH",
                 credentials: "include",
                 headers: {
@@ -92,7 +92,7 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
  
     const deleteAccount = async () => {
         try{
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/my-account", {
+            const res = await fetch("/api/my-account", {
                 method: "DELETE",
                 credentials: "include"
             })
