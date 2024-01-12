@@ -37,7 +37,7 @@ function AccountInfo({toggleEdit, name, email, profileImg, logout}) {
         <button onClick={toggleEdit} className={styles.editButton}>Edit Account</button>
       </div>
       <div>
-        {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)}>Hide Blocked Users</button> : <button onClick={fetchBlockedUsers}>Manage Blocked Users</button>}
+        {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)} className={styles.blockedUserButton}>Hide Blocked Users</button> : <button onClick={fetchBlockedUsers} className={styles.blockedUserButton}>Manage Blocked Users</button>}
         {showBlockedUsers ? displayBlockedUsers : null }
       </div>
     </main>

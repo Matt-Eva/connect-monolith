@@ -40,6 +40,7 @@ h2 {
 .userCard {
     background-color: hsl(0, 0%, 95%);
     border-radius: .2rem;
+    padding: .5rem;
 }
 
 .userCardImage{
@@ -49,11 +50,18 @@ h2 {
     border-radius: 50%;
 }
 
+.userCardName{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: .2rem;
+}
+
 .buttonLink {
     color: white;
     background-color: hsl(180, 100%, 32%);
     border-radius: 1rem;
     min-height: 1.5rem;
     text-align: center;
-    padding-top: .1rem;
+    padding: .2rem;
 }   

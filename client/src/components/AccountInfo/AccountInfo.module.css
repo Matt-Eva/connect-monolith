@@ -37,3 +37,7 @@
     height: 2rem;
     align-self: center;
 }
+
+.blockedUserButton {
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,7 @@
+.card {
+    display: grid;
+    grid-template-columns: 2rem calc(100% - 8rem) 6rem;
+    height: 3rem;
+    align-items: center;
+    margin-bottom: .5rem;
+}
