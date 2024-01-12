@@ -1,6 +1,7 @@
 import { io } from "socket.io-client"
 import { useParams, useOutletContext, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import styles from "./Chat.module.css"
 
 
 function Chat() {
@@ -93,9 +94,21 @@ function Chat() {
     return <article key={message[1].uId}>{userSpan} {text}</article>
   })
 
+  const participants = []
+
+  for(const message of messages) {
+    if (participants.find(user => user.uId === message[0].uId)) continue
+    else participants.push(message[0])
+  }
+  
+  const usernames = participants.map((p, index) => {
+    if (index === participants.length -1) return <span>{p.firstName}</span>
+    return <span>{p.firstName}, </span>
+})
+
   return (
     <main>
-      <h2>Chat</h2>
+      <h2>{usernames}</h2>
       <button onClick={leaveChat}>Leave Chat</button>
       <section style={{height: "70vh", overflow: "scroll"}}>
         {displayMessages}

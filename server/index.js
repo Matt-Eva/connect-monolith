@@ -20,7 +20,7 @@ io.on("connection", async (socket) =>{
     try {
         const query = `
             MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
-            RETURN u, m
+            RETURN u.name AS name, u.firstName as firstName, u.uId AS uId, u.profileImg AS profileImg, m
             ORDER BY m.date
         `
         const result = await session.executeRead(async tx => tx.run(query, {userId: userId, chatId: chatId}))
@@ -28,7 +28,12 @@ io.on("connection", async (socket) =>{
         const messages = []
         for (const record of result.records){
             const message = record.get('m').properties
-            const user = record.get('u').properties
+            const user = {
+                name: record.get("name"),
+                firstName: record.get("firstName"),
+                profileImg: record.get("profileImg"),
+                uId: record.get("uId")
+            }
             messages.push([user, message])
         }
 
