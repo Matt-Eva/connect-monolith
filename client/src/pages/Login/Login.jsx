@@ -18,7 +18,8 @@ function Login() {
 
     return (
         <main className={styles.main}>
-            <h1 className={styles.title}>Connect</h1>
+            <h1 className={styles.welcome}>Connect</h1>
+            <h2 className={styles.title}>Login</h2>
             <form onSubmit={handleLogin} className={styles.form}>
                 <label htmlFor="email">email</label>
                 <input type='text' autoComplete="username" name="email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.input}/>
@@ -26,7 +27,7 @@ function Login() {
                 <input type='password' autoComplete="current-password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.input}/>
                 <input type='submit' value='Login' className={styles.login}/>
             </form>
-            <Link to="/new-account" className={styles.createAccount}>Create Account</Link>
+            <Link to="/new-account" className={`underlined-link ${styles.createAccount}`}>Create Account</Link>
             {/* <Link to="/about" className="underline">About Connect</Link> */}
         </main>
     )

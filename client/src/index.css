@@ -1,8 +1,19 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Titillium+Web:wght@200&display=swap'); */
 
 @font-face {
+    font-family: Jaldi;
+    src: url("./assets/Jaldi-Regular.ttf")
+}
+
+@font-face{
     font-family: Lato;
     src: url("./assets/Lato-Light.ttf")
+}
+
+:root {
+    --background-color: #282828;
+    --input-color: #605D5D;
+    --button-success: #027A94;
 }
 
 * {
@@ -11,57 +22,45 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
+    background-color: var(--background-color);
+    color: white;
     font-family: Lato;
-    color: black;
-    width: 100vw; 
 }
 
 a {
-    color: black;
+    color: white;
     text-decoration: none;
+}
+
+input[type=text], input[type=password] {
+    all: unset;
+    background-color: var(--input-color);
+    border: none;
+    color: white;
+}
+
+input[type=submit] {
+    color: white;
+    background-color: var(--button-success);
+    font-family: Lato;
+    border: none;
+    font-size: 1rem;
+    border-radius: .5rem;
+    padding-bottom: .2rem;
 }
 
 button {
+    color: white;
+    background-color: var(--button-success);
     font-family: Lato;
-    color: white;
-    background-color: hsl(180, 100%, 32%);
-    text-decoration: none;
     border: none;
-    border-radius: 1rem;
-    min-height: 1.5rem;
+    font-size: 1rem;
+    border-radius: .5rem;
+    padding-bottom: .2rem;
 }
 
-h2 {
-    font-size: 1.2rem;
+.underlined-link {
+    text-decoration: underline;
+    text-underline-offset: .2rem;
 }
-
-.userCard {
-    background-color: hsl(0, 0%, 95%);
-    border-radius: .2rem;
-    padding: .5rem;
-}
-
-.userCardImage{
-    height: 2rem;
-    width: 2rem;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.userCardName{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-left: .2rem;
-}
-
-.buttonLink {
-    color: white;
-    background-color: hsl(180, 100%, 32%);
-    border-radius: 1rem;
-    min-height: 1.5rem;
-    text-align: center;
-    padding: .2rem;
-}   
+  

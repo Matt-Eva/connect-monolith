@@ -1,33 +1,46 @@
 .main {
-    width: 100%;
+    width: 100vw;
     display: grid;
-    grid-template-rows: 5rem 10rem calc(100vh - 20rem);
+    grid-template-rows: 5rem 5rem 20rem calc(100vh - 35rem);
     justify-content: center;
-    justify-self: center;
+}
+
+.welcome {
+    font-size: 1.8rem;
+    text-align: center;
+    align-self: center;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: .4rem;
 }
 
 .title {
-    grid-row: 1;
+    grid-row: 2;
     text-align: center;
+    align-self: center;
 }
 
 .form {
-    grid-row: 2;
+    grid-row: 3;
     display: grid;
-    grid-template-rows: 1.3rem 2rem 1.3rem 2rem 1.5rem;
+    grid-template-rows: 1rem 1.6rem 1rem 1.6rem 3rem;
+    row-gap: .5rem;
 }
 
 .input {
     margin-bottom: .5rem;
+    width: 100%;
 }
 
 .login {
     width: 4rem;
+    height: 2rem;
     justify-self: center;
+    align-self: end;
 }
 
 .createAccount {
-    grid-row: 3;
+    grid-row: 4;
     text-align: center;
-    align-self: start;
+    align-self: end;
 }
