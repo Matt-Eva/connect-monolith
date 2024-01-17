@@ -18,7 +18,7 @@ function Login() {
 
     return (
         <main className={styles.main}>
-            <h1 className={styles.welcome}>Connect</h1>
+            <h1 className={styles.welcome}>CONNECT</h1>
             <h2 className={styles.title}>Login</h2>
             <form onSubmit={handleLogin} className={styles.form}>
                 <label htmlFor="email">email</label>

@@ -47,7 +47,7 @@ function CreateAccount() {
 
     return (
         <main className={styles.main}>
-            <h1 className={styles.welcome}>Connect</h1>
+            <h1 className={styles.welcome}>CONNECT</h1>
             <h2 className={styles.title}>Create Account</h2>
             <form onSubmit={handleSubmit} onChange={handleChange} className={styles.form}>
                 <label htmlFor="email" className="">email</label>
