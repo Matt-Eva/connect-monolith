@@ -1,10 +1,9 @@
 .nav {
     grid-row: 3;
-    display: flex;
-    /* align-items: center; */
+    display: grid;
+    grid-template-columns: 50% 50%;
     padding-top: .2rem;
-    justify-content: center;
-    gap: 3rem;
+    justify-items: center;
     border-top: solid 1px;
     border-color: #999999;
 }

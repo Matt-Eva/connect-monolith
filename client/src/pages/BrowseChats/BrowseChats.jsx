@@ -9,8 +9,8 @@ function BrowseChats() {
 
   return (
     <main className={styles.main}>
-        <ChatNavBar />
         <Outlet context={outletContext}/>
+        <ChatNavBar />
     </main>
   )
 }
