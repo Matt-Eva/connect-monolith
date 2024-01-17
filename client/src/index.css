@@ -37,6 +37,7 @@ input[type=text], input[type=password] {
     background-color: var(--input-color);
     border: none;
     color: white;
+    height: 1.6rem;
 }
 
 input[type=submit] {

@@ -47,7 +47,8 @@ function CreateAccount() {
 
     return (
         <main className={styles.main}>
-            <h1 className={styles.title}>Connect</h1>
+            <h1 className={styles.welcome}>Connect</h1>
+            <h2 className={styles.title}>Create Account</h2>
             <form onSubmit={handleSubmit} onChange={handleChange} className={styles.form}>
                 <label htmlFor="email" className="">email</label>
                 <input type="text" name="email" value={formState.email} className={styles.input}/>
@@ -61,7 +62,7 @@ function CreateAccount() {
                 <input type="password" name="confirmPassword" value={formState.password} className={styles.input}/>
                 <input type="submit" value="Create Account" className={styles.createAccount} />
             </form>
-            <Link to="/login" className={styles.login}>Login</Link>
+            <Link to="/login" className={`underlined-link ${styles.login}`}>Login</Link>
         </main>
     )
 }
