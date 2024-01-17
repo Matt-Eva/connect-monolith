@@ -1,35 +1,38 @@
  .header {
-    grid-row: 1;
-    display: grid;
-    grid-template-rows: 2.2rem 2rem;
- }
-
- .siteNav {
-    grid-row: 1;
-    display: grid;
-    grid-template-columns: 6rem 3.3rem 2.1rem calc(100% - 11.4rem);
-    align-items: end;
-    border-bottom: solid .01rem;
-    padding-left: .2rem;
-    padding-bottom: .2rem;
+   grid-row: 1;
+   display: grid;
+   grid-template-columns: 5.5rem 3rem 3rem calc(100vw - 12rem);
+   grid-template-rows: 2rem;
+   align-items: center;
+   border-bottom: solid .01rem;
+   border-color: var(--border-color);
+   padding-left: .5rem;
  }
 
  .title {
-    font-size: 1.5rem;
+    font-size: 1rem;
  }
 
- .click {
-    margin-bottom: .05rem;
- }
+.getApp {
+   display: none;
+}
 
- .learnMore {
-   grid-column: 2;
-    justify-self: start;
- }
-
- .myAccount {
+ .account {
     grid-column: 4;
     justify-self: end;
-    margin-right: .3rem;
+    margin-right: .5rem;
+ }
+
+ @media (min-width: 360px){
+   .getApp {
+      display: inline;
+   }
+   .header {
+      grid-template-columns: 5.5rem 3rem 3.5rem 6rem calc(100vw - 19rem);
+   }
+
+   .account {
+      grid-column: 5;
+   }
  }
 

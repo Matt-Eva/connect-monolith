@@ -14,6 +14,7 @@
     --background-color: #282828;
     --input-color: #605D5D;
     --button-success: #027A94;
+    --border-color: #999999;
 }
 
 * {
@@ -30,6 +31,10 @@ body {
 a {
     color: white;
     text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 input[type=text], input[type=password] {

@@ -6,13 +6,11 @@ function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.siteNav}>
-        <h1 className={styles.title}>Connect</h1>
-        <Link to="/about" className={`${styles.click} ${styles.learnMore}`}>about</Link>
-        {/* <Link className={`${styles.click} ${styles.learnMore}`}>donate</Link> */}
-        <Link to="/account" className={`${styles.click} ${styles.myAccount}`}>my account</Link>
-      </div>
-        <MainNavBar />
+        <h1 className={styles.title}>CONNECT</h1>
+        <Link to="/about" className={styles.about}>about</Link>
+        <Link className={styles.donate}>donate</Link>
+        <Link className={styles.getApp}>get the app</Link>
+        <Link to="/account" className={styles.account}>account</Link>
     </header>
   )
 }

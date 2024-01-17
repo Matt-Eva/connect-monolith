@@ -1,0 +1,4 @@
+.root {
+    display: grid;
+    grid-template-rows: 2rem calc(100vh - 4rem) 2rem;
+}

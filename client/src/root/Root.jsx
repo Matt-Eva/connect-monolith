@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import Header from '../components/Header/Header'
+import MainNavBar from "../components/MainNavBar/MainNavBar"
 import styles from './Root.module.css'
 
 function Root() {
@@ -103,6 +104,7 @@ function Root() {
     <div className={styles.root}>
       {user ? <Header logout={logout} /> : <Navigate to="/login" />}
       <Outlet context={outletContext}/>
+      {user ? <MainNavBar /> : null}
     </div>
   )
 }
