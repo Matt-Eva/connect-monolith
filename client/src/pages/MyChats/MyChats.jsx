@@ -38,9 +38,10 @@ function MyChats() {
     displayChats.push(<ChatCard key={key} {...chat}/>)
   }
 
+  console.log(chats)
+
   return (
     <section className={styles.myChats}>
-      <h2 className={styles.title}>My Chats</h2>
       { 
         loading ? 
           <h3>Loading...</h3> :
