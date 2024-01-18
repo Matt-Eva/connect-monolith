@@ -82,12 +82,10 @@ function NewChat() {
 
   return (
     <section className={styles.newChat}>
-      <h2 className={styles.title}>Create New Chat</h2>
       <div className={styles.searchContainer}>
-        <label hmtlfor="search" className={styles.searchLabel}>Search connections </label>
-        <input type="text" value={search} name="search" onChange={(e)=>setSearch(e.target.value)} className={styles.search}/>
-        <button onClick={createChat} className={styles.createChat}>Create Chat</button>
-        
+        <label hmtlfor="search" className={styles.searchLabel}>Browse connections </label>
+        <input type="text" value={search} name="search" placeholder="Browse connections..." onChange={(e)=>setSearch(e.target.value)} className={styles.search}/>
+        <button onClick={createChat} className={styles.createChat}>Create Chat</button>  
       </div>
       {
         loading ? 

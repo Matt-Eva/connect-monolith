@@ -54,8 +54,13 @@ input[type=text], input[type=password] {
     all: unset;
     background-color: var(--input-color);
     border: none;
+    border-radius: 5px;
     color: white;
     height: 1.6rem;
+}
+
+::placeholder {
+    color: #D2D2D2;
 }
 
 input[type=submit] {

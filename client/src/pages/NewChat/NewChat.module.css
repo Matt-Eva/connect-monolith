@@ -1,40 +1,37 @@
 .newChat {
-    grid-row: 2;
+    grid-row: 1;
     justify-self: center;
     width: 100%;
-    max-width: 20rem;
     display: grid;
-    height: calc(100vh - 8.2rem);
+    height: 100%;
     overflow: auto;
     grid-template-rows: 2rem 3rem calc(100% - 5rem);
-    margin: .7rem .2rem 0 .2rem;
-    padding: .5rem;
-}
-
-.title{
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: .3rem;
+    margin: 10px 4px 0 4px;
+    padding: 5px;
 }
 
 .searchContainer {
-    display: grid;
-    grid-template-rows: 1rem 2rem;
-    grid-template-columns: 60% 40%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .searchLabel {
-    grid-row: 1;
+    visibility: hidden;
+    width: 0px;
 }
 
-.search {
-    grid-row: 2;
-    margin: .2rem 0;
+.searchContainer .search {
+    display: block;
+    width: calc(100% - 7rem);
 }
 
 .createChat {
-    grid-row: 2;
-    margin: .2rem 0 .2rem .2rem;
+    justify-self: center;
+    width: 7rem;
+    margin-right: 5px;
 }
 
 .participantContainer {

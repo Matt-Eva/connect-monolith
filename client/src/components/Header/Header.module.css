@@ -20,7 +20,7 @@
  .account {
     grid-column: 4;
     justify-self: end;
-    margin-right: .5rem;
+    margin-right: 5px;
  }
 
  @media (min-width: 360px){
