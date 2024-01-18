@@ -6,7 +6,6 @@
     height: 100%;
     overflow: auto;
     grid-template-rows: 2rem 3rem calc(100% - 5rem);
-    margin: 10px 4px 0 4px;
     padding: 5px;
 }
 
@@ -15,7 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    /* gap: 5px; */
 }
 
 .searchLabel {
@@ -26,26 +25,32 @@
 .searchContainer .search {
     display: block;
     width: calc(100% - 7rem);
+    margin-right: 5px;
 }
 
 .createChat {
     justify-self: center;
     width: 7rem;
-    margin-right: 5px;
+    /* margin-right: 5px; */
 }
 
 .participantContainer {
     display: flex;
     flex-wrap: wrap;
-    background-color: hsl(0, 0%, 97%);
-    margin-bottom: 1rem;
-    border-radius: .2rem;
-}
-
-.participantCard {
-    margin: .5rem .3rem .5rem 0;
+    background-color: #605D5D;
+    margin-top: 5px;
+    border-radius: 5px;
+    min-height: 2rem;
+    height: 4rem;
+    overflow: auto;
+    padding: 5px;
+    gap: 10px;
 }
 
 .participant {
-    margin-right: .2rem;
+    margin-right: 5px;
+}
+
+img {
+    width: 2rem;
 }

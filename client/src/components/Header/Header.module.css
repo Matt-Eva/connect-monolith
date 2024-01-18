@@ -1,12 +1,13 @@
  .header {
    grid-row: 1;
    display: grid;
-   grid-template-columns: 5.5rem 3rem 3rem calc(100vw - 12rem);
+   grid-template-columns: 5.5rem 3rem 3rem calc(100% - 11.5rem);
    grid-template-rows: 2rem;
    align-items: center;
    border-bottom: solid .01rem;
    border-color: var(--border-color);
-   padding-left: .5rem;
+   padding-left: 5px;
+   padding-right: 5px;
  }
 
  .title {
@@ -20,7 +21,7 @@
  .account {
     grid-column: 4;
     justify-self: end;
-    margin-right: 5px;
+    /* margin-right: 5px; */
  }
 
  @media (min-width: 360px){

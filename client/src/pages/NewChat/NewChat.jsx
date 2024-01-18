@@ -91,14 +91,14 @@ function NewChat() {
         loading ? 
           <h3>Loading...</h3> 
           : 
-          <div>
+          <>
             <div className={styles.participantContainer}>
               {displayParticipants}
             </div>
             <div>
               {displayConnections}
             </div>
-          </div>
+          </>
       }
     </section>
   )
