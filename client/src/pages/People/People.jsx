@@ -1,4 +1,4 @@
-import SearchNavBar from "../../components/SearchNavBar/SearchNavBar"
+import PeopleNavBar from "../../components/PeopleNavBar/PeopleNavBar"
 import { Outlet, useOutletContext } from "react-router-dom"
 import styles from "./People.module.css"
 
@@ -9,8 +9,8 @@ function People() {
 
   return (
     <main className={styles.main}>
-        <SearchNavBar />
         <Outlet context={outletContext}/>
+        <PeopleNavBar />
     </main>
   )
 }
