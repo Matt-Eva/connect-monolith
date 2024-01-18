@@ -45,9 +45,7 @@ function MyChats() {
       { 
         loading ? 
           <h3>Loading...</h3> :
-          <div className={styles.chatContainer}>
-            {displayChats}
-          </div>
+            <>{displayChats}</>
       }       
     </section>
   )

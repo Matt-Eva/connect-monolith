@@ -8,7 +8,7 @@ function NewConnectionCard({name, uId, pending, invited, profileImg}) {
 
     const addConnection = async () =>{
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/invite-connection", {
+            const res = await fetch("/api/invite-connection", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -29,7 +29,7 @@ function NewConnectionCard({name, uId, pending, invited, profileImg}) {
 
     const acceptInvitation = async () => {
         try {
-            const res = await fetch(import.meta.env.VITE_BACKEND_URL + "/accept-invitation", {
+            const res = await fetch("/api/accept-invitation", {
                 method: "POST",
                 credentials: "include",
                 headers: {

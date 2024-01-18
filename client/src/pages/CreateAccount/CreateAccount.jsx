@@ -59,7 +59,7 @@ function CreateAccount() {
                 <label htmlFor="password" className="">password</label>
                 <input type="password" name="password" value={formState.password} className={styles.input}/>
                 <label htmlFor="confirmPassword" className="">confirm password</label>
-                <input type="password" name="confirmPassword" value={formState.password} className={styles.input}/>
+                <input type="password" name="confirmPassword" value={formState.confirmPassword} className={styles.input}/>
                 <input type="submit" value="Create Account" className={styles.createAccount} />
             </form>
             <Link to="/login" className={`underlined-link ${styles.login}`}>Login</Link>

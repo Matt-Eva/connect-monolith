@@ -1,0 +1,36 @@
+.icon {
+    height: 2rem;
+    width: 2rem;
+    display: grid;
+    grid-template-columns: 1rem 1rem;
+}
+
+.roundImage {
+    border-radius: 50%;
+}
+
+.single{
+    height: 2rem;
+    width: 2rem;
+}
+
+.double{
+    height: 1rem;
+    width: 1rem;
+}
+
+.triple{
+    height: 1rem;
+    width: 1rem;
+}
+
+.quadruple{
+    height: 1rem;
+    width: 1rem;
+}
+
+.firstLetter{
+    background-color: var(--button-success);
+    text-align: center;
+    padding: 45%;
+}

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import CardImageIcon from "../CardImageIcon/CardImageIcon"
 import styles from "./ChatCard.module.css"
 
 function ChatCard({chatId, users}) {
@@ -7,12 +8,24 @@ function ChatCard({chatId, users}) {
   
   const userNameArray = users.map((user) => user.firstName)
 
+  const userImages = []
+
+  for (let i = 0; i < users.length && i < 4; i++){
+    userImages.push(
+      {
+        firstName: users[i].firstName,
+        profileImg: users[i].profileImg
+      }
+    )
+  }
+
   const userNames = userNameArray.join(', ')
 
   const nameClass = isTruncated ? styles.namesTruncated : styles.allNames
 
   return (
-    <article className={`userCard ${styles.card}`}>
+    <article className={`${styles.card}`}>
+      <CardImageIcon users={userImages} />
       <span 
       className={nameClass} 
       title={userNames} 
@@ -20,8 +33,7 @@ function ChatCard({chatId, users}) {
       >
         {userNames}
       </span>
-      <Link to={`/chat/${chatId}`} className={styles.link}>open chat</Link>
-      
+      <Link to={`/chat/${chatId}`} className={`underlined-link ${styles.link}`}>open chat</Link>
     </article>
   )
 }

@@ -334,6 +334,8 @@ app.post("/api/new-chat", async(req, res) =>{
                 WHERE all(participant IN participants WHERE participant IN $uIds)
                 RETURN chat, participants
             `, {uIds: uIds, userId: req.session.user.uId})
+
+            console.log(existingChat)
             
             if (existingChat.records.length !== 0){
                 console.log(existingChat.records[0].get('chat').properties, existingChat.records[0].get('participants'))

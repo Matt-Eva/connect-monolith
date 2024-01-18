@@ -1,21 +1,23 @@
 .card {
     min-height: 2rem;
-    max-width: 20rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2.5rem 60% calc(40% - 2rem);
+    align-items: center;
     margin: .5rem 0;
-    padding: .5rem;
 }
 
 .namesTruncated {
-    max-width: 15rem;
     display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: default;
 }
 
 .allNames {
     display: inline-block;
-    max-width: 15rem;
+    cursor: default;
 }
 
 .link {
