@@ -2,7 +2,7 @@
     min-height: 2rem;
     width: 100%;
     display: grid;
-    grid-template-columns: 2.5rem 60% calc(40% - 2rem);
+    grid-template-columns: 2.5rem 55% calc(45% - 2rem);
     align-items: center;
     margin: .5rem 0;
 }
@@ -21,6 +21,8 @@
 }
 
 .link {
+    justify-self: end;
+    margin-right: .5rem;
     float: right;
 }
 

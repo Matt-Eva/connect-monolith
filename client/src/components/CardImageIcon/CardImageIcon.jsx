@@ -6,23 +6,42 @@ function CardImageIcon({users}) {
 
     console.log(length)
 
-    let imageClass;
+    let imageClass = ""
+    let letterClass = ""
 
     if(length === 1) {
-        imageClass = styles.single
-    } else if (length === 2){
-        imageClass = styles.double
-    } else if (length === 3) {
-        imageClass = styles.triple
+        imageClass = styles.singleImage
+        letterClass = styles.singleLetter
     } else {
-        imageClass = styles.quadruple
+        imageClass = styles.multiImage
+        letterClass = styles.multiLetter
     }
 
-    const images = users.map(user => {
+    const images = users.map((user, index) => {
+        let gridClass = ""
+        if (length === 2 && index === 1){
+            gridClass = styles.bottomRight
+        } else if (length === 3 && index === 2){
+            gridClass = styles.bottomMiddle
+        }
+
         if (!user.profileImg){
-            return <span className={`${styles.roundImage} ${imageClass} ${styles.firstLetter}`}>{user.firstName.charAt(0).toUpperCase()}</span>
+            let colorClass = ""
+
+            if(index === 0){
+                colorClass = "bg-blue"
+            } else if (index === 1) {
+                colorClass = "bg-purple"
+            } else if (index === 2){
+                colorClass = "bg-green"
+            } else {
+                colorClass = "bg-red"
+            }
+
+            return <div className={`${styles.roundImage} center-text ${letterClass} ${gridClass} ${colorClass}`}>{user.firstName.charAt(0).toUpperCase()}</div>
         } else {
-            return <img src={user.profileImg} className={`${imageClass} ${styles.roundImage}`}/>
+            return <img src={user.profileImg} className={`${imageClass} ${styles.roundImage}
+            ${gridClass}`}/>
         }
     }) 
 

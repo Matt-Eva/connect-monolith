@@ -13,8 +13,11 @@
 :root {
     --background-color: #282828;
     --input-color: #605D5D;
-    --button-success: #027A94;
     --border-color: #999999;
+    --blue: #027A94;
+    --purple: #996FA4;
+    --red: #995046;
+    --green: #029407;
 }
 
 * {
@@ -47,7 +50,7 @@ input[type=text], input[type=password] {
 
 input[type=submit] {
     color: white;
-    background-color: var(--button-success);
+    background-color: var(--blue);
     font-family: Lato;
     border: none;
     font-size: 1rem;
@@ -57,7 +60,7 @@ input[type=submit] {
 
 button {
     color: white;
-    background-color: var(--button-success);
+    background-color: var(--blue);
     font-family: Lato;
     border: none;
     font-size: 1rem;
@@ -68,5 +71,25 @@ button {
 .underlined-link {
     text-decoration: underline;
     text-underline-offset: .2rem;
+}
+
+.center-text{
+    text-align: center;
+}
+
+.bg-blue {
+    background-color: var(--blue);
+}
+
+.bg-purple {
+    background-color: var(--purple);
+}
+
+.bg-green {
+    background-color: var(--green);
+}
+
+.bg-red {
+    background-color: var(--red);
 }
   

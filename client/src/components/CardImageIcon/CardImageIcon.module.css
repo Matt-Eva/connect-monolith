@@ -9,28 +9,35 @@
     border-radius: 50%;
 }
 
-.single{
+.singleImage {
     height: 2rem;
     width: 2rem;
 }
 
-.double{
+.multiImage {
     height: 1rem;
     width: 1rem;
 }
 
-.triple{
-    height: 1rem;
-    width: 1rem;
+.singleLetter{
+    height: 2rem;
+    width: 2rem;
+    padding-top: .4rem;
 }
 
-.quadruple{
+.multiLetter {
     height: 1rem;
     width: 1rem;
+    font-size: .8rem;
 }
 
-.firstLetter{
-    background-color: var(--button-success);
-    text-align: center;
-    padding: 45%;
+.bottomRight{
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.bottomMiddle{
+    grid-row: 2;
+    grid-column: span 2;
+    justify-self: center;
 }
