@@ -85,17 +85,19 @@ function NewChat() {
       <div className={styles.searchContainer}>
         <label hmtlfor="search" className={styles.searchLabel}>Browse connections </label>
         <input type="text" value={search} name="search" placeholder="Browse connections..." onChange={(e)=>setSearch(e.target.value)} className={styles.search}/>
-        <button onClick={createChat} className={styles.createChat}>Create Chat</button> 
-        <div className={styles.participantContainer}>
-              {displayParticipants}
-            </div> 
+        <button onClick={createChat} className={styles.createChat}>Create Chat</button>  
       </div>
       {
         loading ? 
           <h3>Loading...</h3> 
           : 
           <div>
-            {displayConnections}
+            <div className={styles.participantContainer}>
+              {displayParticipants}
+            </div>
+            <div>
+              {displayConnections}
+            </div>
           </div>
       }
     </section>
