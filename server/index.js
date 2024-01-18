@@ -319,7 +319,7 @@ app.post("/api/new-chat", async(req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
     
     console.log(req.body.participants)
-    const participants = [...req.body.participants, req.session.user]
+    const participants = [...req.body.participants]
     const uIds = participants.map(participant => participant.uId)
     console.log(req.session.user.uId)
     console.log(uIds)
@@ -337,7 +337,7 @@ app.post("/api/new-chat", async(req, res) =>{
             console.log(existingChat)
             
             if (existingChat.records.length !== 0){
-                console.log(existingChat.records[0].get('chat').properties, existingChat.records[0].get('participants'))
+                console.log(existingChat.records[0].get('chat').properties)
                 return existingChat.records[0].get('chat').properties
             }
 

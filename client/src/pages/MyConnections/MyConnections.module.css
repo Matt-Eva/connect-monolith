@@ -3,16 +3,11 @@
     width: 100%;
     height: 100%;
     overflow: auto;
+    padding: 5px;
 }
 
 .header {
     font-size: 1.2rem;
     text-align: center;
     margin: .5rem 0rem ;
-}
-
-.connectionContainer {
-    padding: .5rem;
-    overflow: auto;
-    width: 100%;
 }

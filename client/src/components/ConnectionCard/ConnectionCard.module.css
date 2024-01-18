@@ -1,15 +1,33 @@
 .card {
     min-height: 2rem;
     width: 100%;
-    max-width: 20rem;
     display: grid;
-    grid-template-columns: 15% 50% 35%;
+    grid-template-rows: 2rem 1rem;
+    grid-template-columns: 2rem calc(100% - 6rem) 4rem;
     border-radius: .2rem;
-    margin: .5rem 0;
-    padding: .5rem;
+    margin: 15px 0;
+}
+
+.imageContainer{
+    grid-row: span 2;
+    height: 100%;
+    display: flex;
     align-items: center;
 }
 
-link {
-    font-size: .8rem;
+.name{
+    margin-left: 5px;
+}
+
+.button {
+    grid-row: span 2;
+    align-self: center;
+    height: 1.6rem;
+}
+
+.link {
+    grid-row: 2;
+    grid-column: 2;
+    margin-left: 5px;
+    font-size: .9rem;
 }

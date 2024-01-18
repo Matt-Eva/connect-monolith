@@ -73,7 +73,7 @@ function Chat() {
 
   const leaveChat = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL + `/leave-chat/${chatId}`, {
+      const res = await fetch(`/api/leave-chat/${chatId}`, {
         method: "DELETE",
         credentials: "include"
       })
