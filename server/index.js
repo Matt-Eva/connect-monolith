@@ -330,11 +330,15 @@ app.post("/api/new-chat", async(req, res) =>{
 
             const existingChat = await tx.run(`
                 MATCH (chat:Chat)
-                WHERE all(uId IN $uIds WHERE (:User {uId: $userId}) - [:PARTICIPATING] -> (chat) <- [:PARTICIPATING] -(:User {uId: uId}))
+                WHERE all(uId IN $uIds WHERE (:User {uId: $userId}) - [:PARTICIPATING] -> (chat) <- [:PARTICIPATING] - (:User {uId: uId}))
+                WITH chat
+                MATCH (chat) <- [p:PARTICIPATING] - ()
+                WITH chat, count(p) as count
+                WHERE count = size($uIds)
                 RETURN chat
             `, {uIds: uIds, userId: req.session.user.uId})
 
-            console.log(existingChat)
+            console.log(existingChat.records)
             
             if (existingChat.records.length !== 0){
                 console.log(existingChat.records[0].get('chat').properties)
@@ -342,7 +346,8 @@ app.post("/api/new-chat", async(req, res) =>{
             }
 
             const newChat = await tx.run(`
-                CREATE (c:Chat {uId: $chatId})
+                MATCH (user:User {uId: $userId})
+                CREATE (user) - [:PARTICIPATING] -> (c:Chat {uId: $chatId})
                 WITH c
                 UNWIND $uIds AS participantId
                 MATCH (u:User {uId: participantId})
