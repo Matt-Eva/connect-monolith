@@ -75,7 +75,7 @@ function NewChat() {
     return (
       <div className={styles.participantCard}>
         <span key={participant.uId} className={styles.participant}>{participant.name}</span>
-        <button onClick={() => removeParticipant(participant)} className={styles.removeParticipant}>remove</button>
+        <button onClick={() => removeParticipant(participant)} className={`bg-purple`}>remove</button>
       </div>
     )
   })
