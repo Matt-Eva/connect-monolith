@@ -2,7 +2,7 @@
     grid-row: span 3;
     width: 100vw;
     display: grid;
-    grid-template-rows: 5rem 5rem 20rem calc(100vh - 35rem);
+    grid-template-rows: 5rem 5rem 20rem calc(100% - 35rem);
     justify-content: center;
 }
 
