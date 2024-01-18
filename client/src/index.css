@@ -34,6 +34,11 @@ body {
     background-color: var(--background-color);
     color: white;
     font-family: Lato;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
 }
 
 a {
