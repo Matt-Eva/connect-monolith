@@ -329,10 +329,9 @@ app.post("/api/new-chat", async(req, res) =>{
         const result = await session.executeWrite(async tx =>{
 
             const existingChat = await tx.run(`
-                MATCH (:User {uId: $userId}) -[:PARTICIPATING] ->(chat:Chat)
-                WITH chat, COLLECT {MATCH (p:User) -[:PARTICIPATING] ->(chat:Chat) RETURN (p.uId)} AS participants
-                WHERE all(participant IN participants WHERE participant IN $uIds)
-                RETURN chat, participants
+                MATCH (chat:Chat)
+                WHERE all(uId IN $uIds WHERE (:User {uId: $userId}) - [:PARTICIPATING] -> (chat) <- [:PARTICIPATING] -(:User {uId: uId}))
+                RETURN chat
             `, {uIds: uIds, userId: req.session.user.uId})
 
             console.log(existingChat)
