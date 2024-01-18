@@ -57,6 +57,7 @@ input[type=text], input[type=password] {
     border-radius: 5px;
     color: white;
     height: 1.6rem;
+    text-indent: 5px;
 }
 
 ::placeholder {

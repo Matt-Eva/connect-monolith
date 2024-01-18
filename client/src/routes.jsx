@@ -4,7 +4,7 @@ import MyChats from "./pages/MyChats/MyChats.jsx";
 import NewChat from "./pages/NewChat/NewChat.jsx";
 import People from "./pages/People/People.jsx";
 import MyConnections from "./pages/MyConnections/MyConnections.jsx";
-import NewConnections from "./pages/NewConnections/NewConnections.jsx";
+import Search from "./pages/Search/Search.jsx";
 import Chat from "./pages/Chat/Chat.jsx";
 import Login from "./pages/Login/Login.jsx";
 import CreateAccount from "./pages/CreateAccount/CreateAccount.jsx";
@@ -38,7 +38,7 @@ const routes = [
                 children: [
                   {
                     path: "/people",
-                    element: <NewConnections />
+                    element: <Search />
                   },
                   {
                     path: "/people/my-connections",

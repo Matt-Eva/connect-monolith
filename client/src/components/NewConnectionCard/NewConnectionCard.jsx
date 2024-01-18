@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import CardImageIcon from "../CardImageIcon/CardImageIcon"
 import styles from "./NewConnectionCard.module.css"
 
 function NewConnectionCard({name, uId, pending, invited, profileImg}) {
@@ -45,9 +46,16 @@ function NewConnectionCard({name, uId, pending, invited, profileImg}) {
         }
     }
 
+    const iconUser = [{
+        firstName: name,
+        profileImg: profileImg
+    }]
+
     return (
         <article className={styles.card}>
-            <img src={profileImg} alt={`${name} profile image`}className={`userCardImage ${styles.image}`}/>
+            <div className={styles.imageContainer}>
+                <CardImageIcon users={iconUser} />
+            </div>
             <span className={styles.name} title={name}>{name}</span>
             { pendingInvite ? <span> Invitation Pending</span> : 
                 (invited ? 
@@ -60,7 +68,7 @@ function NewConnectionCard({name, uId, pending, invited, profileImg}) {
                     <button onClick={addConnection} className={styles.button}>connect</button>
                 )
             }
-            <Link to={`/profile/${uId}`} className={styles.link}>View Profile</Link>
+            <Link to={`/profile/${uId}`} className={styles.link}>view profile</Link>
         </article>
       )
 }
