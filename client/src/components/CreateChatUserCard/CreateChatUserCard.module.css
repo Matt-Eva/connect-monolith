@@ -1,14 +1,12 @@
 .card {
     min-height: 2rem;
-    max-width: 20rem;
-    margin: .5rem 0;
-    padding: .5rem;
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 2rem calc(100% - 6rem) 4rem;
     align-items: center;
+    margin: 10px 0px;
 }
 
 .name {
-    margin-left: .5rem;
+    margin-left: 10px;
 }

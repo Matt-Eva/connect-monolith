@@ -1,10 +1,16 @@
+import CardImageIcon from "../CardImageIcon/CardImageIcon"
 import styles from "./CreateChatUserCard.module.css"
 
 function CreateChatUserCard({user, addParticipant}) {
+  
+  const iconUser = [{
+    firstName: user.name,
+    profileImg: user.profileImg
+  }]
     
   return (
     <div className={`userCard ${styles.card}`}>
-        <img src={user.profileImg} alt={`${user.name} profile image`} className={`userCardImage`}/>
+        <CardImageIcon users={iconUser}/>
         <span className={styles.name}>{user.name}</span>
         <button onClick={() => addParticipant(user) }>Add</button>
     </div>

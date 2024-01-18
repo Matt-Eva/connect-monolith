@@ -5,7 +5,7 @@
     display: grid;
     height: 100%;
     overflow: auto;
-    grid-template-rows: 2rem 3rem calc(100% - 5rem);
+    grid-template-rows: 2rem 4.1rem calc(100% - 6.1rem);
     padding: 5px;
 }
 
@@ -14,7 +14,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* gap: 5px; */
 }
 
 .searchLabel {
@@ -31,22 +30,24 @@
 .createChat {
     justify-self: center;
     width: 7rem;
-    /* margin-right: 5px; */
 }
 
 .participantContainer {
     display: flex;
     flex-wrap: wrap;
     background-color: #605D5D;
-    margin-top: 5px;
     border-radius: 5px;
-    min-height: 2rem;
-    height: 4rem;
+    height: 4.1rem;
     overflow: auto;
     padding: 5px;
     gap: 10px;
+    margin-top: 5px;
 }
 
 .participant {
     margin-right: 5px;
+}
+
+.connectionContainer{
+    height: 100%;
 }

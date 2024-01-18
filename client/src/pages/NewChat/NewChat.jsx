@@ -24,6 +24,7 @@ function NewChat() {
         console.log("unauthorized")
       }
     }
+
     fetchConnections()
   }, [])
 
@@ -95,7 +96,7 @@ function NewChat() {
             <div className={styles.participantContainer}>
               {displayParticipants}
             </div>
-            <div>
+            <div className={styles.connectionContainer}>
               {displayConnections}
             </div>
           </>
