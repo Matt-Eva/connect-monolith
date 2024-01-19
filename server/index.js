@@ -70,12 +70,11 @@ io.on("connection", async (socket) =>{
     })
 
     socket.on("disconnecting", () =>{
-        // console.log(socket.rooms)
+
     })
 
     socket.on("disconnect", (reason) =>{
-        // console.log(reason)
-        // console.log(socket.rooms.size)
+
     })
 })
 
@@ -102,7 +101,7 @@ app.post("/api/login", async (req, res) =>{
                 profileImg: user.profileImg,
                 uId: user.uId
             }
-            console.log(req.session.user)
+
             res.status(200).send(req.session.user)
         } else {
             res.status(401).send({error: "unauthorized"})
@@ -129,7 +128,6 @@ app.delete("/api/logout", async (req, res) =>{
 })
 
 app.get("/api/me", (req, res) =>{
-    console.log(req.session.user)
     if (req.session.user){
         res.status(200).send(req.session.user)
     } else {
@@ -138,8 +136,9 @@ app.get("/api/me", (req, res) =>{
 })
 
 app.post("/api/new-account", async (req, res) => {
-    console.log(req.body)
+
     const session = driver.session()
+
     try {
         const password = await argon2.hash(req.body.password)
         const user = await session.executeWrite(async tx =>{
@@ -176,7 +175,7 @@ app.post("/api/new-account", async (req, res) => {
             res.status(422).send({error: "email already in use"})
         } else{
             req.session.user = user
-            console.log(req.session.user)
+
             res.status(201).send(user)
         }
     } catch(e){
@@ -200,7 +199,7 @@ app.patch("/api/my-account", async (req, res) =>{
             RETURN u.firstName AS firstName, u.lastName AS lastName, u.email AS email
         `
         const result = await session.executeWrite(tx => tx.run(query, {...newInfo, selfId})) 
-        console.log(result.records[0])
+
 
         if(result.records.length !== 0) {
             const updatedInfo = {
@@ -318,11 +317,8 @@ app.get("/api/my-chats", async (req, res) =>{
 app.post("/api/new-chat", async(req, res) =>{
     if (!req.session.user) return res.status(401).send({error: "unauthorized"})
     
-    console.log(req.body.participants)
     const participants = [...req.body.participants]
     const uIds = participants.map(participant => participant.uId)
-    console.log(req.session.user.uId)
-    console.log(uIds)
     const session = driver.session()
     try {
 
@@ -337,11 +333,8 @@ app.post("/api/new-chat", async(req, res) =>{
                 WHERE count = size($uIds)
                 RETURN chat
             `, {uIds: uIds, userId: req.session.user.uId})
-
-            console.log(existingChat.records)
             
             if (existingChat.records.length !== 0){
-                console.log(existingChat.records[0].get('chat').properties)
                 return existingChat.records[0].get('chat').properties
             }
 
@@ -524,10 +517,7 @@ app.get("/api/my-invitations", async(req, res) =>{
             }
         })
 
-        console.log(invitations)
-
         res.status(200).send(invitations)
-
     } catch (e){
         console.error(e)
         res.status(500).send({message: "internal server error"})
@@ -566,7 +556,7 @@ app.post("/api/accept-invitation", async (req, res) =>{
     const {connectionId} = req.body
     const userId = req.session.user.uId
     const session = driver.session()
-    console.log(connectionId)
+
     try {
         const query = ` 
             MATCH (s:User {uId: $userId}) - [in:INVITED] - (u:User {uId: $connectionId})
@@ -603,7 +593,6 @@ app.post("/api/ignore-invitation", async (req, res) =>{
             RETURN i
         `
         const result = await session.executeWrite(tx => tx.run(query, {selfId, connectionId}))
-        console.log(result.records[0].get("i"))
 
         res.status(201).end()
     } catch (e) {
