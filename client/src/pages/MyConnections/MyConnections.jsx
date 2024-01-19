@@ -6,6 +6,7 @@ import styles from "./MyConnections.module.css"
 function MyConnections() {
   const { user } = useOutletContext()
   const [connections, setConnections] = useState([])
+  const [search, setSearch] = useState("")
 
   console.log(connections)
 
@@ -30,12 +31,18 @@ function MyConnections() {
     }
   }, [user])
 
-  console.log(connections)
+  const filterUsers = (e) =>{
+    setSearch(e.target.value)
+  }
 
-  const displayConnections = connections.map(connection => <ConnectionCard key={connection.uId} {...connection} />)
+  const filteredConnections = connections.filter(connection => connection.name.toLowerCase().startsWith(search.toLowerCase()))
+
+  const displayConnections = filteredConnections.map(connection => <ConnectionCard key={connection.uId} {...connection} />)
 
   return (
     <div className={styles.container}>
+        <label className={styles.searchLabel}>browse your connections</label>
+        <input type="text" placeholder="Browse connections..." className={styles.search} onChange={filterUsers}/>
         {displayConnections}
     </div>
   )

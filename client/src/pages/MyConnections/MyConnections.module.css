@@ -6,6 +6,18 @@
     padding: 5px;
 }
 
+.searchLabel {
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+    display: inline;
+}
+
+.container .search {
+    width: 80%;
+    margin: 0 10%;
+}
+
 .header {
     font-size: 1.2rem;
     text-align: center;
