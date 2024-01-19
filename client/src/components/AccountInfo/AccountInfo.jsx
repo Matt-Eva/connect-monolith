@@ -1,8 +1,9 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import BlockedUserCard from "../BlockedUserCard/BlockedUserCard"
 import styles from "./AccountInfo.module.css"
 
-function AccountInfo({toggleEdit, name, email, profileImg, logout}) {
+function AccountInfo({toggleEdit, name, email, profileImg, uId, logout}) {
   const [blockedUsers, setBlockedUsers] = useState([])
   const [showBlockedUsers, setShowBlockedUsers] = useState(false)
 
@@ -31,13 +32,15 @@ function AccountInfo({toggleEdit, name, email, profileImg, logout}) {
         <img src={profileImg} alt={`${name} profile image`} className={styles.profileImage}/>
         <button onClick={logout} className={styles.logoutButton}>logout</button>
       </div>
-      <div className={styles.userInfo}>
-        <h2>{name}</h2>
-        <p className={styles.email}>{email}</p>
-        <button onClick={toggleEdit} className={styles.editButton}>Edit Account</button>
+      <h2 className={styles.name}>{name}</h2>
+      <p className={styles.email}>{email}</p>
+      <Link to={`/profile/${uId}`} className={`underlined-link`}>view profile</Link>
+      <div className={styles.buttonContainer}>
+        <button onClick={() =>toggleEdit("info")} className={styles.editButton}>edit account</button>
+        <button onClick={() =>toggleEdit("image")}>edit profile image</button>
       </div>
+      {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)} className={styles.blockedUserButton}>hide blocked users</button> : <button onClick={fetchBlockedUsers} className={styles.blockedUserButton}>manage blocked users</button>}
       <div>
-        {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)} className={styles.blockedUserButton}>Hide Blocked Users</button> : <button onClick={fetchBlockedUsers} className={styles.blockedUserButton}>Manage Blocked Users</button>}
         {showBlockedUsers ? displayBlockedUsers : null }
       </div>
     </main>

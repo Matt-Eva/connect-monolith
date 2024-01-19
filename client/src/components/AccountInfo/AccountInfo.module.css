@@ -1,7 +1,18 @@
 .main {
+    height: 100%;
     display: grid;
-    grid-template-rows: 20% 10% 70%;
-    padding: .5rem;
+    grid-template-rows: 30% 2rem 2rem 2rem 2rem 2rem calc(70% - 9rem);
+    padding: 5px;
+}
+
+.buttonContainer button {
+    background-color: var(--background-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    height: 1.3rem;
+    padding: 0;
+    margin-right: 10px;
 }
 
 .imageLogout{
@@ -20,25 +31,16 @@
     height: 2rem;
 }
 
-.userInfo {
-    display: grid;
-    grid-template-rows: 50% 50%;
-    grid-template-columns: 50% 50%;
-    margin-bottom: 1rem;
-}
-
-.email{
-    grid-row: 2;
-    grid-column: 1;
-}
-
-.editButton {
-    grid-row: span 2;
-    height: 2rem;
-    width: 8rem;
-    align-self: center;
+.name {
+    font-size: 1.5rem;
 }
 
 .blockedUserButton {
-    margin-bottom: 1rem;
+    justify-self: start;
+    background-color: var(--background-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    height: 1.3rem;
+    padding: 0;
 }

@@ -86,7 +86,7 @@ button {
 
 .underlined-link {
     text-decoration: underline;
-    text-underline-offset: .2rem;
+    text-underline-offset: 2px;
 }
 
 .center-text{
