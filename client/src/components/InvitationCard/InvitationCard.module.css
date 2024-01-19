@@ -1,26 +1,35 @@
 .card {
-    min-height: 2rem;
     width: 100%;
-    max-width: 20rem;
-    margin: .5rem 0;
-    padding: .5rem;
+    margin: 20px 0 2rem 0;
     display: grid;
-    grid-template-rows: 2rem 2rem;
+    grid-template-rows: 4rem 2rem;
+    grid-template-columns: 2rem calc(100% - 7rem) 5rem;
 }
 
-.infoContainer{
+.imageContainer{
     grid-row: 1;
-    display: flex;
-    align-items: center;
+    /* align-self: center; */
 }
 
 .name{
-    margin-left: 1rem;
+    grid-row: 1;
+    margin-left: 10px;
+    margin-top: .4rem;
+    /* align-self: center; */
+}
+
+.link {
+    margin-top: .4rem;
+}
+
+.responseContainer {
+    grid-row: 2;
+    grid-column: span 3;
+    width: 100%;
 }
 
 .button {
-    margin: .4rem .5rem 0 0;
+    margin-right: 24px;
     width: 4rem;
-    grid-column: 1;
     display: inline-block;
 }

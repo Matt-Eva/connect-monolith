@@ -28,10 +28,7 @@ function MyInvitations() {
 
   return (
     <div className={styles.container}>
-        <h2 className={styles.header}>My Invitations</h2>
-        <div className={styles.invitationContainer}>   
-        {displayInvitations}
-        </div>
+            {displayInvitations}
     </div>
   )
 }

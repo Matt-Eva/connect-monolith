@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
+import CardImageIcon from "../CardImageIcon/CardImageIcon"
 import styles from "./InvitationCard.module.css"
 
 function InvitationCard({name, uId, profileImg}) {
@@ -64,18 +66,24 @@ function InvitationCard({name, uId, profileImg}) {
         }
     }
 
+    const iconUser = [{
+        firstName: name,
+        profileImg
+    }]
+
   return (
-    <article className={`userCard ${styles.card}`}>
-        <div className={styles.infoContainer}>
-            <img src={profileImg} alt={`${name} profile image`} className={`userCardImage ${styles.image}`}/>
-            <span className={styles.name}>{name}</span>
+    <article className={`${styles.card}`}>
+        <div className={styles.imageContainer}>
+            <CardImageIcon users={iconUser} />
         </div>
+        <span className={styles.name}>{name}</span>
+        <Link to={`/profile/${uId}`} className={`underlined-link ${styles.link}`}>view profile</Link>
         <div className={styles.responseContainer}>
             {responded ?  null :
                 <>
-                    <button onClick={accept} className={styles.button}>Accept</button>
-                    <button onClick={ignore} className={styles.button}>Ignore</button>
-                    <button onClick={block} className={styles.button}>Block</button>
+                    <button onClick={block} className={`bg-red ${styles.button}`}>Block</button>
+                    <button onClick={ignore} className={`bg-purple ${styles.button}`}>Ignore</button>
+                    <button onClick={accept} className={`${styles.button}`}>Accept</button>
                 </>
             }
             {connected ? <span className={styles.response}>Connected</span>: null}
