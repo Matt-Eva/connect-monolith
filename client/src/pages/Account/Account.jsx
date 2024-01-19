@@ -9,7 +9,7 @@ function Account() {
     const {user, logout} = useOutletContext()
     const [editMode, setEditMode] = useState("")
 
-    console.log(user)
+    console.log(editMode)
 
     const toggleEdit = (option) =>{
         setEditMode(option)
@@ -18,16 +18,16 @@ function Account() {
     let display;
 
     if (editMode === "info"){
-        <EditAccountForm toggleEdit={toggleEdit} {...user}/>
+        display = <EditAccountForm toggleEdit={toggleEdit} {...user}/>
     } else if (editMode === "image") {
-        
+       display = <UpdateProfileImage toggleEdit={toggleEdit} {...user} />
     } else {
         display = <AccountInfo toggleEdit={toggleEdit} logout={logout} {...user} />
     }
 
     return (
         <>
-            {editMode ? <EditAccountForm toggleEdit={toggleEdit} {...user}/> : <AccountInfo toggleEdit={toggleEdit} logout={logout} {...user} />}
+            {display}
         </>
     )
 }
