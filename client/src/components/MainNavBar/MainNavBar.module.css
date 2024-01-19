@@ -1,9 +1,12 @@
-.nav {
+.footer{
     grid-row: 3;
+    border-top: solid 1px;
+    border-color: #999999;
+} 
+
+.nav {
     display: grid;
     grid-template-columns: 50% 50%;
     padding-top: .2rem;
     justify-items: center;
-    border-top: solid 1px;
-    border-color: #999999;
 }

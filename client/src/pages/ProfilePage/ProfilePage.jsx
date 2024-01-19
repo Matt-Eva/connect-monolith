@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useOutletContext, useNavigate } from "react-router"
+import styles from "./ProfilePage.module.css"
 
 function ProfilePage() {
     const {user} = useOutletContext()
@@ -154,7 +155,7 @@ function ProfilePage() {
     }
     
     return (
-        <div>
+        <main>
             <h2>{profile.name}</h2>
             {profile.connected ? 
             <>
@@ -173,7 +174,7 @@ function ProfilePage() {
             {profile.pending ? <p>Invitation Pending</p> : null}
             {profile.invited ? <button onClick={accept}>Accept Invitation</button> : null}
             {(!profile.connected && !profile.pending) && (!profile.invited && !profile.blocked) ? <button onClick={connect}>Connect</button> : null}
-        </div>
+        </main>
     )
 }
 
