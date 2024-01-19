@@ -59,6 +59,15 @@ input[type=text], input[type=password] {
     height: 1.6rem;
     text-indent: 5px;
 }
+input[type=text]:disabled, input[type=password]:disabled {
+    all: unset;
+    background-color: var(--border-color);
+    border: none;
+    border-radius: 5px;
+    color: lightgray;
+    height: 1.6rem;
+    text-indent: 5px;
+}
 
 ::placeholder {
     color: #D2D2D2;

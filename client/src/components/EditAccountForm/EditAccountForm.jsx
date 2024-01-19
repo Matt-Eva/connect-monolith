@@ -40,6 +40,7 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
                 },
                 body: JSON.stringify({newInfo: formState})
             })
+
             if (res.ok){
                 const updatedInfo = await res.json()
                 alert("Info successfully updated!")
@@ -61,6 +62,7 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
     
     const updatePassword = async (e) =>{
         e.preventDefault()
+
         if (passwordState.newPassword !== passwordState.confirmPassword) {
             alert("Password confirmation must match new password.")
             setPasswordState({
@@ -87,11 +89,10 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
         } catch(e){
             console.error(e)
         }
-
     }
  
     const deleteAccount = async () => {
-        try{
+        try {
             const res = await fetch("/api/my-account", {
                 method: "DELETE",
                 credentials: "include"
@@ -101,14 +102,14 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
                 destroyUser()
                 navigate("/login")
             }
-        } catch(e){
+        } catch(e) {
             console.error(e)
         }
     }
 
   return (
     <main className={styles.main}>
-        <button onClick={toggleEdit} className={styles.backButton}>Back</button>
+        <button onClick={() =>toggleEdit("")} className={styles.backButton}>Back</button>
         <div className={styles.formContainer}>
             <h2>Update Profile Info</h2>
             {disableChangeInfo ? <button onClick={() => setDisableChangeInfo(false)} className={styles.permissionsButton}>Change Info</button> : <button onClick={() =>{
@@ -141,14 +142,14 @@ function EditAccountForm({toggleEdit, firstName, lastName, email, profileImg}) {
                 <input type="submit" disabled={disableChangePassword} className={styles.submitButton}/>
             </form>
         </div>
-        <div>
+        <div className={styles.deleteContainer}>
             <h2 className={styles.deleteAccountHeader}>Delete Account</h2>
-            <button onClick={() => setEnableDelete(true)}>Delete Account</button>
+            <button onClick={() => setEnableDelete(true)} className={styles.enableDelete}>Delete Account</button>
             {enableDelete ?
             <>
                 <p className={styles.deleteQuestion}>Are you sure you want to delete your account?</p>
                 <button onClick={() => setEnableDelete(false)} className={styles.deleteAccountButton}>No, Don't Delete my Account</button>
-                <button onClick={deleteAccount} >Yes, Delete my Account</button>
+                <button onClick={deleteAccount} className={styles.deleteAccountButton}>Yes, Delete my Account</button>
             </> : null}
         </div>
     </main>

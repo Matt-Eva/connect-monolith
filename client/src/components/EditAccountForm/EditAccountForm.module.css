@@ -1,45 +1,60 @@
 .main {
-    padding: .5rem;
+    padding: 5px;
     height: 100%;
+    display: grid;
+    grid-template-rows: 3rem 18rem 18rem 15rem;
     overflow: auto;
 }
 
 .backButton{
-    margin-bottom: .5rem;
+    align-self: start;
+    width: 4rem;
+    height: 2rem;
 }
 
 .formContainer{
     display: grid;
-    grid-template-columns: 10rem calc(100% - 10rem);
-    grid-template-rows: 2.3rem 10rem;
+    grid-template-rows: 2.3rem 2rem 10rem;
     margin-bottom: 2rem;
-}
-
-.form {
-    grid-column: span 2;
-    display: grid;
-    row-gap: .12rem;
-    width: 80%;
-    max-width: 20rem;
-  
+    justify-content: center;
 }
 
 .permissionsButton{
-    max-width: 8rem;
+    justify-self: center;
 }
+
+.form {
+    display: grid;
+    row-gap: .12rem;
+}
+
 
 .submitButton{
     width: 6rem;
 }
 
-.deleteAccountHeader {
-    margin-bottom: .5rem;
+.deleteContainer {
+    justify-self: center;
+    display: grid;
+    grid-template-rows: 2rem 2rem 3rem 4rem 4rem;
+    align-items: center;
 }
 
-.deleteQuestion {
-    margin: .5rem 0;
+.deleteContainer button {
+    align-self: center;
+    height: 2rem;
+
+}
+
+.deleteAccountHeader {
+    justify-self: center;
+}
+
+.enableDelete {
+    width: 8rem;
+    justify-self: center;
 }
 
 .deleteAccountButton {
-    margin: 0 .5rem 1rem 0;
+    justify-self: center;
 }
