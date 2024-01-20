@@ -159,6 +159,15 @@ function ProfilePage() {
         :
         <span className={styles.profileIcon}>{user.name.charAt(0).toUpperCase()}</span>
     )
+
+    if (user.uId === profile.uId){
+        return (
+            <main className={styles.main}>
+                {iconDisplay}
+                <h2 className={styles.name}>{profile.name}</h2>
+            </main>
+        )
+    }
     
     return (
         <main className={styles.main}>
