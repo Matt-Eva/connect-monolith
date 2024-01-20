@@ -1,7 +1,21 @@
 .card {
     display: grid;
-    grid-template-columns: 2rem calc(100% - 8rem) 6rem;
+    grid-template-rows: 2rem 1rem;
+    grid-template-columns: 2rem calc(100% - 6.5rem) 4.5rem;
     height: 3rem;
     align-items: center;
-    margin-bottom: .5rem;
+    margin: 20px 0; 
+}
+
+.name{
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card a {
+    grid-row: 2;
+    grid-column: 2;
+    margin-left: 5px;
 }

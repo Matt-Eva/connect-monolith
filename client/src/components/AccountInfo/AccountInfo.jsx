@@ -39,7 +39,7 @@ function AccountInfo({toggleEdit, name, email, profileImg, uId, logout}) {
         <button onClick={() =>toggleEdit("info")} className={styles.editButton}>edit account</button>
         <button onClick={() =>toggleEdit("image")}>edit profile image</button>
       </div>
-      {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)} className={styles.blockedUserButton}>hide blocked users</button> : <button onClick={fetchBlockedUsers} className={styles.blockedUserButton}>manage blocked users</button>}
+      {showBlockedUsers ? <button onClick={() => setShowBlockedUsers(false)} className={`bg-purple ${styles.blockedUserButton}`}>hide blocked users</button> : <button onClick={fetchBlockedUsers} className={` bg-red ${styles.blockedUserButton}`}>manage blocked users</button>}
       <div>
         {showBlockedUsers ? displayBlockedUsers : null }
       </div>

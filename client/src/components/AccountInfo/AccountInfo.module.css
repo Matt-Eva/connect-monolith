@@ -1,7 +1,7 @@
 .main {
     height: 100%;
     display: grid;
-    grid-template-rows: 30% 2rem 2rem 2rem 2rem 2rem calc(70% - 9rem);
+    grid-template-rows: 30% 2rem 2rem 2rem 2rem 3rem calc(70% - 9rem);
     padding: 5px;
 }
 
@@ -37,10 +37,6 @@
 
 .blockedUserButton {
     justify-self: start;
-    background-color: var(--background-color);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    cursor: pointer;
-    height: 1.3rem;
-    padding: 0;
+    align-self: center;
+    height: 2rem;
 }

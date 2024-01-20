@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { Link } from "react-router-dom"
 import CardImageIcon from "../CardImageIcon/CardImageIcon"
 import styles from "./BlockedUserCard.module.css"
 
 function BlockedUserCard({name, profileImg, uId}) {
+  const [blocked, setBlocked] = useState(true)
 
   const iconUser = [{
     firstName: name,
@@ -16,10 +18,7 @@ function BlockedUserCard({name, profileImg, uId}) {
             credentials: "include"
         })
         if (res.ok){
-            setProfile({
-                ...profile,
-                blocked: false
-            })
+            setBlocked(false)
         }
     } catch (e) {
         console.error(e)
@@ -30,8 +29,8 @@ function BlockedUserCard({name, profileImg, uId}) {
     <article className={`${styles.card}`}>
         <CardImageIcon users={iconUser} />
         <p className={styles.name}>{name}</p>
-        <button onClick={unblock}>unblock</button>
-        <Link to={`/profile/${uId}`} className={`buttonLink`}>view profile</Link>
+        {blocked ? <button onClick={unblock} className={`bg-red`}>unblock</button> : <span>unblocked</span>}
+        <Link to={`/profile/${uId}`} className={`underlined-link`}>view profile</Link>
     </article>
   )
 }

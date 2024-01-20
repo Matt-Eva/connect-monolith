@@ -679,6 +679,8 @@ app.delete("/api/unblock-user/:userId", async (req, res) =>{
             RETURN exists((s) - [:BLOCKED] -> (u)) AS blocked
         `
         const result = await session.executeWrite(tx => tx.run(query, {selfId, userId}))
+
+        console.log(result.records)
         
         if(result.records.length !== 0 && result.records[0].get("blocked") === false){
             res.status(202).end()

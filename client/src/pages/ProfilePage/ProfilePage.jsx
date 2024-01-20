@@ -166,7 +166,7 @@ function ProfilePage() {
             <h2 className={styles.name}>{profile.name}</h2>
                 { manageConnection ? 
                     <div className={styles.buttonContainer}>
-                        {profile.blocked ? <button onClick={unblock}>Unblock</button> : <button onClick={block} className={`bg-red`}>Block</button>}
+                        {profile.blocked ? <button onClick={unblock} className={`bg-purple`}>Unblock</button> : <button onClick={block} className={`bg-red`}>Block</button>}
                         {profile.connected ? <button onClick={() => setAllowDisconnect(true)} className={`bg-purple`}>Disconnect</button> : null}
                         {allowDisconnect ? 
                         <>
