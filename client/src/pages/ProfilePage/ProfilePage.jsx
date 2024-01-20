@@ -6,10 +6,9 @@ function ProfilePage() {
     const {user} = useOutletContext()
     const [profile, setProfile] = useState(false)
     const [allowDisconnect, setAllowDisconnect] = useState(false)
+    const [manageConnection, setManageConnection] = useState(false)
     const navigate = useNavigate()
     const {id} = useParams()
-
-    console.log(profile)
 
     useEffect(() =>{
         const loadProfile = async () =>{
@@ -153,27 +152,42 @@ function ProfilePage() {
     if(!profile){
         return <h2>Loading...</h2>
     }
+
+    const iconDisplay = (
+        profile.profileImg ? 
+        <img src={profile.profileImg} alt="profile img" className={styles.profileImage}/> 
+        :
+        <span className={styles.profileIcon}>{user.name.charAt(0).toUpperCase()}</span>
+    )
     
     return (
-        <main>
-            <h2>{profile.name}</h2>
-            {profile.connected ? 
-            <>
-                <button onClick={startChat}>Message</button>
-                <button onClick={() => setAllowDisconnect(true)}>Disconnect</button>
-            </>
-             : null}
-            {profile.blocked? <button onClick={unblock}>Unblock</button> : <button onClick={block}>Block</button>}
-            {allowDisconnect ? 
-            <>
-                <p>Are you sure you want to disconnect from {profile.name}?</p>
-                <button onClick={disconnect}>Yes</button>
-                <button onClick={() => setAllowDisconnect(false)}>No</button>
-            </>
-                : null}
-            {profile.pending ? <p>Invitation Pending</p> : null}
-            {profile.invited ? <button onClick={accept}>Accept Invitation</button> : null}
-            {(!profile.connected && !profile.pending) && (!profile.invited && !profile.blocked) ? <button onClick={connect}>Connect</button> : null}
+        <main className={styles.main}>
+            {iconDisplay}
+            <h2 className={styles.name}>{profile.name}</h2>
+                { manageConnection ? 
+                    <div className={styles.buttonContainer}>
+                        {profile.blocked ? <button onClick={unblock}>Unblock</button> : <button onClick={block} className={`bg-red`}>Block</button>}
+                        {profile.connected ? <button onClick={() => setAllowDisconnect(true)} className={`bg-purple`}>Disconnect</button> : null}
+                        {allowDisconnect ? 
+                        <>
+                            <p>Are you sure you want to disconnect from {profile.name}?</p>
+                            <button onClick={disconnect}>Yes</button>
+                            <button onClick={() => setAllowDisconnect(false)}>No</button>
+                        </>
+                            : null}
+                        <button onClick={() => setManageConnection(false)}>Back</button>
+                    </div> 
+                    : 
+                    <div className={styles.buttonContainer}>
+                        {profile.connected ? 
+                            <button onClick={startChat} className={styles.chatButton}>Chat</button>
+                        : null}
+                        {profile.pending ? <p>Invitation Pending</p> : null}
+                        {profile.invited ? <button onClick={accept}>Accept Invitation</button> : null}
+                        {(!profile.connected && !profile.pending) && (!profile.invited && !profile.blocked) ? <button onClick={connect}>Connect</button> : null}
+                        <button onClick={() => setManageConnection(true)} className={styles.manageConnectionButton}>manage connection</button>
+                    </div>
+                }
         </main>
     )
 }

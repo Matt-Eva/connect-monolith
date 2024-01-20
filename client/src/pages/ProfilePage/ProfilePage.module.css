@@ -1,0 +1,30 @@
+.main {
+    display: grid;
+    grid-template-rows: 30% 3rem 2rem;
+    padding: 5px;
+    align-items: center;
+}
+
+.profileImage{
+    grid-row: 1;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profileIcon {
+    grid-row: 1;
+}
+
+.name {
+    grid-row: 2;
+}
+
+.buttonContainer button{
+    margin-right: 10px;
+}   
+
+.manageConnectionButton{
+    background-color: var(---background-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
