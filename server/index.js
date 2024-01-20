@@ -18,15 +18,21 @@ io.on("connection", async (socket) =>{
     const session = driver.session()
 
     try {
-        const query = `
+        const messageQuery = `
             MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
             RETURN u.name AS name, u.firstName as firstName, u.uId AS uId, u.profileImg AS profileImg, m
             ORDER BY m.date
         `
-        const result = await session.executeRead(async tx => tx.run(query, {userId: userId, chatId: chatId}))
+        const messageResults = await session.executeRead(async tx => tx.run(messageQuery, {userId: userId, chatId: chatId}))
+
+        const participantsQuery = `
+            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+            RETURN u.firstName AS firstName
+        `
+        const participantResults = await session.executeRead(async tx => tx.run(participantsQuery, {userId: userId, chatId: chatId}))
 
         const messages = []
-        for (const record of result.records){
+        for (const record of messageResults.records){
             const message = record.get('m').properties
             const user = {
                 name: record.get("name"),
@@ -37,10 +43,15 @@ io.on("connection", async (socket) =>{
             messages.push([user, message])
         }
 
+        const participants = participantResults.records.map(record => { return {firstName: record.get("firstName")} })
+
         socket.join(chatId)
         io.to(chatId).emit("joined", `joined room ${chatId}`)
 
-        socket.emit("load", messages)
+        socket.emit("load", {
+            messages,
+            participants
+        })
     } catch(e) {
         console.error(e)
     } finally {

@@ -8,6 +8,7 @@ function Chat() {
   const {user} = useOutletContext()
   const [loading, setLoading] = useState(true)
   const [messages, setMessages] = useState([])
+  const [participants, setParticipants] = useState([])
   const [input, setInput] = useState("")
   const [socket, setSocket] = useState({})
 
@@ -30,7 +31,8 @@ function Chat() {
     })
   
     socket.on("load", (arg) =>{
-      setMessages(arg)
+      setMessages(arg.messages)
+      setParticipants(arg.participants)
       setLoading(false)
     })
 
@@ -93,13 +95,6 @@ function Chat() {
     const text = <p>{content.text}</p>
     return <article key={message[1].uId}>{userSpan} {text}</article>
   })
-
-  const participants = []
-
-  for(const message of messages) {
-    if (participants.find(user => user.uId === message[0].uId)) continue
-    else participants.push(message[0])
-  }
   
   const usernames = participants.map((p, index) => {
     if (index === participants.length -1) return <span>{p.firstName}</span>
