@@ -7,8 +7,9 @@ function BlockedUserCard({name, profileImg, uId}) {
   const [blocked, setBlocked] = useState(true)
 
   const iconUser = [{
-    firstName: name,
-    profileImg
+    name,
+    profileImg,
+    uId
   }]
 
   const unblock = async () => {

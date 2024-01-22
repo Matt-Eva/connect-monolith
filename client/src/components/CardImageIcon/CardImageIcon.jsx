@@ -36,10 +36,10 @@ function CardImageIcon({users}) {
                 colorClass = "bg-red"
             }
 
-            return <div className={`${styles.roundImage} center-text ${letterClass} ${gridClass} ${colorClass}`}>{user.firstName.charAt(0).toUpperCase()}</div>
+            return <div className={`${styles.roundImage} center-text ${letterClass} ${gridClass} ${colorClass}`} key={user.uId}>{user.name.charAt(0).toUpperCase()}</div>
         } else {
             return <img src={user.profileImg} className={`${imageClass} ${styles.roundImage}
-            ${gridClass}`}/>
+            ${gridClass}`} key={user.uId}/>
         }
     }) 
 

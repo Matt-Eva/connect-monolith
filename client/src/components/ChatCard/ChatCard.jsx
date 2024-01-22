@@ -13,8 +13,9 @@ function ChatCard({chatId, users}) {
   for (let i = 0; i < users.length && i < 4; i++){
     userImages.push(
       {
-        firstName: users[i].firstName,
-        profileImg: users[i].profileImg
+        name: users[i].name,
+        profileImg: users[i].profileImg,
+        uId: users[i].uId
       }
     )
   }

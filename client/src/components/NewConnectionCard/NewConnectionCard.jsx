@@ -47,8 +47,9 @@ function NewConnectionCard({name, uId, pending, invited, profileImg}) {
     }
 
     const iconUser = [{
-        firstName: name,
-        profileImg: profileImg
+        name,
+        profileImg,
+        uId
     }]
 
     return (

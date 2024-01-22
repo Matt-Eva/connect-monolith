@@ -25,12 +25,6 @@ io.on("connection", async (socket) =>{
         `
         const messageResults = await session.executeRead(async tx => tx.run(messageQuery, {userId: userId, chatId: chatId}))
 
-        const participantsQuery = `
-            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
-            RETURN u.firstName AS firstName
-        `
-        const participantResults = await session.executeRead(async tx => tx.run(participantsQuery, {userId: userId, chatId: chatId}))
-
         const messages = []
         for (const record of messageResults.records){
             const message = record.get('m').properties
@@ -41,7 +35,13 @@ io.on("connection", async (socket) =>{
             messages.push([user, message])
         }
 
-        const participants = participantResults.records.map(record => { return {firstName: record.get("firstName")} })
+        const participantsQuery = `
+            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+            RETURN u.firstName AS firstName, u.uId AS uId
+        `
+        const participantResults = await session.executeRead(async tx => tx.run(participantsQuery, {userId: userId, chatId: chatId}))
+
+        const participants = participantResults.records.map(record => { return {firstName: record.get("firstName"), uId: record.get("uId")} })
 
         socket.join(chatId)
         io.to(chatId).emit("joined", `joined room ${chatId}`)
@@ -305,7 +305,7 @@ app.get("/api/my-chats", async (req, res) =>{
     const session = driver.session()
     try {
         const userId = req.session.user.uId
-        const query = "MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg"
+        const query = "MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId"
         const result = await session.executeRead(tx => tx.run(query, {userId: userId}))
         
         const chatHash = {}
@@ -314,7 +314,8 @@ app.get("/api/my-chats", async (req, res) =>{
             const chat = record.get('chat').properties
             const user = {
                 firstName: record.get("firstName"),
-                profileImg: record.get("profileImg")
+                profileImg: record.get("profileImg"),
+                uId: record.get("uId")
             }
             if (!chatHash[chat.uId]) chatHash[chat.uId] = []
             chatHash[chat.uId].push(user)

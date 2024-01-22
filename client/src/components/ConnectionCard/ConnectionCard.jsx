@@ -32,7 +32,8 @@ function ConnectionCard({name, uId, profileImg}) {
 
   const iconUser = [{
     firstName: name,
-    profileImg
+    profileImg,
+    uId
   }]
 
   return (

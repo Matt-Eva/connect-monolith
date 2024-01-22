@@ -30,26 +30,6 @@
     overflow: auto;
 }
 
-.messageCard {
-    align-self: end;
-    width: 100%;
-    min-height: 2rem;
-    margin-top: 10px;
-    padding-bottom: 5px;
-    display: grid;
-    grid-template-columns: 2.5rem calc(100% - 2.5rem);
-}
-
-.imageContainer {
-    grid-row: span 2;
-}
-
-.messageContent {
-    font-size: .9rem;
-    grid-column: 2;
-    align-self: start;
-}
-
 .textInputForm {
     align-self: center;
     grid-row: 3;

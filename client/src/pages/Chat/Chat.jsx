@@ -2,6 +2,7 @@ import { io } from "socket.io-client"
 import { useEffect, useState, useRef } from "react"
 import { useParams, useOutletContext, useNavigate } from "react-router-dom"
 import styles from "./Chat.module.css"
+import MessageCard from "../../components/MessageCard/MessageCard"
 import CardImageIcon from "../../components/CardImageIcon/CardImageIcon"
 
 
@@ -61,10 +62,11 @@ function Chat() {
   useEffect(() =>{
     if (scrollRef.current !== null){
       const messageContainer = scrollRef.current
-      if (justLoaded === true) {
+      const lastChild = messageContainer.lastChild
+      if (justLoaded === true && lastChild ) {
         messageContainer.lastChild.scrollIntoView({block: 'end'})
         setJustLoaded(false)
-      } else {
+      } else if (lastChild) {
         messageContainer.lastChild.scrollIntoView({behavior: 'smooth',block: 'end'})
       }
     }
@@ -104,22 +106,15 @@ function Chat() {
     }
   }
 
-  console.log(messages)
-
   const displayMessages = messages.map(message =>{
     const user = message[0]
     const content = message[1]
-    const userSpan = <span>{user.name}</span>
-    const text = <p className={styles.messageContent}>{content.text}</p>
-    const userImageIcon = <div className={styles.imageContainer}>
-      <CardImageIcon  users={[{firstName: user.name, profileImg: user.profileImg}]}/>
-      </div>
-    return <article key={message[1].uId} className={styles.messageCard}> {userImageIcon} {userSpan} {text}</article>
+    return <MessageCard key={content.uId} {...user} {...content} />
   })
   
   const usernames = participants.map((p, index) => {
-    if (index === participants.length -1) return <span>{p.firstName}</span>
-    return <span>{p.firstName}, </span>
+    if (index === participants.length -1) return <span key={p.uId}>{p.firstName}</span>
+    return <span key={p.uId}>{p.firstName}, </span>
 })
 
   return (
