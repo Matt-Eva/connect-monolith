@@ -8,6 +8,7 @@ import CardImageIcon from "../../components/CardImageIcon/CardImageIcon"
 function Chat() {
   const {user} = useOutletContext()
   const [loading, setLoading] = useState(true)
+  const [justLoaded, setJustLoaded] = useState(true)
   const [messages, setMessages] = useState([])
   const [participants, setParticipants] = useState([])
   const [input, setInput] = useState("")
@@ -60,7 +61,12 @@ function Chat() {
   useEffect(() =>{
     if (scrollRef.current !== null){
       const messageContainer = scrollRef.current
-      messageContainer.lastChild.scrollIntoView({block: 'end'})
+      if (justLoaded === true) {
+        messageContainer.lastChild.scrollIntoView({block: 'end'})
+        setJustLoaded(false)
+      } else {
+        messageContainer.lastChild.scrollIntoView({behavior: 'smooth',block: 'end'})
+      }
     }
   }, [messages])
 
@@ -98,13 +104,15 @@ function Chat() {
     }
   }
 
+  console.log(messages)
+
   const displayMessages = messages.map(message =>{
     const user = message[0]
     const content = message[1]
     const userSpan = <span>{user.name}</span>
     const text = <p className={styles.messageContent}>{content.text}</p>
     const userImageIcon = <div className={styles.imageContainer}>
-      <CardImageIcon key={content.uId} users={[{firstName: user.name, profileImg: user.profileImg}]}/>
+      <CardImageIcon  users={[{firstName: user.name, profileImg: user.profileImg}]}/>
       </div>
     return <article key={message[1].uId} className={styles.messageCard}> {userImageIcon} {userSpan} {text}</article>
   })
