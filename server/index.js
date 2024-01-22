@@ -65,6 +65,7 @@ io.on("connection", async (socket) =>{
                 MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
                 CREATE (user) - [:SENT] -> (message:Message {uId: $uId, text: $text, date: $date, userId: $userId}) - [:SENT_IN_CHAT] ->(c)
                 RETURN user.name AS name, user.profileImg AS profileImg, message
+                ORDER BY message.date DESC
             `
             const result = await session.executeWrite(async tx => tx.run(query, {userId: message.userId, uId: uuid(), text: message.text, date: Date.now(), chatId: message.chatId}))
             const record = result.records[0]

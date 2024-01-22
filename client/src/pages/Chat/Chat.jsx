@@ -1,7 +1,8 @@
 import { io } from "socket.io-client"
+import { useEffect, useState, useRef } from "react"
 import { useParams, useOutletContext, useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
 import styles from "./Chat.module.css"
+import CardImageIcon from "../../components/CardImageIcon/CardImageIcon"
 
 
 function Chat() {
@@ -11,6 +12,8 @@ function Chat() {
   const [participants, setParticipants] = useState([])
   const [input, setInput] = useState("")
   const [socket, setSocket] = useState({})
+
+  const scrollRef = useRef(null)
 
   const chatId = useParams().id
 
@@ -54,6 +57,13 @@ function Chat() {
 
   }, [user])
 
+  useEffect(() =>{
+    if (scrollRef.current !== null){
+      const messageContainer = scrollRef.current
+      messageContainer.lastChild.scrollIntoView({block: 'end'})
+    }
+  }, [messages])
+
   if (loading){
     return <h1>Loading</h1>
   }
@@ -92,8 +102,11 @@ function Chat() {
     const user = message[0]
     const content = message[1]
     const userSpan = <span>{user.name}</span>
-    const text = <p>{content.text}</p>
-    return <article key={message[1].uId} className={styles.messageCard}>{userSpan} {text}</article>
+    const text = <p className={styles.messageContent}>{content.text}</p>
+    const userImageIcon = <div className={styles.imageContainer}>
+      <CardImageIcon key={content.uId} users={[{firstName: user.name, profileImg: user.profileImg}]}/>
+      </div>
+    return <article key={message[1].uId} className={styles.messageCard}> {userImageIcon} {userSpan} {text}</article>
   })
   
   const usernames = participants.map((p, index) => {
@@ -103,12 +116,12 @@ function Chat() {
 
   return (
     <main className={styles.main}>
-      <h2 className={styles.participants}>{usernames}</h2>
+      <h2 className={styles.participants} title={usernames}>{usernames}</h2>
       <button onClick={leaveChat}>Leave Chat</button>
-      <section className={styles.messageContainer}>
+      <section className={styles.messageContainer} ref={scrollRef}>
         {displayMessages}
       </section>
-      <form onSubmit={sendMessage} className={styles.textInput}>
+      <form onSubmit={sendMessage} className={styles.textInputForm}>
         <input type="text" placeholder="Type message here..." value={input} onChange={(e) => setInput(e.target.value)}  />
         <input type="submit" value='send'/>
       </form>

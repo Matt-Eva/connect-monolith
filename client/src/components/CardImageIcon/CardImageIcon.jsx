@@ -4,8 +4,6 @@ function CardImageIcon({users}) {
 
     const length = users.length
 
-    console.log(length)
-
     let imageClass = ""
     let letterClass = ""
 
