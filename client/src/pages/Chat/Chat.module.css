@@ -1,0 +1,23 @@
+.main {
+    grid-row: 2;
+    height: 100%;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: calc(100% - 6rem) 6rem;
+    grid-template-rows: 2rem calc(100% - 4rem) 2rem;
+}
+
+.participants {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+    margin-right: 5px;
+}
+
+.messageContainer {
+    grid-row: 2;
+    grid-column: span 2;
+    display: flex;
+    flex-wrap: wrap;
+}

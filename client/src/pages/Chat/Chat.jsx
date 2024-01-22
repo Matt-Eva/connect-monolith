@@ -93,7 +93,7 @@ function Chat() {
     const content = message[1]
     const userSpan = <span>{user.name}</span>
     const text = <p>{content.text}</p>
-    return <article key={message[1].uId}>{userSpan} {text}</article>
+    return <article key={message[1].uId} className={styles.messageCard}>{userSpan} {text}</article>
   })
   
   const usernames = participants.map((p, index) => {
@@ -102,14 +102,14 @@ function Chat() {
 })
 
   return (
-    <main>
-      <h2>{usernames}</h2>
+    <main className={styles.main}>
+      <h2 className={styles.participants}>{usernames}</h2>
       <button onClick={leaveChat}>Leave Chat</button>
-      <section style={{height: "70vh", overflow: "scroll"}}>
+      <section className={styles.messageContainer}>
         {displayMessages}
       </section>
-      <form onSubmit={sendMessage}>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)}  />
+      <form onSubmit={sendMessage} className={styles.textInput}>
+        <input type="text" placeholder="Type message here..." value={input} onChange={(e) => setInput(e.target.value)}  />
         <input type="submit" value='send'/>
       </form>
     </main>

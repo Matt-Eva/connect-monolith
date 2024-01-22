@@ -20,7 +20,7 @@ io.on("connection", async (socket) =>{
     try {
         const messageQuery = `
             MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
-            RETURN u.name AS name, u.firstName as firstName, u.uId AS uId, u.profileImg AS profileImg, m
+            RETURN u.name AS name, u.profileImg AS profileImg, m
             ORDER BY m.date
         `
         const messageResults = await session.executeRead(async tx => tx.run(messageQuery, {userId: userId, chatId: chatId}))
@@ -36,9 +36,7 @@ io.on("connection", async (socket) =>{
             const message = record.get('m').properties
             const user = {
                 name: record.get("name"),
-                firstName: record.get("firstName"),
                 profileImg: record.get("profileImg"),
-                uId: record.get("uId")
             }
             messages.push([user, message])
         }
@@ -66,11 +64,16 @@ io.on("connection", async (socket) =>{
             const query = `
                 MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
                 CREATE (user) - [:SENT] -> (message:Message {uId: $uId, text: $text, date: $date, userId: $userId}) - [:SENT_IN_CHAT] ->(c)
-                RETURN user, message
+                RETURN user.name AS name, user.profileImg AS profileImg, message
             `
             const result = await session.executeWrite(async tx => tx.run(query, {userId: message.userId, uId: uuid(), text: message.text, date: Date.now(), chatId: message.chatId}))
             const record = result.records[0]
-            const newMessage = [record.get('user').properties, record.get('message').properties]
+            const newMessage = [
+                {
+                    name: record.get("name"),
+                    profileImg: record.get("profileImg")
+                }
+                , record.get('message').properties]
 
             io.to(chatId).emit("new-message", newMessage)
         } catch(e){
