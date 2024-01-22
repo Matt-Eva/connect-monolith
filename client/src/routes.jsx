@@ -12,6 +12,8 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage.jsx";
 import MyInvitations from "./pages/MyInvitations/MyInvitations.jsx";
 import Account from "./pages/Account/Account.jsx";
 import About from "./pages/About/About.jsx";
+import GetApp from "./pages/GetApp/GetApp.jsx";
+import Donate from "./pages/Donate/Donate.jsx"
 
 const routes = [
     {
@@ -73,6 +75,14 @@ const routes = [
             {
                 path: "/about",
                 element: <About />
+            },
+            {
+                path: "/get-app",
+                element: <GetApp />
+            },
+            {
+                path: "/donate",
+                element: <Donate />
             }
         ]
     }
