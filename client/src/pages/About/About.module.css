@@ -1,0 +1,27 @@
+.main {
+    grid-row: 2;
+    padding: 10px;
+    display: grid;
+    
+}
+
+.main h2{
+    text-align: center;
+    font-size: 1.2rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    margin-bottom: 10px;
+}
+
+.content {
+    /* background-color: hsl(0, 0%, 40%); */
+    height: 100%;
+    background-color: var(--input-color);
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.main p {
+    padding: 10px;
+    line-height: 1.5rem;
+}
