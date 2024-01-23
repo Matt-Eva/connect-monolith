@@ -19,7 +19,7 @@ export default defineConfig({
         short_name: "Connect",
         description: "A social media and real time chat application.",
         theme_color: "#ffffff",
-        display: "fullscreen",
+        display: "standalone",
         icons: [
           {
             "src": "pwa-64x64.png",
