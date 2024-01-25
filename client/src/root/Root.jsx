@@ -7,24 +7,30 @@ import styles from './Root.module.css'
 function Root() {
   const [user, setUser] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [offlineDisplay, setOfflineDisplay] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
   const [startingPath, setStartingPath] = useState(location.pathname)
 
-  console.log(import.meta.env.VITE_BACKEND_URL)
-
   useEffect(() =>{
     const getMe = async () =>{
-      const res = await fetch("/api/me")
-
-      if(res.ok){
-        const data = await res.json()
-        setUser(data)
-        setLoading(false)
-      } else if (res.status === 401){
-        setUser(false)
-        setLoading(false)
-        navigate('/login')
+      try {
+        const res = await fetch("/api/me")
+        if(res.ok){
+          const data = await res.json()
+          setUser(data)
+          setLoading(false)
+        } else if (res.status === 401){
+          setUser(false)
+          setLoading(false)
+          navigate('/login')
+        } else {
+          throw new Error('Problem with network response')
+        }
+      } catch (e){
+        setOfflineDisplay(true)
+        console.log("caught error")
+        console.error(e)
       }
     }
     getMe()
@@ -84,10 +90,10 @@ function Root() {
         }
       } else {
         const error = await res.json()
-        throw new Error(error.error)
+        // throw new Error(error.error)
       }
     } catch(e) {
-      console.log(e)
+      // console.log(e)
       throw new Error(e.message)
     }
   }
@@ -96,8 +102,10 @@ function Root() {
 
   const outletContext = {user, login: login, logout, destroyUser, createAccount: createAccount}
 
-  if (loading){
+  if (loading && !offlineDisplay){
     return <h1>Loading...</h1>
+  } else if (offlineDisplay) {
+    return <h1>You are currently offline</h1>
   }
 
   return (
