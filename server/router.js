@@ -42,4 +42,8 @@ router.get("/my-invitations", invitationController.getInvitations);
 
 router.post("/invite-connection", invitationController.createInvitation);
 
+router.post("/accept-invitation", invitationController.acceptInvitation);
+
+router.post("/ignore-invitation", invitationController.ignoreInvitation);
+
 module.exports = router;

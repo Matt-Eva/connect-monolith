@@ -90,6 +90,7 @@ exports.search = async (req, res) => {
 exports.deleteConnection = async (req, res) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
+
   const connectionId = req.params.connectionId;
   const selfId = req.session.user.uId;
   const session = neoDriver.session();
