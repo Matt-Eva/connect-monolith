@@ -1,6 +1,4 @@
 const neoDriver = require("../config/neo4jConfig.js");
-const { v4 } = require("uuid");
-const uuid = v4;
 
 exports.getInvitations = async (req, res) => {
   if (!req.session.user)

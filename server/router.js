@@ -6,6 +6,7 @@ const userController = require("./controllers/userController.js");
 const chatController = require("./controllers/chatController.js");
 const connectionController = require("./controllers/connectionController.js");
 const invitationController = require("./controllers/invitationController.js");
+const blockedUserController = require("./controllers/blockedUserController.js");
 
 router.post("/login", authController.login);
 
@@ -45,5 +46,7 @@ router.post("/invite-connection", invitationController.createInvitation);
 router.post("/accept-invitation", invitationController.acceptInvitation);
 
 router.post("/ignore-invitation", invitationController.ignoreInvitation);
+
+router.post("/block-user", blockedUserController.blockUser);
 
 module.exports = router;
