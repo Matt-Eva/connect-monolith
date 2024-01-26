@@ -12,6 +12,8 @@ router.delete("/logout", authController.logout);
 
 router.get("/me", authController.me);
 
+router.get("/user/:id", userController.getUser);
+
 router.post("/new-account", userController.createUser);
 
 router.patch("/my-account", userController.updateUser);
@@ -27,5 +29,12 @@ router.post("/new-chat", chatController.createChat);
 router.delete("/leave-chat/:chatId", chatController.leaveChat);
 
 router.get("/my-connections", connectionController.getConnections);
+
+router.get("/search-connections/:name", connectionController.search);
+
+router.delete(
+  "/delete-connection/:connectionId",
+  connectionController.deleteConnection,
+);
 
 module.exports = router;

@@ -3,6 +3,47 @@ const neoDriver = require("../config/neo4jConfig.js");
 const { v4 } = require("uuid");
 const uuid = v4;
 
+// loads user for profile page
+exports.getUser = async (req, res) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
+  const selfId = req.session.user.uId;
+  const userId = req.params.id;
+  const session = neoDriver.session();
+  try {
+    const query = `
+              MATCH (s:User {uId: $selfId}), (u:User {uId: $userId}) 
+              WHERE NOT (s) <- [:BLOCKED] - (u)
+              RETURN u.profileImg AS profileImg, u.name AS name, exists((s) - [:CONNECTED] - (u)) AS connected, exists((s) - [:INVITED] -> (u)) AS pending, exists((s) <- [:INVITED] - (u)) AS invited, exists((s) - [:BLOCKED] -> (u)) AS blocked, exists((s) - [:IGNORED] -> (u)) AS ignored`;
+
+    const result = await session.executeRead((tx) =>
+      tx.run(query, { userId: userId, selfId: selfId }),
+    );
+
+    if (result.records.length !== 0) {
+      const user = {
+        profileImg: result.records[0].get("profileImg"),
+        name: result.records[0].get("name"),
+        connected: result.records[0].get("connected"),
+        invited: result.records[0].get("invited"),
+        pending: result.records[0].get("pending"),
+        blocked: result.records[0].get("blocked"),
+        ignored: result.records[0].get("ignored"),
+        uId: userId,
+      };
+
+      res.status(200).send(user);
+    } else {
+      res.status(404).send({ message: "user not found" });
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ message: "internal server error" });
+  } finally {
+    await session.close();
+  }
+};
+
 exports.createUser = async (req, res) => {
   const session = neoDriver.session();
 
