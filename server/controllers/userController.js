@@ -59,3 +59,40 @@ exports.createUser = async (req, res) => {
     await session.close();
   }
 };
+
+exports.updateUser = async (req, res) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
+  const selfId = req.session.user.uId;
+  const newInfo = req.body.newInfo;
+  const session = neoDriver.session();
+
+  try {
+    const query = `
+              MATCH (u:User {uId: $selfId})
+              SET u.firstName = $firstName, u.lastName = $lastName, u.email = $email
+              RETURN u.firstName AS firstName, u.lastName AS lastName, u.email AS email
+          `;
+
+    const result = await session.executeWrite((tx) =>
+      tx.run(query, { ...newInfo, selfId }),
+    );
+
+    if (result.records.length !== 0) {
+      const updatedInfo = {
+        firstName: result.records[0].get("firstName"),
+        lastName: result.records[0].get("lastName"),
+        email: result.records[0].get("email"),
+      };
+
+      res.status(202).send(updatedInfo);
+    } else {
+      res.status(422).end();
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ message: "internal server error" });
+  } finally {
+    await session.close();
+  }
+};

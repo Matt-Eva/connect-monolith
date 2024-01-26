@@ -12,4 +12,6 @@ router.get("/me", authController.me);
 
 router.post("/new-account", userController.createUser);
 
+router.patch("/my-account", userController.updateUser);
+
 module.exports = router;
