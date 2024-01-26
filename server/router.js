@@ -14,4 +14,6 @@ router.post("/new-account", userController.createUser);
 
 router.patch("/my-account", userController.updateUser);
 
+router.patch("/update-password", userController.updatePassword);
+
 module.exports = router;
