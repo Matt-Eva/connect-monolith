@@ -1,10 +1,11 @@
 # To Do
+
 ## Feature List
 
 - Create Account - DONE
 - Login - DONE
 - Edit Account
-- Delete Account 
+- Delete Account
 - Load Connections - DONE
 - Search Connections - DONE
 - Invite Connections - DONE

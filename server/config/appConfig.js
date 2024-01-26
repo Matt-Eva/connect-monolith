@@ -1,24 +1,23 @@
-const express = require("express")
-const path = require("path")
-const http = require("http")
+const express = require("express");
+const path = require("path");
+const http = require("http");
 
+const router = require("../router.js");
+const sessionMiddleware = require("./sessionConfig.js");
 
-const router = require("../router.js")
-const sessionMiddleware = require("./sessionConfig.js")
+const app = express();
 
-const app = express()
+app.use(sessionMiddleware);
 
-app.use(sessionMiddleware)
+app.use(express.json());
 
-app.use(express.json())
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.use(express.static(path.join(__dirname, "../client/dist") ))
+app.use("/api", router);
 
-app.use("/api", router)
+const server = http.createServer(app);
 
-const server = http.createServer(app)
-
-module.exports =  {
-    server,
-    app
-}
+module.exports = {
+  server,
+  app,
+};
