@@ -1,4 +1,7 @@
-const { server, driver, io, app } = require("./config.js")
+// const { server, driver, io, app } = require("./config.js")
+const {server, app} = require("./appConfig.js")
+const driver = require("./neo4jConfig.js")
+const io = require("./socketIoConfig.js")
 const argon2 = require('argon2')
 const { v4 } = require("uuid")
 const path = require("path")

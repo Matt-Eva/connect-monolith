@@ -17,4 +17,7 @@ app.use("/", router)
 
 const server = http.createServer(app)
 
-module.exports = server
+module.exports =  {
+    server,
+    app
+}
