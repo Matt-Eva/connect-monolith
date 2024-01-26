@@ -1,7 +1,6 @@
-// const { server, driver, io, app } = require("./config.js")
 const {server, app} = require("./config/appConfig.js")
 const driver = require("./config/neo4jConfig.js")
-const io = require("./config/socketIoConfig.js")
+const  { io, handleConnection } = require("./config/socketIoConfig.js")
 const argon2 = require('argon2')
 const { v4 } = require("uuid")
 const path = require("path")
@@ -11,101 +10,7 @@ server.listen(process.env.PORT, () =>{
     console.log(`Server running on ${process.env.PORT}`)
 })
 
-io.on("connection", async (socket) =>{
-
-    if (!socket.request.session.user) return socket.disconnect()
-
-    const chatId = socket.handshake.query.chatId
-    const userId = socket.request.session.user.uId
-    const session = driver.session()
-
-    try {
-
-        const messageQuery = `
-            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
-            RETURN u.name AS name, u.profileImg AS profileImg, m
-            ORDER BY m.date
-        `
-        const messageResults = await session.executeRead(async tx => tx.run(messageQuery, {userId: userId, chatId: chatId}))
-
-        const messages = []
-
-        for (const record of messageResults.records){
-            const message = record.get('m').properties
-            const user = {
-                name: record.get("name"),
-                profileImg: record.get("profileImg"),
-            }
-            messages.push([user, message])
-        }
-
-        const participantsQuery = `
-            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
-            RETURN u.firstName AS firstName, u.uId AS uId
-        `
-        const participantResults = await session.executeRead(async tx => tx.run(participantsQuery, {userId: userId, chatId: chatId}))
-
-        const participants = participantResults.records.map(record => { return {firstName: record.get("firstName"), uId: record.get("uId")} })
-
-        socket.join(chatId)
-
-        io.to(chatId).emit("joined", `joined room ${chatId}`)
-
-        socket.emit("load", {
-            messages,
-            participants
-        })
-
-    } catch(e) {
-
-        console.error(e)
-
-    } finally {
-
-        await session.close()
-
-    }
-
-    socket.on("message", async (message) =>{
-        
-        const session = driver.session()
-
-        try {
-
-            const query = `
-                MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
-                CREATE (user) - [:SENT] -> (message:Message {uId: $uId, text: $text, date: $date, userId: $userId}) - [:SENT_IN_CHAT] ->(c)
-                RETURN user.name AS name, user.profileImg AS profileImg, message
-                ORDER BY message.date DESC
-            `
-            const result = await session.executeWrite(async tx => tx.run(query, {userId: message.userId, uId: uuid(), text: message.text, date: Date.now(), chatId: message.chatId}))
-            const record = result.records[0]
-
-            const newMessage = [
-                {
-                    name: record.get("name"),
-                    profileImg: record.get("profileImg")
-                }, 
-                record.get('message').properties
-            ]
-
-            io.to(chatId).emit("new-message", newMessage)
-
-        } catch(e){
-            console.error(e)
-        } finally {
-            await session.close()
-        }
-    })
-
-    socket.on("disconnecting", () =>{
-
-    })
-
-    socket.on("disconnect", (reason) =>{
-
-    })
-})
+io.on("connection", handleConnection)
 
 app.post("/api/login", async (req, res) =>{
     const {email, password} = req.body
