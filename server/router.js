@@ -40,4 +40,6 @@ router.delete(
 
 router.get("/my-invitations", invitationController.getInvitations);
 
+router.post("/invite-connection", invitationController.createInvitation);
+
 module.exports = router;
