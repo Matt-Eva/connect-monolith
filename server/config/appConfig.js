@@ -2,7 +2,7 @@ const express = require("express")
 const path = require("path")
 const http = require("http")
 
-const router = require("./router.js")
+const router = require("../router.js")
 const sessionMiddleware = require("./sessionConfig.js")
 
 const app = express()
