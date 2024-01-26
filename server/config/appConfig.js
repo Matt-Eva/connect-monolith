@@ -14,7 +14,7 @@ app.use(express.json())
 
 app.use(express.static(path.join(__dirname, "../client/dist") ))
 
-app.use("/", router)
+app.use("/api", router)
 
 const server = http.createServer(app)
 

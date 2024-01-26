@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development'){
 
 io.engine.use(sessionMiddleware)
 
-const loadMessages = async ({socket, chatId, userId}) => {
+const loadChat = async ({socket, chatId, userId}) => {
 
     const session = neoDriver.session()
 
@@ -108,19 +108,19 @@ const handleConnection = async (socket) =>{
     const chatId = socket.handshake.query.chatId
     const userId = socket.request.session.user.uId
 
-    loadMessages({socket, chatId, userId})
+    loadChat({socket, chatId, userId})
 
     socket.on("message", async (message) =>{
         handleMessage({message, chatId, userId})
     })
 
-    socket.on("disconnecting", () =>{
+    // socket.on("disconnecting", () =>{
 
-    })
+    // })
 
-    socket.on("disconnect", (reason) =>{
+    // socket.on("disconnect", (reason) =>{
 
-    })
+    // })
 }
 
 module.exports = {
