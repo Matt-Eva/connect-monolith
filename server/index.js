@@ -1,7 +1,6 @@
 const { server, app } = require("./config/appConfig.js");
-const driver = require("./config/neo4jConfig.js");
+const neoDriver = require("./config/neo4jConfig.js");
 const { io, handleConnection } = require("./config/socketIoConfig.js");
-const argon2 = require("argon2");
 const path = require("path");
 const { v4 } = require("uuid");
 const uuid = v4;
@@ -12,121 +11,12 @@ server.listen(process.env.PORT, () => {
 
 io.on("connection", handleConnection);
 
-app.patch("/api/update-password", async (req, res) => {
-  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
-
-  const selfId = req.session.user.uId;
-  const passwordInfo = req.body.passwordInfo;
-  const session = driver.session();
-
-  try {
-    const findQuery = `
-            MATCH (u:User {uId: $selfId})
-            RETURN u.password AS password
-        `;
-    const user = await session.executeRead((tx) =>
-      tx.run(findQuery, { selfId }),
-    );
-
-    if (user.records.length === 0)
-      return res.status(404).send({ message: "user not found" });
-
-    const passwordHash = user.records[0].get("password");
-
-    const authorized = await argon2.verify(
-      passwordHash,
-      passwordInfo.currentPassword,
-    );
-
-    if (!authorized)
-      return res.status(401).send({
-        message:
-          "Password entered for current password does not match current password.",
-      });
-
-    const newPasswordHash = await argon2.hash(passwordInfo.newPassword);
-
-    const updateQuery = `
-            MATCH (u:User {uId: $selfId})
-            SET u.password = $newPassword
-        `;
-
-    await session.executeWrite((tx) =>
-      tx.run(updateQuery, { newPassword: newPasswordHash, selfId }),
-    );
-
-    res.status(202).end();
-  } catch (e) {
-    console.error(e);
-    res.status(500).send({ message: "internal server error" });
-  } finally {
-    await session.close();
-  }
-});
-
-app.delete("/api/my-account", async (req, res) => {
-  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
-
-  const selfId = req.session.user.uId;
-  const session = driver.session();
-  try {
-    const query = `
-            MATCH (u:User {uId: $selfId})
-            OPTIONAL MATCH (u) - [:SENT] -> (m:Message)
-            DETACH DELETE u, m
-        `;
-
-    await session.executeWrite((tx) => tx.run(query, { selfId }));
-
-    res.status(202).end();
-  } catch (e) {
-    console.error(e);
-    res.status(500).send({ message: "internal server error" });
-  } finally {
-    await session.close();
-  }
-});
-
-app.get("/api/my-chats", async (req, res) => {
-  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
-
-  const session = driver.session();
-  try {
-    const userId = req.session.user.uId;
-    const query =
-      "MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId";
-    const result = await session.executeRead((tx) =>
-      tx.run(query, { userId: userId }),
-    );
-
-    const chatHash = {};
-
-    for (const record of result.records) {
-      const chat = record.get("chat").properties;
-      const user = {
-        firstName: record.get("firstName"),
-        profileImg: record.get("profileImg"),
-        uId: record.get("uId"),
-      };
-      if (!chatHash[chat.uId]) chatHash[chat.uId] = [];
-      chatHash[chat.uId].push(user);
-    }
-
-    res.status(200).send(chatHash);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send({ error: "internal server error" });
-  } finally {
-    await session.close();
-  }
-});
-
 app.post("/api/new-chat", async (req, res) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const participants = [...req.body.participants];
   const uIds = participants.map((participant) => participant.uId);
-  const session = driver.session();
+  const session = neoDriver.session();
   try {
     const result = await session.executeWrite(async (tx) => {
       const existingChat = await tx.run(
@@ -176,7 +66,7 @@ app.delete("/api/leave-chat/:chatId", async (req, res) => {
 
   const selfId = req.session.user.uId;
   const chatId = req.params.chatId;
-  const session = driver.session();
+  const session = neoDriver.session();
   try {
     const query = `
             MATCH (u:User {uId: $selfId}) - [p:PARTICIPATING] -> (c:Chat {uId: $chatId})
@@ -201,7 +91,7 @@ app.get("/api/my-connections", async (req, res) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const user = req.session.user;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -238,7 +128,7 @@ app.get("/api/search-connections/:name", async (req, res) => {
 
   const name = req.params.name;
   const userId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -287,7 +177,7 @@ app.delete("/api/delete-connection/:connectionId", async (req, res) => {
     return res.status(401).send({ message: "unauthorized" });
   const connectionId = req.params.connectionId;
   const selfId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -315,7 +205,7 @@ app.get("/api/my-invitations", async (req, res) => {
     return res.status(401).send({ message: "unauthorized" });
 
   const userId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -349,7 +239,7 @@ app.post("/api/invite-connection", async (req, res) => {
 
   const { connectionId } = req.body;
   const userId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -376,7 +266,7 @@ app.post("/api/accept-invitation", async (req, res) => {
 
   const { connectionId } = req.body;
   const userId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = ` 
@@ -409,7 +299,7 @@ app.post("/api/ignore-invitation", async (req, res) => {
 
   const { connectionId } = req.body;
   const selfId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
   try {
     const query = `
             MATCH (s:User {uId: $selfId}) <- [:INVITED] - (u:User {uId: $connectionId})
@@ -435,7 +325,7 @@ app.post("/api/block-user", async (req, res) => {
 
   const userId = req.body.userId;
   const selfId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
   try {
     const query = `
             MATCH (s:User {uId: $selfId}), (u:User {uId: $userId})
@@ -468,7 +358,7 @@ app.get("/api/blocked-users", async (req, res) => {
     return res.status(401).send({ message: "unauthorized" });
 
   const selfId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -500,7 +390,7 @@ app.delete("/api/unblock-user/:userId", async (req, res) => {
 
   const userId = req.params.userId;
   const selfId = req.session.user.uId;
-  const session = driver.session();
+  const session = neoDriver.session();
 
   try {
     const query = `
@@ -535,7 +425,7 @@ app.get("/api/user/:id", async (req, res) => {
 
   const selfId = req.session.user.uId;
   const userId = req.params.id;
-  const session = driver.session();
+  const session = neoDriver.session();
   try {
     const query = `
             MATCH (s:User {uId: $selfId}), (u:User {uId: $userId}) 

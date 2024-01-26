@@ -1,5 +1,5 @@
-const neoDriver = require("../config/neo4jConfig.js");
 const argon2 = require("argon2");
+const neoDriver = require("../config/neo4jConfig.js");
 const { v4 } = require("uuid");
 const uuid = v4;
 
@@ -139,6 +139,29 @@ exports.updatePassword = async (req, res) => {
     await session.executeWrite((tx) =>
       tx.run(updateQuery, { newPassword: newPasswordHash, selfId }),
     );
+
+    res.status(202).end();
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ message: "internal server error" });
+  } finally {
+    await session.close();
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
+  const selfId = req.session.user.uId;
+  const session = neoDriver.session();
+  try {
+    const query = `
+              MATCH (u:User {uId: $selfId})
+              OPTIONAL MATCH (u) - [:SENT] -> (m:Message)
+              DETACH DELETE u, m
+          `;
+
+    await session.executeWrite((tx) => tx.run(query, { selfId }));
 
     res.status(202).end();
   } catch (e) {
