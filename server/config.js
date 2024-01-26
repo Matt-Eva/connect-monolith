@@ -1,6 +1,5 @@
 const neo = require("neo4j-driver")
 const express = require("express")
-const cors = require("cors")
 const session = require("express-session")
 const path = require("path")
 const http = require("http")
@@ -78,10 +77,6 @@ if (process.env.NODE_ENV === 'development'){
 }
 
 io.engine.use(sessionMiddleware)
-
-// io.use((socket, next) =>{
-//     sessionMiddleware(socket.request, {}, next)
-// })
 
 module.exports = {
     app,
