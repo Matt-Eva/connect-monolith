@@ -2,8 +2,8 @@ const { server, app } = require("./config/appConfig.js");
 const driver = require("./config/neo4jConfig.js");
 const { io, handleConnection } = require("./config/socketIoConfig.js");
 const argon2 = require("argon2");
-const { v4 } = require("uuid");
 const path = require("path");
+const { v4 } = require("uuid");
 const uuid = v4;
 
 server.listen(process.env.PORT, () => {
@@ -11,14 +11,6 @@ server.listen(process.env.PORT, () => {
 });
 
 io.on("connection", handleConnection);
-
-app.get("/api/me", (req, res) => {
-  if (req.session.user) {
-    res.status(200).send(req.session.user);
-  } else {
-    res.status(401).send({ error: "unauthorized" });
-  }
-});
 
 app.post("/api/new-account", async (req, res) => {
   const session = driver.session();
