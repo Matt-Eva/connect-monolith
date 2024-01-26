@@ -5,6 +5,7 @@ const authController = require("./controllers/authController.js");
 const userController = require("./controllers/userController.js");
 const chatController = require("./controllers/chatController.js");
 const connectionController = require("./controllers/connectionController.js");
+const invitationController = require("./controllers/invitationController.js");
 
 router.post("/login", authController.login);
 
@@ -36,5 +37,7 @@ router.delete(
   "/delete-connection/:connectionId",
   connectionController.deleteConnection,
 );
+
+router.get("/my-invitations", invitationController.getInvitations);
 
 module.exports = router;
