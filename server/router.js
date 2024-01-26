@@ -51,4 +51,6 @@ router.post("/block-user", blockedUserController.blockUser);
 
 router.get("/blocked-users", blockedUserController.loadBlockedUsers);
 
+router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
+
 module.exports = router;
