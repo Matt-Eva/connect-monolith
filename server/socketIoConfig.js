@@ -1,6 +1,6 @@
 const { Server } = require("socket.io")
 
-const { sessionMiddleware} = require("./sessionConfig.js")
+const  sessionMiddleware = require("./sessionConfig.js")
 const { server } = require("./appConfig.js")
 
 let io;
