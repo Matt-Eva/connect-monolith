@@ -1,53 +1,57 @@
-import { Link, useNavigate } from "react-router-dom"
-import CardImageIcon from "../CardImageIcon/CardImageIcon"
-import styles from "./ConnectionCard.module.css"
+import { Link, useNavigate } from "react-router-dom";
+import CardImageIcon from "../CardImageIcon/CardImageIcon";
+import styles from "./ConnectionCard.module.css";
 
-function ConnectionCard({name, uId, profileImg}) {
+function ConnectionCard({ name, uId, profileImg }) {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  const startChat = async () =>{
+  const startChat = async () => {
     const body = {
-      participants: [{uId: uId}]
-    }
+      participants: [{ uId: uId }],
+    };
 
     const res = await fetch("/api/new-chat", {
       method: "POST",
       credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
-    })
-    
-    if (res.ok){
-      const newChat = await res.json()
-      console.log(newChat)
-      navigate(`/chat/${newChat.uId}`)
-  
-    }
-  
-  }
-    
+      body: JSON.stringify(body),
+    });
 
-  const iconUser = [{
-    firstName: name,
-    profileImg,
-    uId
-  }]
+    if (res.ok) {
+      const newChat = await res.json();
+      console.log(newChat);
+      navigate(`/chat/${newChat.uId}`);
+    }
+  };
+
+  const iconUser = [
+    {
+      firstName: name,
+      profileImg,
+      uId,
+    },
+  ];
 
   return (
     <article className={`userCard ${styles.card}`}>
       <div className={styles.imageContainer}>
-        <CardImageIcon users={iconUser}/>
+        <CardImageIcon users={iconUser} />
       </div>
-      <span title={name} className={styles.name}>{name}</span>
-      <button className={styles.button} onClick={startChat}>Chat</button>
-      <Link to={`/profile/${uId}`} className={`underlined-link ${styles.link}`}>view profile</Link>
+      <span title={name} className={styles.name}>
+        {name}
+      </span>
+      <button className={styles.button} onClick={startChat}>
+        Chat
+      </button>
+      <Link to={`/profile/${uId}`} className={`underlined-link ${styles.link}`}>
+        view profile
+      </Link>
     </article>
-  )
+  );
 }
 
-export default ConnectionCard
+export default ConnectionCard;
 
 // 54a3a1e1-50b7-4c7d-a8a4-4b9e6e914664

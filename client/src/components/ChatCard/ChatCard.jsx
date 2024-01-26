@@ -1,42 +1,42 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import CardImageIcon from "../CardImageIcon/CardImageIcon"
-import styles from "./ChatCard.module.css"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import CardImageIcon from "../CardImageIcon/CardImageIcon";
+import styles from "./ChatCard.module.css";
 
-function ChatCard({chatId, users}) {
-  const [isTruncated, setIsTruncated] = useState(true)
-  
-  const userNameArray = users.map((user) => user.firstName)
+function ChatCard({ chatId, users }) {
+  const [isTruncated, setIsTruncated] = useState(true);
 
-  const userImages = []
+  const userNameArray = users.map((user) => user.firstName);
 
-  for (let i = 0; i < users.length && i < 4; i++){
-    userImages.push(
-      {
-        name: users[i].name,
-        profileImg: users[i].profileImg,
-        uId: users[i].uId
-      }
-    )
+  const userImages = [];
+
+  for (let i = 0; i < users.length && i < 4; i++) {
+    userImages.push({
+      name: users[i].name,
+      profileImg: users[i].profileImg,
+      uId: users[i].uId,
+    });
   }
 
-  const userNames = userNameArray.join(', ')
+  const userNames = userNameArray.join(", ");
 
-  const nameClass = isTruncated ? styles.namesTruncated : styles.allNames
+  const nameClass = isTruncated ? styles.namesTruncated : styles.allNames;
 
   return (
     <article className={`${styles.card}`}>
       <CardImageIcon users={userImages} />
-      <span 
-      className={nameClass} 
-      title={userNames} 
-      onClick={() => setIsTruncated(!isTruncated)}
+      <span
+        className={nameClass}
+        title={userNames}
+        onClick={() => setIsTruncated(!isTruncated)}
       >
         {userNames}
       </span>
-      <Link to={`/chat/${chatId}`} className={`underlined-link ${styles.link}`}>open chat</Link>
+      <Link to={`/chat/${chatId}`} className={`underlined-link ${styles.link}`}>
+        open chat
+      </Link>
     </article>
-  )
+  );
 }
 
-export default ChatCard
+export default ChatCard;
