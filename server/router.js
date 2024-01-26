@@ -49,4 +49,6 @@ router.post("/ignore-invitation", invitationController.ignoreInvitation);
 
 router.post("/block-user", blockedUserController.blockUser);
 
+router.get("/blocked-users", blockedUserController.loadBlockedUsers);
+
 module.exports = router;

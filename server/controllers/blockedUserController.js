@@ -33,3 +33,34 @@ exports.blockUser = async (req, res) => {
     await session.close();
   }
 };
+
+exports.loadBlockedUsers = async (req, res) => {
+  if (!req.session.user)
+    return res.status(401).send({ message: "unauthorized" });
+
+  const selfId = req.session.user.uId;
+  const session = neoDriver.session();
+
+  try {
+    const query = `
+              MATCH (s:User {uId: $selfId}) - [:BLOCKED] -> (u:User)
+              RETURN u.name AS name, u.uId AS uId, u.profileImg AS profileImg
+          `;
+    const result = await session.executeRead((tx) => tx.run(query, { selfId }));
+
+    const blockedUsers = result.records.map((user) => {
+      return {
+        name: user.get("name"),
+        uId: user.get("uId"),
+        profileImg: user.get("profileImg"),
+      };
+    });
+
+    res.status(200).send(blockedUsers);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send({ message: "internal server error" });
+  } finally {
+    await session.close();
+  }
+};
