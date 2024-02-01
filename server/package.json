@@ -27,7 +27,8 @@
     "express-session": "^1.17.3",
     "neo4j-driver": "^5.14.0",
     "socket.io": "^4.7.2",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.2.0",
