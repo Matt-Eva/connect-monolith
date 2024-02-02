@@ -151,7 +151,7 @@ const handlePushNotifications = async ({ message, chatId, userId }) => {
       });
 
       try {
-        webPush.sendNotification(subscription, payload);
+        await webPush.sendNotification(subscription, payload);
       } catch (error) {
         if (error.statusCode === 410) {
           const session = neoDriver.session();
