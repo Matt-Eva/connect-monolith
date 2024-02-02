@@ -73,9 +73,8 @@ const loadChat = async ({ socket, chatId, userId }) => {
   }
 };
 
-const handleMessage = async ({ message, chatId, userId }) => {
+const createMessage = async ({ message, chatId, userId }) => {
   const session = neoDriver.session();
-
   try {
     const messageQuery = `
             MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
@@ -108,11 +107,23 @@ const handleMessage = async ({ message, chatId, userId }) => {
 
     io.to(chatId).emit("new-message", newMessage);
 
+    return newMessage;
+  } catch (error) {
+    throw new Error(error);
+  } finally {
+    await session.close();
+  }
+};
+
+const handlePushNotifications = async ({ message, chatId, userId }) => {
+  const session = neoDriver.session();
+
+  try {
     const subscriptionQuery = `
       MATCH (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
       WHERE NOT u.uId = $userId
       AND u.subscribed IS NOT NULL
-      RETURN u.subscriptionEndpoint AS endpoint, u.subscriptionp256dh AS p256dh, u.subscriptionAuth AS auth
+      RETURN u.subscriptionEndpoint AS endpoint, u.subscriptionp256dh AS p256dh, u.subscriptionAuth AS auth, u.name AS name, u.subscribed AS subscribed, u.uId AS uId
     `;
 
     const subscriptionQueryObj = {
@@ -124,9 +135,7 @@ const handleMessage = async ({ message, chatId, userId }) => {
       tx.run(subscriptionQuery, subscriptionQueryObj),
     );
 
-    console.log("subscription results ", subscriptionResult.records);
-
-    subscriptionResult.records.forEach((record) => {
+    subscriptionResult.records.forEach(async (record) => {
       const subscription = {
         endpoint: record.get("endpoint"),
         expirationTime: null,
@@ -137,12 +146,48 @@ const handleMessage = async ({ message, chatId, userId }) => {
       };
 
       const payload = JSON.stringify({
-        title: "New Message",
-        body: message.text,
+        title: message[0].name,
+        body: message[1].text,
       });
 
-      webPush.sendNotification(subscription, payload).catch(console.error);
+      try {
+        webPush.sendNotification(subscription, payload);
+      } catch (error) {
+        if (error.statusCode === 410) {
+          const session = neoDriver.session();
+          const userId = record.get("uId");
+
+          const removeSubscriptionQuery = `
+            MATCH (u:User {uId: $userId})
+            SET u.subscribed = null
+            RETURN u.subscribed AS subscribed
+          `;
+
+          const removeSubscriptionQueryObj = {
+            userId,
+          };
+
+          await session.executeWrite((tx) =>
+            tx.run(removeSubscriptionQuery, removeSubscriptionQueryObj),
+          );
+          await session.close();
+        }
+      }
     });
+  } catch (error) {
+    throw new Error(error);
+  } finally {
+    await session.close();
+  }
+};
+
+const handleMessage = async ({ message, chatId, userId }) => {
+  const session = neoDriver.session();
+
+  try {
+    const newMessage = await createMessage({ message, chatId, userId });
+
+    handlePushNotifications({ message: newMessage, chatId, userId });
   } catch (e) {
     console.error(e);
   } finally {
