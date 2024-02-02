@@ -28,18 +28,6 @@ function MyChats() {
     }
   }, []);
 
-  if ("serviceWorker" in navigator && Notification.permission === "granted") {
-    navigator.serviceWorker.ready.then(() => {
-      console.log("service worker ready");
-      if (navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({
-          type: "focusState",
-          isFocused: true,
-        });
-      }
-    });
-  }
-
   const displayChats = [];
 
   for (const key in chats) {
