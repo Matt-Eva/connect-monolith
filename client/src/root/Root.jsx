@@ -41,10 +41,12 @@ function Root() {
     const hideNotifications = async () => {
       if ("serviceWorker" in navigator) {
         await navigator.serviceWorker.ready;
-        navigator.serviceWorker.controller.postMessage({
-          type: "focusState",
-          isFocused: true,
-        });
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            type: "focusState",
+            isFocused: true,
+          });
+        }
       }
     };
     hideNotifications();
@@ -66,18 +68,22 @@ function Root() {
               });
             })
             .then(() => {
-              navigator.serviceWorker.controller.postMessage({
-                type: "focusState",
-                isFocused: true,
-              });
+              if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                  type: "focusState",
+                  isFocused: true,
+                });
+              }
             });
         } else {
           console.log("document is hidden");
           await navigator.serviceWorker.ready;
-          navigator.serviceWorker.controller.postMessage({
-            type: "focusState",
-            isFocused: false,
-          });
+          if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: "focusState",
+              isFocused: false,
+            });
+          }
         }
       }
     };
