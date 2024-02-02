@@ -187,7 +187,7 @@ const handleMessage = async ({ message, chatId, userId }) => {
   try {
     const newMessage = await createMessage({ message, chatId, userId });
 
-    handlePushNotifications({ message: newMessage, chatId, userId });
+    await handlePushNotifications({ message: newMessage, chatId, userId });
   } catch (e) {
     console.error(e);
   } finally {
