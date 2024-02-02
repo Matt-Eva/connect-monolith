@@ -5,9 +5,18 @@ const userFocus = {
 self.addEventListener("push", (event) => {
   const data = event.data.json();
 
-  console.log(data);
+  console.log("push event", userFocus);
 
-  self.registration.showNotification(data.title, {
-    body: data.body,
-  });
+  if (!userFocus.isFocused) {
+    self.registration.showNotification(data.title, {
+      body: data.body,
+    });
+  }
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "focusState") {
+    userFocus.isFocused = event.data.isFocused;
+    console.log(userFocus);
+  }
 });

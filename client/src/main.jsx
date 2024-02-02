@@ -26,6 +26,30 @@ if ("serviceWorker" in navigator) {
     const subscription = await registration.pushManager.getSubscription();
     if (subscription) {
       console.log("this user is subscribed for push notifications!");
+      registration.active.postMessage({
+        type: "focusState",
+        isFocused: true,
+      });
+      console.log("focus state true");
+
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+          console.log("document visible");
+          registration.active.postMessage({
+            type: "focusState",
+            isFocused: true,
+          });
+
+          console.log("focus state true");
+        } else {
+          console.log("document hidden");
+          registration.active.postMessage({
+            type: "focusState",
+            isFocused: false,
+          });
+          console.log("focus state false");
+        }
+      });
     } else {
       console.log("this user is not yet subscribed for push notifications");
     }
