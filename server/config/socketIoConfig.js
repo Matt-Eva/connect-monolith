@@ -3,6 +3,7 @@ const { Server } = require("socket.io");
 const sessionMiddleware = require("./sessionConfig.js");
 const { server } = require("./appConfig.js");
 const neoDriver = require("./neo4jConfig.js");
+const webPush = require("./webPushConfig.js");
 const { v4 } = require("uuid");
 const uuid = v4;
 
@@ -76,34 +77,70 @@ const handleMessage = async ({ message, chatId, userId }) => {
   const session = neoDriver.session();
 
   try {
-    const query = `
+    const messageQuery = `
             MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
             CREATE (user) - [:SENT] -> (message:Message {uId: $uId, text: $text, date: $date, userId: $userId}) - [:SENT_IN_CHAT] ->(c)
             RETURN user.name AS name, user.profileImg AS profileImg, message
             ORDER BY message.date DESC
         `;
 
-    const result = await session.executeWrite(async (tx) =>
-      tx.run(query, {
-        userId: message.userId,
-        uId: uuid(),
-        text: message.text,
-        date: Date.now(),
-        chatId: message.chatId,
-      }),
+    const messageQueryObj = {
+      userId: message.userId,
+      uId: uuid(),
+      text: message.text,
+      date: Date.now(),
+      chatId: message.chatId,
+    };
+
+    const messageResult = await session.executeWrite(async (tx) =>
+      tx.run(messageQuery, messageQueryObj),
     );
 
-    const record = result.records[0];
+    const messageRecord = messageResult.records[0];
 
     const newMessage = [
       {
-        name: record.get("name"),
-        profileImg: record.get("profileImg"),
+        name: messageRecord.get("name"),
+        profileImg: messageRecord.get("profileImg"),
       },
-      record.get("message").properties,
+      messageRecord.get("message").properties,
     ];
 
     io.to(chatId).emit("new-message", newMessage);
+
+    const subscriptionQuery = `
+      MATCH (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+      WHERE NOT u.uId = $userId
+      AND NOT u.subscribed = null
+      RETURN u.subscriptionEndpoint AS endpoint, u.subscriptionp256dh AS p256dh, u.subscriptionAuth AS auth
+    `;
+
+    const subscriptionQueryObj = {
+      chatId,
+      userId,
+    };
+
+    const subscriptionResult = await session.executeRead((tx) =>
+      tx.run(subscriptionQuery, subscriptionQueryObj),
+    );
+
+    subscriptionResult.records.forEach((record) => {
+      const subscription = {
+        endpoint: record.get("endpoint"),
+        expirationTime: null,
+        keys: {
+          p256dh: record.get("p256dh"),
+          auth: record.get("auth"),
+        },
+      };
+
+      const payload = JSON.stringify({
+        title: "New Message",
+        body: message.text,
+      });
+
+      webPush.sendNotification(subscription, payload).catch(console.error);
+    });
   } catch (e) {
     console.error(e);
   } finally {
