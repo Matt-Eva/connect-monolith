@@ -48,7 +48,7 @@ function EnableNotifications() {
           applicationServerKey: publicVapidKey,
         });
 
-        console.log("subscribed to push notifications", subscription);
+        console.log("subscribed to push notifications", newSubscription);
 
         await postSubscription(newSubscription);
       }
