@@ -1,3 +1,7 @@
+const userFocus = {
+  isFocused: false,
+};
+
 self.addEventListener("push", (event) => {
   const data = event.data.json();
 

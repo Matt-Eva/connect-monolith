@@ -17,8 +17,17 @@ const publicVapidKey =
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
-    const register = await navigator.serviceWorker.register("/sw.js", {
+    await navigator.serviceWorker.register("/sw.js", {
       scope: "/",
     });
+
+    const registration = await navigator.serviceWorker.ready;
+
+    const subscription = await registration.pushManager.getSubscription();
+    if (subscription) {
+      console.log("this user is subscribed for push notifications!");
+    } else {
+      console.log("this user is not yet subscribed for push notifications");
+    }
   });
 }
