@@ -9,7 +9,6 @@ function MyChats() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("effected");
     const fetchChats = async () => {
       const res = await fetch("/api/my-chats", {
         credentials: "include",
