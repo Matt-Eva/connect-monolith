@@ -14,7 +14,7 @@ function MyChats() {
       const res = await fetch("/api/my-chats", {
         credentials: "include",
       });
-      console.log(res.status);
+
       if (res.ok) {
         const chats = await res.json();
         setChats(chats);
@@ -37,8 +37,6 @@ function MyChats() {
     };
     displayChats.push(<ChatCard key={key} {...chat} />);
   }
-
-  console.log(chats);
 
   return (
     <section className={styles.myChats}>
