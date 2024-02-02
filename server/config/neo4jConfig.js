@@ -1,13 +1,13 @@
 const neo = require("neo4j-driver");
 
-const driver = neo.driver(
+const neoDriver = neo.driver(
   process.env.NEO_URL,
   neo.auth.basic(process.env.NEO_USER, process.env.NEO_PASSWORD),
 );
 
-const testDriverConnectivity = async (driver) => {
+const testDriverConnectivity = async (neoDriver) => {
   try {
-    await driver.verifyConnectivity();
+    await neoDriver.verifyConnectivity();
     console.log("connected");
   } catch (error) {
     console.error(error);
@@ -15,6 +15,6 @@ const testDriverConnectivity = async (driver) => {
   }
 };
 
-testDriverConnectivity(driver);
+testDriverConnectivity(neoDriver);
 
-module.exports = driver;
+module.exports = neoDriver;

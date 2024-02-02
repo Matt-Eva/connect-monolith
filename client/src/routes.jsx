@@ -13,79 +13,84 @@ import MyInvitations from "./pages/MyInvitations/MyInvitations.jsx";
 import Account from "./pages/Account/Account.jsx";
 import About from "./pages/About/About.jsx";
 import GetApp from "./pages/GetApp/GetApp.jsx";
-import Donate from "./pages/Donate/Donate.jsx"
+import Donate from "./pages/Donate/Donate.jsx";
+import EnableNotifications from "./pages/EnableNotifications/EnableNotifications.jsx";
 
 const routes = [
-    {
-        path: '/',
-        element: <Root />,
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "/",
+        element: <BrowseChats />,
         children: [
-            {
-                path: '/',
-                element: <BrowseChats />,
-                children: [
-                    {
-                        path: '/',
-                        element: <MyChats />
-                    },
-                    {
-                        path: '/new-chat',
-                        element: <NewChat />
-                    } 
-                ]
-            },
-            {
-                path: '/people',
-                element: <People />,
-                children: [
-                  {
-                    path: "/people",
-                    element: <Search />
-                  },
-                  {
-                    path: "/people/my-connections",
-                    element: <MyConnections />
-                  },
-                  {
-                    path: "/people/invitations",
-                    element: <MyInvitations />
-                  }
-                ]
-            }, 
-            {
-                path: '/chat/:id',
-                element: <Chat />
-            }, 
-            {
-                path: "/login",
-                element: <Login />
-            }, 
-            {
-                path: "/new-account",
-                element: <CreateAccount />
-            }, 
-            {
-                path: "/profile/:id",
-                element: <ProfilePage />
-            },
-            {
-                path: "/account",
-                element: <Account />
-            }, 
-            {
-                path: "/about",
-                element: <About />
-            },
-            {
-                path: "/get-app",
-                element: <GetApp />
-            },
-            {
-                path: "/donate",
-                element: <Donate />
-            }
-        ]
-    }
-]
+          {
+            path: "/",
+            element: <MyChats />,
+          },
+          {
+            path: "/new-chat",
+            element: <NewChat />,
+          },
+        ],
+      },
+      {
+        path: "/people",
+        element: <People />,
+        children: [
+          {
+            path: "/people",
+            element: <Search />,
+          },
+          {
+            path: "/people/my-connections",
+            element: <MyConnections />,
+          },
+          {
+            path: "/people/invitations",
+            element: <MyInvitations />,
+          },
+        ],
+      },
+      {
+        path: "/chat/:id",
+        element: <Chat />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/new-account",
+        element: <CreateAccount />,
+      },
+      {
+        path: "/profile/:id",
+        element: <ProfilePage />,
+      },
+      {
+        path: "/account",
+        element: <Account />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/get-app",
+        element: <GetApp />,
+      },
+      {
+        path: "/donate",
+        element: <Donate />,
+      },
+      {
+        path: "/enable-notifications",
+        element: <EnableNotifications />,
+      },
+    ],
+  },
+];
 
 export default routes;
