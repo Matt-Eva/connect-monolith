@@ -30,15 +30,27 @@ if ("serviceWorker" in navigator) {
         type: "focusState",
         isFocused: true,
       });
+
+      const notifications = await registration.getNotifications();
+      for (let i = 0; i < notifications.length; i += 1) {
+        console.log(notifications[i], "clearing notification");
+        notifications[i].close();
+      }
       console.log("focus state true");
 
-      document.addEventListener("visibilitychange", () => {
+      document.addEventListener("visibilitychange", async () => {
         if (!document.hidden) {
           console.log("document visible");
           registration.active.postMessage({
             type: "focusState",
             isFocused: true,
           });
+
+          const notifications = await registration.getNotifications();
+          for (let i = 0; i < notifications.length; i += 1) {
+            console.log(notifications[i], "clearing notification");
+            notifications[i].close();
+          }
 
           console.log("focus state true");
         } else {
