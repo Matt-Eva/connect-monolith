@@ -17,7 +17,7 @@ const publicVapidKey =
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
-    const register = await navigator.serviceWorker.register("/sw.js", {
+    await navigator.serviceWorker.register("/sw.js", {
       scope: "/",
     });
   });
