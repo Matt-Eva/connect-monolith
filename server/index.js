@@ -48,8 +48,6 @@ app.post("/api/notification-subscription", async (req, res) => {
         },
       };
 
-      console.log("new subscription ", newSubscription);
-
       res.status(201).send(newSubscription);
     } catch (error) {
       console.error(error);

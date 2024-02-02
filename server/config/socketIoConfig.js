@@ -111,7 +111,7 @@ const handleMessage = async ({ message, chatId, userId }) => {
     const subscriptionQuery = `
       MATCH (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
       WHERE NOT u.uId = $userId
-      AND NOT u.subscribed = null
+      AND u.subscribed IS NOT NULL
       RETURN u.subscriptionEndpoint AS endpoint, u.subscriptionp256dh AS p256dh, u.subscriptionAuth AS auth
     `;
 
@@ -123,6 +123,8 @@ const handleMessage = async ({ message, chatId, userId }) => {
     const subscriptionResult = await session.executeRead((tx) =>
       tx.run(subscriptionQuery, subscriptionQueryObj),
     );
+
+    console.log("subscription results ", subscriptionResult.records);
 
     subscriptionResult.records.forEach((record) => {
       const subscription = {
