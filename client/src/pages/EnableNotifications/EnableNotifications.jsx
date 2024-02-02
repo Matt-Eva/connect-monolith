@@ -51,6 +51,38 @@ function EnableNotifications() {
         console.log("subscribed to push notifications", newSubscription);
 
         await postSubscription(newSubscription);
+
+        const ready = await navigator.serviceWorker.ready;
+
+        ready.active.postMessage({
+          type: "focusState",
+          isFocused: true,
+        });
+
+        document.addEventListener("visibilitychange", async () => {
+          if (!document.hidden) {
+            console.log("document visible");
+            ready.active.postMessage({
+              type: "focusState",
+              isFocused: true,
+            });
+
+            const notifications = await ready.getNotifications();
+            for (let i = 0; i < notifications.length; i += 1) {
+              console.log(notifications[i], "clearing notification");
+              notifications[i].close();
+            }
+
+            console.log("focus state true");
+          } else {
+            console.log("document hidden");
+            ready.active.postMessage({
+              type: "focusState",
+              isFocused: false,
+            });
+            console.log("focus state false");
+          }
+        });
       }
     } catch (error) {
       console.error("Error setting up push notifications" + error);
