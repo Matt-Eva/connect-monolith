@@ -25,8 +25,8 @@ function Root() {
     logout({ setStartingPath, setUser, navigate, location });
   };
 
-  const handleCreateAccount = ({ newUser }) => {
-    createAccount({ newUser, setUser, navigate, startingPath });
+  const handleCreateAccount = async ({ newUser }) => {
+    await createAccount({ newUser, setUser, navigate, startingPath });
   };
 
   const destroyUser = () => setUser(false);

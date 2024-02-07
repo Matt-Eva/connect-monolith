@@ -33,7 +33,7 @@ function CreateAccount() {
       name: `${formState.firstName} ${formState.lastName}`,
     };
     try {
-      await handleCreateAccount(newUser);
+      await handleCreateAccount({ newUser });
       setFormState(baseFormState);
     } catch (e) {
       console.error(e);
