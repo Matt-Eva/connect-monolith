@@ -6,6 +6,7 @@ function CreateChatUserCard({ user, addParticipant }) {
     {
       firstName: user.name,
       profileImg: user.profileImg,
+      uId: user.uId,
     },
   ];
 
