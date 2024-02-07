@@ -2,6 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import styles from "./MyChats.module.css";
+import { fetchChats } from "./UtilsMyChats";
 
 function MyChats() {
   const { user } = useOutletContext();
@@ -9,21 +10,8 @@ function MyChats() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchChats = async () => {
-      const res = await fetch("/api/my-chats", {
-        credentials: "include",
-      });
-
-      if (res.ok) {
-        const chats = await res.json();
-        setChats(chats);
-        setLoading(false);
-      } else {
-        alert("Something went wrong when loading your chats.");
-      }
-    };
     if (user) {
-      fetchChats();
+      fetchChats({ setChats, setLoading });
     }
   }, []);
 
