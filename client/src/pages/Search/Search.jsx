@@ -1,45 +1,43 @@
-import {useState} from "react"
-import NewConnectionCard from "../../components/NewConnectionCard/NewConnectionCard"
-import styles from "./Search.module.css"
+import { useState } from "react";
 
-function NewConnections() {
-  const [search, setSearch] = useState('')
-  const [searchResults, setSearchResults] = useState([])
+import NewConnectionCard from "../../components/NewConnectionCard/NewConnectionCard";
 
-  const handleSearch = async (e) =>{
-    e.preventDefault()
-  
-    try{
-      const res = await fetch(`/api/search-connections/${search}`, {
-        credentials: "include"
-      })
-      if (res.ok){
-        const data = await res.json()
-        setSearchResults(data)
-      } else{
-        const error = await res.json()
-        console.error(error)
-      }
-    } catch (e){
-      console.error(e)
-    }
-  }
+import styles from "./Search.module.css";
 
-  const displayResults = searchResults.map(result => <NewConnectionCard key={result.uId} {...result}/>)
+import { search } from "./UtilsSearch";
 
-  console.log(searchResults)
+function Search() {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setSearchLoading(true);
+    search({ setSearchResults, searchInput, setSearchLoading });
+  };
+
+  const displayResults = searchResults.map((result) => (
+    <NewConnectionCard key={result.uId} {...result} />
+  ));
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSearch} className={styles.form}>
-        <input type="text" value={search} placeholder="Find new connections..." onChange={(e) => setSearch(e.target.value)} className={styles.searchField}/>
-        <input type="submit" value="search" className={styles.searchButton}/>
+        <input
+          type="text"
+          value={searchInput}
+          placeholder="Find new connections..."
+          onChange={(e) => setSearchInput(e.target.value)}
+          className={styles.searchField}
+        />
+        <input type="submit" value="search" className={styles.searchButton} />
       </form>
       <div className={styles.resultsContainer}>
-        {displayResults}
+        {searchLoading ? <h2>Searching...</h2> : displayResults}
       </div>
     </div>
-  )
+  );
 }
 
-export default NewConnections
+export default Search;
