@@ -56,6 +56,7 @@ exports.createUser = async (req, res) => {
               `,
         { email: req.body.email },
       );
+
       if (existingUser.records.length !== 0) {
         return "already exists";
       }

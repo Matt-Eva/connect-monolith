@@ -48,14 +48,14 @@ exports.search = async (req, res) => {
   try {
     const query = `
               MATCH (u:User {uId: $userId}) - [:CONNECTED] - (:User) - [:CONNECTED] -(c:User)
-              WHERE c.name STARTS WITH $name
+              WHERE c.name =~ "(?i)" + $name + ".*"
               AND NOT (c) - [:CONNECTED] - (u)
               AND NOT (c) - [:BLOCKED] - (u)
               AND u <> c
               RETURN c.uId AS uId, c.name AS name, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
               UNION
               MATCH (c:User), (u:User {uId: $userId})
-              WHERE c.name STARTS WITH $name
+              WHERE c.name =~ "(?i)" + $name + ".*"
               AND NOT (c) - [:CONNECTED] - (u)
               AND NOT (c) - [:BLOCKED] - (u)
               AND c <> u
