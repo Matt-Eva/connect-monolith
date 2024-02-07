@@ -1,7 +1,10 @@
 import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 import ChatCard from "../../components/ChatCard/ChatCard";
+
 import styles from "./MyChats.module.css";
+
 import { fetchChats } from "./UtilsMyChats";
 
 function MyChats() {
