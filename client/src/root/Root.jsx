@@ -3,7 +3,7 @@ import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header/Header";
 import MainNavBar from "../components/MainNavBar/MainNavBar";
 import styles from "./Root.module.css";
-import { getMe } from "./UtilsRoot";
+import { getMe, logout } from "./UtilsRoot";
 
 function Root() {
   const [user, setUser] = useState(false);
@@ -17,7 +17,13 @@ function Root() {
     getMe({ setUser, setLoading, setOfflineDisplay, navigate });
   }, []);
 
-  const login = async (email, password) => {
+  const handleLogin = ({ email, password }) => {};
+
+  const handleLogout = () => {
+    logout({ setStartingPath, setUser, navigate, location });
+  };
+
+  const login = async ({ email, password }) => {
     const res = await fetch("/api" + "/login", {
       method: "POST",
       credentials: "include",
@@ -39,16 +45,6 @@ function Root() {
       const error = await res.json();
       console.error(error);
     }
-  };
-
-  const logout = async () => {
-    await fetch("/api" + "/logout", {
-      method: "DELETE",
-      credentials: "include",
-    });
-    setStartingPath(location.pathname);
-    setUser(false);
-    navigate("/login");
   };
 
   const createAccount = async (newUser) => {
@@ -83,10 +79,10 @@ function Root() {
 
   const outletContext = {
     user,
-    login: login,
-    logout,
+    login,
+    handleLogout,
     destroyUser,
-    createAccount: createAccount,
+    createAccount,
   };
 
   if (loading && !offlineDisplay) {
@@ -97,7 +93,7 @@ function Root() {
 
   return (
     <div className={styles.root}>
-      {user ? <Header logout={logout} /> : <Navigate to="/login" />}
+      {user ? <Header logout={handleLogout} /> : <Navigate to="/login" />}
       <Outlet context={outletContext} />
       {user ? <MainNavBar /> : null}
     </div>

@@ -19,4 +19,14 @@ const getMe = async ({ navigate, setUser, setLoading, setOfflineDisplay }) => {
   }
 };
 
-export { getMe };
+const logout = async ({ setStartingPath, setUser, navigate, location }) => {
+  await fetch("/api" + "/logout", {
+    method: "DELETE",
+    credentials: "include",
+  });
+  setStartingPath(location.pathname);
+  setUser(false);
+  navigate("/login");
+};
+
+export { getMe, logout };
