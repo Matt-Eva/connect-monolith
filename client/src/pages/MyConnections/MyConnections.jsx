@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+
 import ConnectionCard from "../../components/ConnectionCard/ConnectionCard";
+
 import styles from "./MyConnections.module.css";
+
 import { fetchConnections } from "./UtilsMyConnections";
 
 function MyConnections() {

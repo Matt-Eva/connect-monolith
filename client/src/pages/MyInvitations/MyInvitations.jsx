@@ -1,36 +1,22 @@
-import {useEffect, useState} from "react"
-import InvitationCard from "../../components/InvitationCard/InvitationCard"
-import styles from "./MyInvitations.module.css"
+import { useEffect, useState } from "react";
+
+import styles from "./MyInvitations.module.css";
+
+import { fetchInvitations, displayInvitations } from "./UtilsMyInvitations";
 
 function MyInvitations() {
-    const [invitations, setInvitations] = useState([])
-    console.log(invitations)
+  const [invitations, setInvitations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() =>{
-        const fetchInvitations = async () =>{
-            try {
-                const res = await fetch("/api/my-invitations", {
-                    credentials: "include"
-                })
-                if (res.ok){
-                    const data = await res.json()
-    
-                    setInvitations(data)
-                } 
-            } catch(e){
-                console.error(e)
-            }
-        }
-        fetchInvitations()
-    }, [])
+  useEffect(() => {
+    fetchInvitations({ setInvitations, setLoading });
+  }, []);
 
-    const displayInvitations = invitations.map(invitation => <InvitationCard key={invitation.uId} {...invitation}/>)
+  const display = displayInvitations({ invitations });
 
-  return (
-    <div className={styles.container}>
-            {displayInvitations}
-    </div>
-  )
+  if (loading) return <h2>Loading...</h2>;
+
+  return <div className={styles.container}>{display}</div>;
 }
 
-export default MyInvitations
+export default MyInvitations;
