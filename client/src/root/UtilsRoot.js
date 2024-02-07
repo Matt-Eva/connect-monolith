@@ -43,6 +43,33 @@ const login = async ({ email, password, setUser, navigate, startingPath }) => {
   }
 };
 
+const createAccount = async ({ newUser, setUser, navigate, startingPath }) => {
+  try {
+    const res = await fetch("/api" + "/new-account", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      setUser(data);
+      if (startingPath === "/login" || startingPath === "/new-account") {
+        navigate("/");
+      } else {
+        navigate(startingPath);
+      }
+    } else {
+      const error = await res.json();
+      throw new Error(error.error);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const logout = async ({ setStartingPath, setUser, navigate, location }) => {
   await fetch("/api" + "/logout", {
     method: "DELETE",
@@ -53,4 +80,4 @@ const logout = async ({ setStartingPath, setUser, navigate, location }) => {
   navigate("/login");
 };
 
-export { getMe, login, logout };
+export { getMe, login, logout, createAccount };

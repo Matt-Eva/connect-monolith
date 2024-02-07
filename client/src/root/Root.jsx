@@ -3,7 +3,7 @@ import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header/Header";
 import MainNavBar from "../components/MainNavBar/MainNavBar";
 import styles from "./Root.module.css";
-import { getMe, logout, login } from "./UtilsRoot";
+import { getMe, logout, login, createAccount } from "./UtilsRoot";
 
 function Root() {
   const [user, setUser] = useState(false);
@@ -25,32 +25,8 @@ function Root() {
     logout({ setStartingPath, setUser, navigate, location });
   };
 
-  const createAccount = async (newUser) => {
-    try {
-      const res = await fetch("/api" + "/new-account", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data);
-        if (startingPath === "/login" || startingPath === "/new-account") {
-          navigate("/");
-        } else {
-          navigate(startingPath);
-        }
-      } else {
-        const error = await res.json();
-        // throw new Error(error.error)
-      }
-    } catch (e) {
-      // console.log(e)
-      throw new Error(e.message);
-    }
+  const handleCreateAccount = ({ newUser }) => {
+    createAccount({ newUser, setUser, navigate, startingPath });
   };
 
   const destroyUser = () => setUser(false);
@@ -60,7 +36,7 @@ function Root() {
     handleLogin,
     handleLogout,
     destroyUser,
-    createAccount,
+    handleCreateAccount,
   };
 
   if (loading && !offlineDisplay) {
