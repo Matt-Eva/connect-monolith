@@ -1,27 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import BlockedUserCard from "../BlockedUserCard/BlockedUserCard";
+import { Link, useOutletContext } from "react-router-dom";
+import BlockedUserCard from "../../components/BlockedUserCard/BlockedUserCard";
 import styles from "./AccountInfo.module.css";
+import { fetchBlockedUsers } from "./UtilsAccountInfo";
 
-function AccountInfo({ toggleEdit, name, email, profileImg, uId, logout }) {
+function AccountInfo() {
+  const { user, handleLogout } = useOutletContext();
+  const { name, email, profileImg, uId } = user;
+
   const [blockedUsers, setBlockedUsers] = useState([]);
   const [showBlockedUsers, setShowBlockedUsers] = useState(false);
 
-  const fetchBlockedUsers = async () => {
-    try {
-      const res = await fetch("/api/blocked-users", { credentials: "include" });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.length !== 0) {
-          setBlockedUsers(data);
-          setShowBlockedUsers(true);
-        } else {
-          alert("You haven't blocked any other users");
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  const handleFetchBlockedUsers = () => {
+    fetchBlockedUsers({ setBlockedUsers, setShowBlockedUsers });
   };
 
   const displayBlockedUsers = blockedUsers.map((user) => (
@@ -36,7 +27,7 @@ function AccountInfo({ toggleEdit, name, email, profileImg, uId, logout }) {
           alt={`${name} profile image`}
           className={styles.profileImage}
         />
-        <button onClick={logout} className={styles.logoutButton}>
+        <button onClick={handleLogout} className={styles.logoutButton}>
           logout
         </button>
       </div>
@@ -47,13 +38,12 @@ function AccountInfo({ toggleEdit, name, email, profileImg, uId, logout }) {
       </Link>
       <Link to="/enable-notifications">manage notifications</Link>
       <div className={styles.buttonContainer}>
-        <button
-          onClick={() => toggleEdit("info")}
-          className={styles.editButton}
-        >
+        <Link to="/account/edit" className={`underlined-link`}>
           edit account
-        </button>
-        <button onClick={() => toggleEdit("image")}>edit profile image</button>
+        </Link>
+        <Link to="/account/edit-image" className={`underlined-link`}>
+          edit profile image
+        </Link>
       </div>
       {showBlockedUsers ? (
         <button
@@ -64,7 +54,7 @@ function AccountInfo({ toggleEdit, name, email, profileImg, uId, logout }) {
         </button>
       ) : (
         <button
-          onClick={fetchBlockedUsers}
+          onClick={handleFetchBlockedUsers}
           className={` bg-red ${styles.blockedUserButton}`}
         >
           manage blocked users

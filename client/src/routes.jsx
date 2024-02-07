@@ -11,6 +11,9 @@ import CreateAccount from "./pages/CreateAccount/CreateAccount.jsx";
 import ProfilePage from "./pages/ProfilePage/ProfilePage.jsx";
 import MyInvitations from "./pages/MyInvitations/MyInvitations.jsx";
 import Account from "./pages/Account/Account.jsx";
+import AccountInfo from "./pages/AccountInfo/AccountInfo.jsx";
+import EditAccountForm from "./pages/EditAccountForm/EditAccountForm.jsx";
+import UpdateProfileImage from "./pages/UpdateProfileImage/UpdateProfileImage.jsx";
 import About from "./pages/About/About.jsx";
 import GetApp from "./pages/GetApp/GetApp.jsx";
 import Donate from "./pages/Donate/Donate.jsx";
@@ -72,6 +75,20 @@ const routes = [
       {
         path: "/account",
         element: <Account />,
+        children: [
+          {
+            path: "/account",
+            element: <AccountInfo />,
+          },
+          {
+            path: "/account/edit",
+            element: <EditAccountForm />,
+          },
+          {
+            path: "/account/edit-image",
+            element: <UpdateProfileImage />,
+          },
+        ],
       },
       {
         path: "/about",
