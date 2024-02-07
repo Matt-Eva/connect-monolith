@@ -3,13 +3,13 @@ import { useOutletContext, Link, Navigate } from "react-router-dom";
 import styles from "./Login.module.css";
 
 function Login() {
-  const { login, user } = useOutletContext();
+  const { handleLogin, user } = useOutletContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email, password });
+    handleLogin({ email, password });
   };
 
   if (user) {
