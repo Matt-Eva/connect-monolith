@@ -1,135 +1,88 @@
-import { io } from "socket.io-client"
-import { useEffect, useState, useRef } from "react"
-import { useParams, useOutletContext, useNavigate } from "react-router-dom"
-import styles from "./Chat.module.css"
-import MessageCard from "../../components/MessageCard/MessageCard"
-import CardImageIcon from "../../components/CardImageIcon/CardImageIcon"
-
+import { useEffect, useState, useRef } from "react";
+import { useParams, useOutletContext, useNavigate } from "react-router-dom";
+import MessageCard from "../../components/MessageCard/MessageCard";
+import styles from "./Chat.module.css";
+import {
+  initializeSocket,
+  handleScroll,
+  leaveChat,
+  sendMessage,
+} from "./UtilsChat";
 
 function Chat() {
-  const {user} = useOutletContext()
-  const [loading, setLoading] = useState(true)
-  const [justLoaded, setJustLoaded] = useState(true)
-  const [messages, setMessages] = useState([])
-  const [participants, setParticipants] = useState([])
-  const [input, setInput] = useState("")
-  const [socket, setSocket] = useState({})
+  const { user } = useOutletContext();
+  const [loading, setLoading] = useState(true);
+  const [justLoaded, setJustLoaded] = useState(true);
+  const [messages, setMessages] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const [input, setInput] = useState("");
+  const [socket, setSocket] = useState({});
 
-  const scrollRef = useRef(null)
+  const scrollRef = useRef(null);
 
-  const chatId = useParams().id
+  const chatId = useParams().id;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(() =>{
-    const socket = io(import.meta.env.VITE_BACKEND_URL, {
-      withCredentials: true,
-      query: {
-        chatId: chatId
-      }
-    })
+  useEffect(() => {
+    return initializeSocket({
+      setSocket,
+      setMessages,
+      setParticipants,
+      setLoading,
+      chatId,
+    });
+  }, [user]);
 
-    setSocket(socket)
-  
-    socket.on("disconnect", () =>{
-      console.log("disconnected")
-    })
-  
-    socket.on("load", (arg) =>{
-      setMessages(arg.messages)
-      setParticipants(arg.participants)
-      setLoading(false)
-    })
+  useEffect(() => {
+    handleScroll({ scrollRef, justLoaded, setJustLoaded });
+  }, [messages]);
 
-    socket.on("joined", (arg) =>{
-      console.log(arg)
-    })
-  
-    socket.on("connect", () =>{
-      // console.log("socket", socket.id)
-    })
-    
-    socket.on("new-message", message =>{
-      setMessages((messages) =>[...messages, message])
-    })
-
-    return () =>{
-      socket.disconnect()
-    }
-
-  }, [user])
-
-  useEffect(() =>{
-    if (scrollRef.current !== null){
-      const messageContainer = scrollRef.current
-      const lastChild = messageContainer.lastChild
-      if (justLoaded === true && lastChild ) {
-        messageContainer.lastChild.scrollIntoView({block: 'end'})
-        setJustLoaded(false)
-      } else if (lastChild) {
-        messageContainer.lastChild.scrollIntoView({behavior: 'smooth',block: 'end'})
-      }
-    }
-  }, [messages])
-
-  if (loading){
-    return <h1>Loading</h1>
+  if (loading) {
+    return <h2>Loading...</h2>;
   }
 
-  const sendMessage = (e) =>{
-    e.preventDefault()
-    if (input === '') return
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    sendMessage({ socket, chatId, userId: user.uId, input, setInput });
+  };
 
-    const message = {
-      userId: user.uId,
-      chatId: chatId,
-      text: input
-    }
+  const handleLeaveChat = () => {
+    leaveChat({ chatId, navigate });
+  };
 
-    socket.emit('message', message)
+  const displayMessages = messages.map((message) => {
+    const user = message[0];
+    const content = message[1];
+    return <MessageCard key={content.uId} {...user} {...content} />;
+  });
 
-    setInput('')
-  }
-
-  const leaveChat = async () => {
-    try {
-      const res = await fetch(`/api/leave-chat/${chatId}`, {
-        method: "DELETE",
-        credentials: "include"
-      })
-      if (res.ok){
-        alert("You have left the chat")
-        navigate('/')
-      }
-    } catch(e) {
-      console.error(e)
-    }
-  }
-
-  const displayMessages = messages.map(message =>{
-    const user = message[0]
-    const content = message[1]
-    return <MessageCard key={content.uId} {...user} {...content} />
-  })
-  
   const usernames = participants.map((p, index) => {
-    if (index === participants.length -1) return <span key={p.uId}>{p.firstName}</span>
-    return <span key={p.uId}>{p.firstName}, </span>
-})
+    if (index === participants.length - 1)
+      return <span key={p.uId}>{p.firstName}</span>;
+    return <span key={p.uId}>{p.firstName}, </span>;
+  });
 
   return (
     <main className={styles.main}>
-      <h2 className={styles.participants} title={usernames}>{usernames}</h2>
-      <button onClick={leaveChat}>Leave Chat</button>
+      <h2 className={styles.participants} title={usernames}>
+        {usernames}
+      </h2>
+      <button onClick={handleLeaveChat}>Leave Chat</button>
       <section className={styles.messageContainer} ref={scrollRef}>
         {displayMessages}
       </section>
-      <form onSubmit={sendMessage} className={styles.textInputForm}>
-        <input type="text" placeholder="Type message here..." value={input} onChange={(e) => setInput(e.target.value)}  />
-        <input type="submit" value='send'/>
+      <form onSubmit={handleSendMessage} className={styles.textInputForm}>
+        <input
+          type="text"
+          placeholder="Type message here..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <input type="submit" value="send" />
       </form>
     </main>
-  )
+  );
 }
 
-export default Chat
+export default Chat;

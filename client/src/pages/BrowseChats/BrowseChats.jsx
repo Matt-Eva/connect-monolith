@@ -1,18 +1,18 @@
-import ChatNavBar from "../../components/ChatNavBar/ChatNavBar"
-import { Outlet, useOutletContext } from "react-router-dom"
-import styles from "./BrowseChats.module.css"
+import ChatNavBar from "../../components/ChatNavBar/ChatNavBar";
+import { Outlet, useOutletContext } from "react-router-dom";
+import styles from "./BrowseChats.module.css";
 
 function BrowseChats() {
-  const {user} = useOutletContext()
+  const { user } = useOutletContext();
 
-  const outletContext = {user: user}
+  const outletContext = { user };
 
   return (
     <main className={styles.main}>
-        <Outlet context={outletContext}/>
-        <ChatNavBar />
+      <Outlet context={outletContext} />
+      <ChatNavBar />
     </main>
-  )
+  );
 }
 
-export default BrowseChats
+export default BrowseChats;
