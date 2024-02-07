@@ -88,6 +88,10 @@ const routes = [
             path: "/account/edit-image",
             element: <UpdateProfileImage />,
           },
+          {
+            path: "/account/enable-notifications",
+            element: <EnableNotifications />,
+          },
         ],
       },
       {
@@ -101,10 +105,6 @@ const routes = [
       {
         path: "/donate",
         element: <Donate />,
-      },
-      {
-        path: "/enable-notifications",
-        element: <EnableNotifications />,
       },
     ],
   },

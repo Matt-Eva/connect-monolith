@@ -1,21 +1,30 @@
-import { useState } from "react"
-import styles from "./UpdateProfileImage.module.css"
+import styles from "./UpdateProfileImage.module.css";
+import { useOutletContext, Link } from "react-router-dom";
 
-function UpdateProfileImage({toggleEdit, profileImg, name}) {
-    const [image, setImage] = useState(profileImg)
-    
-    let iconDisplay = profileImg ? <img src={profileImg} alt="profile image" className={styles.image}/> : <span>{name.charAt(0).toUpperCase()}</span>
+function UpdateProfileImage({ name }) {
+  const { user } = useOutletContext();
+  const { profileImg } = user;
 
+  let iconDisplay = profileImg ? (
+    <img src={profileImg} alt="profile image" className={styles.image} />
+  ) : (
+    <span>{name.charAt(0).toUpperCase()}</span>
+  );
 
-    return (
+  return (
     <main className={styles.main}>
-        <button onClick={() => toggleEdit("")} className={styles.backButton}>Back</button>
-        {iconDisplay}
-        <button className={`bg-purple ${styles.imageButton}`}>Select Image</button>
-        <button className={styles.imageButton}>Confirm</button>
-        <p style={{"font-style": "italic"}}>Dear users - we aren't currently allowing updates to profile images at this time. Coming soon!</p>
+      <Link to="/account">Back</Link>
+      {iconDisplay}
+      <button className={`bg-purple ${styles.imageButton}`}>
+        Select Image
+      </button>
+      <button className={styles.imageButton}>Confirm</button>
+      <p style={{ "font-style": "italic" }}>
+        Dear users - we aren't currently allowing updates to profile images at
+        this time. Coming soon!
+      </p>
     </main>
-    )
+  );
 }
 
-export default UpdateProfileImage
+export default UpdateProfileImage;

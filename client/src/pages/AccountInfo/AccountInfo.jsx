@@ -36,8 +36,10 @@ function AccountInfo() {
       <Link to={`/profile/${uId}`} className={`underlined-link`}>
         view profile
       </Link>
-      <Link to="/enable-notifications">manage notifications</Link>
-      <div className={styles.buttonContainer}>
+      <Link to="/account/enable-notifications" className={`underlined-link`}>
+        manage notifications
+      </Link>
+      <div className={styles.editContainer}>
         <Link to="/account/edit" className={`underlined-link`}>
           edit account
         </Link>
