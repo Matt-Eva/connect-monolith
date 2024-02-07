@@ -3,6 +3,7 @@ import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header/Header";
 import MainNavBar from "../components/MainNavBar/MainNavBar";
 import styles from "./Root.module.css";
+import { getMe } from "./UtilsRoot";
 
 function Root() {
   const [user, setUser] = useState(false);
@@ -13,27 +14,7 @@ function Root() {
   const [startingPath, setStartingPath] = useState(location.pathname);
 
   useEffect(() => {
-    const getMe = async () => {
-      try {
-        const res = await fetch("/api/me");
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-          setLoading(false);
-        } else if (res.status === 401) {
-          setUser(false);
-          setLoading(false);
-          navigate("/login");
-        } else {
-          throw new Error("Problem with network response");
-        }
-      } catch (e) {
-        setOfflineDisplay(true);
-        console.log("caught error");
-        console.error(e);
-      }
-    };
-    getMe();
+    getMe({ setUser, setLoading, setOfflineDisplay, navigate });
   }, []);
 
   const login = async (email, password) => {
