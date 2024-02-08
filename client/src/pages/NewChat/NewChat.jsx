@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import CreateChatUserCard from "../../components/CreateChatUserCard/CreateChatUserCard.jsx";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard.jsx";
 
 import styles from "./NewChat.module.css";
+
+import { setConnections } from "../../state/connections.js";
+
+import { addChat } from "../../state/chats.js";
 
 import {
   fetchConnections,
@@ -13,15 +18,25 @@ import {
 } from "./UtilsNewChat.js";
 
 function NewChat() {
-  const [connections, setConnections] = useState([]);
+  const connectionsState = useSelector((state) => state.connections.value);
+  const connections = connectionsState.connections;
+  const isFetched = connectionsState.isFetched;
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState("");
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
+  console.log(participants);
+
   useEffect(() => {
-    fetchConnections({ setConnections, setLoading });
+    if (!isFetched) {
+      fetchConnections({ setConnections, setLoading, dispatch });
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const addParticipant = (user) => {
@@ -39,7 +54,7 @@ function NewChat() {
   };
 
   const handleCreateChat = () => {
-    createChat({ participants, navigate });
+    createChat({ participants, navigate, dispatch, addChat });
   };
 
   const filteredConnections = filterConnections({

@@ -1,17 +1,17 @@
-const fetchConnections = async ({ setConnections, setLoading }) => {
+const fetchConnections = async ({ setConnections, setLoading, dispatch }) => {
   const res = await fetch("/api/my-connections", {
     credentials: "include",
   });
   if (res.ok) {
     const data = await res.json();
-    setConnections(data);
+    dispatch(setConnections(data));
     setLoading(false);
   } else if (res.status === 401) {
     console.log("unauthorized");
   }
 };
 
-const createChat = async ({ participants, navigate }) => {
+const createChat = async ({ participants, navigate, addChat, dispatch }) => {
   const body = {
     participants,
   };
@@ -27,7 +27,7 @@ const createChat = async ({ participants, navigate }) => {
 
   if (res.ok) {
     const newChat = await res.json();
-    console.log(newChat);
+    dispatch(addChat({ chatId: newChat.uId, participants }));
     navigate(`/chat/${newChat.uId}`);
   }
 };

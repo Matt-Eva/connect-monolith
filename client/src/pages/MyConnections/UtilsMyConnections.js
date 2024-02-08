@@ -1,11 +1,11 @@
-const fetchConnections = async ({ setConnections }) => {
+const fetchConnections = async ({ setConnections, dispatch }) => {
   try {
     const res = await fetch("/api/my-connections", {
       credentials: "include",
     });
     if (res.ok) {
       const data = await res.json();
-      setConnections(data);
+      dispatch(setConnections(data));
     } else {
       throw new Error("problem");
     }

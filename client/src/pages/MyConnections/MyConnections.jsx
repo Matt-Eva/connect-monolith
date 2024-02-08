@@ -1,17 +1,28 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import ConnectionCard from "../../components/ConnectionCard/ConnectionCard";
 
 import styles from "./MyConnections.module.css";
 
+import { setConnections } from "../../state/connections";
+
 import { fetchConnections } from "./UtilsMyConnections";
 
 function MyConnections() {
-  const [connections, setConnections] = useState([]);
+  const connectionsState = useSelector((state) => state.connections.value);
+  console.log(connectionsState);
+  const connections = connectionsState.connections;
+  const isFetched = connectionsState.isFetched;
+
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    fetchConnections({ setConnections });
+    if (!isFetched) {
+      fetchConnections({ setConnections, dispatch });
+    }
   }, []);
 
   const filterUsers = (e) => {
