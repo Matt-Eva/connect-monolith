@@ -1,5 +1,8 @@
-const validateAndCreate = async ({
-  handleCreateAccount,
+const createAccount = async ({
+  createUser,
+  dispatch,
+  navigate,
+  startingPath,
   formState,
   setFormState,
   baseFormState,
@@ -21,12 +24,30 @@ const validateAndCreate = async ({
     name: `${formState.firstName} ${formState.lastName}`,
   };
   try {
-    await handleCreateAccount({ newUser });
-    setFormState(baseFormState);
+    const res = await fetch("/api" + "/new-account", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(createUser(data));
+      setFormState(baseFormState);
+      if (startingPath === "/login" || startingPath === "/new-account") {
+        navigate("/");
+      } else {
+        navigate(startingPath);
+      }
+    } else {
+      const error = await res.json();
+      throw new Error(error.error);
+    }
   } catch (e) {
     console.error(e);
-    alert(e.message + ". Please use a different email address.");
   }
 };
 
-export { validateAndCreate };
+export { createAccount };

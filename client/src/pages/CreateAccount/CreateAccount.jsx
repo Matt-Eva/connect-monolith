@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./CreateAccount.module.css";
 
-import { validateAndCreate } from "./UtilsCreateAccount";
+import { createAccount } from "./UtilsCreateAccount";
 
 function CreateAccount() {
-  const { handleCreateAccount } = useOutletContext();
+  const startingPath = useSelector((state) => state.startingPath.value);
+  const dispatch = useDispatch();
 
   const baseFormState = {
     password: "",
@@ -27,11 +29,14 @@ function CreateAccount() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    validateAndCreate({
-      handleCreateAccount,
+    createAccount({
+      startingPath,
+      dispatch,
+      createUser,
       formState,
       setFormState,
       baseFormState,
+      navigate,
     });
   };
 

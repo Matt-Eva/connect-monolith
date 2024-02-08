@@ -9,12 +9,11 @@ import styles from "./Root.module.css";
 
 import { createUser, destroyUser } from "../state/user";
 
-import { getMe, logout, login, createAccount } from "./UtilsRoot";
+import { getMe } from "./UtilsRoot";
 import { setStartingPath } from "../state/startingPath";
 
 function Root() {
   const user = useSelector((state) => state.user.value);
-  const startingPath = useSelector((state) => state.startingPath.value);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -35,25 +34,6 @@ function Root() {
     dispatch(setStartingPath(location.pathname));
   }, []);
 
-  const handleLogout = () => {
-    logout({ setStartingPath, dispatch, destroyUser, navigate, location });
-  };
-
-  const handleCreateAccount = ({ newUser }) => {
-    createAccount({
-      newUser,
-      dispatch,
-      createUser,
-      navigate,
-      startingPath,
-    });
-  };
-
-  const outletContext = {
-    handleLogout,
-    handleCreateAccount,
-  };
-
   if (loading && !offlineDisplay) {
     return <h1>Loading...</h1>;
   } else if (offlineDisplay) {
@@ -63,7 +43,7 @@ function Root() {
   return (
     <div className={styles.root}>
       {user ? <Header /> : <Navigate to="/login" />}
-      <Outlet context={outletContext} />
+      <Outlet />
       {user ? <MainNavBar /> : null}
     </div>
   );
