@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { useParams, useOutletContext, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import MessageCard from "../../components/MessageCard/MessageCard";
+
 import styles from "./Chat.module.css";
+
 import {
   initializeSocket,
   handleScroll,
@@ -10,7 +14,7 @@ import {
 } from "./UtilsChat";
 
 function Chat() {
-  const { user } = useOutletContext();
+  const user = useSelector((state) => state.user.value);
   const [loading, setLoading] = useState(true);
   const [justLoaded, setJustLoaded] = useState(true);
   const [messages, setMessages] = useState([]);
