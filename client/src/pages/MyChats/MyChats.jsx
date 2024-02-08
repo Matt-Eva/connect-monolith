@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import ChatCard from "../../components/ChatCard/ChatCard";
 
 import styles from "./MyChats.module.css";
 
+import { setChats } from "../../state/chats";
+
 import { fetchChats } from "./UtilsMyChats";
 
 function MyChats() {
-  const user = useSelector((state) => state.user.value);
+  const chatsState = useSelector((state) => state.chats.value);
+  const isFetched = chatsState.isFetched;
+  const chats = chatsState.chats;
+  const dispatch = useDispatch();
 
-  const [chats, setChats] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      fetchChats({ setChats, setLoading });
+    if (!isFetched) {
+      fetchChats({ setChats, dispatch, setLoading });
+    } else {
+      setLoading(false);
     }
-  }, []);
+  }, [isFetched]);
 
   const displayChats = [];
 

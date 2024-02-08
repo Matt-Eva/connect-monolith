@@ -1,11 +1,11 @@
-const fetchChats = async ({ setChats, setLoading }) => {
+const fetchChats = async ({ setChats, setLoading, dispatch }) => {
   const res = await fetch("/api/my-chats", {
     credentials: "include",
   });
 
   if (res.ok) {
     const chats = await res.json();
-    setChats(chats);
+    dispatch(setChats(chats));
     setLoading(false);
   } else {
     alert("Something went wrong when loading your chats.");
