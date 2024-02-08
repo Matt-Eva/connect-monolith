@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./Login.module.css";
@@ -23,7 +23,14 @@ function Login() {
   };
 
   if (user) {
-    return <Navigate to="/" />;
+    return (
+      <main>
+        <p>You are already logged in.</p>
+        <Link to="/" className={`underlined-link`}>
+          Home
+        </Link>
+      </main>
+    );
   }
 
   return (

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 
 import ConnectionCard from "../../components/ConnectionCard/ConnectionCard";
 
@@ -8,15 +7,12 @@ import styles from "./MyConnections.module.css";
 import { fetchConnections } from "./UtilsMyConnections";
 
 function MyConnections() {
-  const user = useSelector((state) => state.user.value);
   const [connections, setConnections] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (user) {
-      fetchConnections({ setConnections });
-    }
-  }, [user]);
+    fetchConnections({ setConnections });
+  }, []);
 
   const filterUsers = (e) => {
     setSearch(e.target.value);

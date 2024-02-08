@@ -7,7 +7,9 @@ export const startingPathSlice = createSlice({
   },
   reducers: {
     setStartingPath: (startingPathState, action) => {
+      console.log("from redux", action.payload);
       startingPathState.value = action.payload;
+      console.log(startingPathState.value);
     },
   },
 });

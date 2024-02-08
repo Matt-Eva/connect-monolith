@@ -7,6 +7,7 @@ import styles from "./CreateAccount.module.css";
 import { createAccount } from "./UtilsCreateAccount";
 
 function CreateAccount() {
+  const user = useSelector((state) => state.user.value);
   const startingPath = useSelector((state) => state.startingPath.value);
   const dispatch = useDispatch();
 
@@ -39,6 +40,17 @@ function CreateAccount() {
       navigate,
     });
   };
+
+  if (user) {
+    return (
+      <main>
+        <p>You are already logged in.</p>
+        <Link to="/" className={`underlined-link`}>
+          Home
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main className={styles.main}>

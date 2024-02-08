@@ -18,9 +18,12 @@ function Root() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location.pathname);
 
   const [loading, setLoading] = useState(true);
   const [offlineDisplay, setOfflineDisplay] = useState(false);
+
+  console.log(user);
 
   useEffect(() => {
     getMe({
@@ -31,6 +34,7 @@ function Root() {
       createUser,
       destroyUser,
     });
+    console.log(location.pathname);
     dispatch(setStartingPath(location.pathname));
   }, []);
 

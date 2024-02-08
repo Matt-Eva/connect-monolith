@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useOutletContext, useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 import styles from "./ProfilePage.module.css";
 
@@ -15,7 +16,7 @@ import {
 } from "./UtilsProfilePage";
 
 function ProfilePage() {
-  const { user } = useOutletContext();
+  const user = useSelector((state) => state.user.value);
 
   const [profile, setProfile] = useState(false);
   const [allowDisconnect, setAllowDisconnect] = useState(false);

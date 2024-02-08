@@ -18,9 +18,11 @@ const login = async ({
   if (res.ok) {
     const data = await res.json();
     dispatch(createUser(data));
+
     if (startingPath === "/login" || startingPath === "/new-account") {
       navigate("/");
     } else {
+      console.log("navigating", startingPath);
       navigate(startingPath);
     }
   } else {
