@@ -29,8 +29,6 @@ function NewChat() {
 
   const navigate = useNavigate();
 
-  console.log(participants);
-
   useEffect(() => {
     if (!isFetched) {
       fetchConnections({ setConnections, setLoading, dispatch });
