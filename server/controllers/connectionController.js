@@ -1,6 +1,4 @@
 const neoDriver = require("../config/neo4jConfig.js");
-const { v4 } = require("uuid");
-const uuid = v4;
 
 exports.getConnections = async (req, res) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
@@ -11,7 +9,7 @@ exports.getConnections = async (req, res) => {
   try {
     const query = `
               MATCH (user:User {uId: $userId}) - [:CONNECTED] - (c:User)
-              RETURN c.name AS name, c.uId AS uId, c.profileImg AS profileImg
+              RETURN c.name AS name, c.uId AS uId, c.profileImg AS profileImg, c.firstName AS firstName
           `;
     const result = await session.executeRead((tx) =>
       tx.run(query, { userId: user.uId }),
@@ -24,6 +22,7 @@ exports.getConnections = async (req, res) => {
         name: record.get("name"),
         uId: record.get("uId"),
         profileImg: record.get("profileImg"),
+        firstName: record.get("firstName"),
       };
 
       connections.push(connection);
