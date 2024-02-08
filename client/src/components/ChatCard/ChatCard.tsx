@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
 import styles from "./ChatCard.module.css";
 
-function ChatCard({ chatId, users }) {
+function ChatCard({ chatId, users }: { chatId: string }) {
   const [isTruncated, setIsTruncated] = useState(true);
 
   console.log(users);

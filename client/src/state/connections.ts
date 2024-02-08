@@ -1,5 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface Connection {
+  name: string;
+  firstName: string;
+  profileImg: string;
+  uId: string;
+}
+
 export const connectionsSlice = createSlice({
   name: "connections",
   initialState: {

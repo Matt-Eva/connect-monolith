@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../reduxHooks";
 
 import Header from "../components/Header/Header";
 import MainNavBar from "../components/MainNavBar/MainNavBar";
@@ -13,8 +13,8 @@ import { getMe } from "./UtilsRoot";
 import { setStartingPath } from "../state/startingPath";
 
 function Root() {
-  const user = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.user.value);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const location = useLocation();

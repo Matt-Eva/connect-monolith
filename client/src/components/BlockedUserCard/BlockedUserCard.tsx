@@ -3,7 +3,15 @@ import { Link } from "react-router-dom";
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
 import styles from "./BlockedUserCard.module.css";
 
-function BlockedUserCard({ name, profileImg, uId }) {
+function BlockedUserCard({
+  name,
+  profileImg,
+  uId,
+}: {
+  name: string;
+  profileImg: string;
+  uId: string;
+}) {
   const [blocked, setBlocked] = useState(true);
 
   const iconUser = [

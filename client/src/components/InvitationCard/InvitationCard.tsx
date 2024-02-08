@@ -7,7 +7,15 @@ import styles from "./InvitationCard.module.css";
 
 import { accept, ignore, block } from "./UtilsInvitationCard";
 
-function InvitationCard({ name, uId, profileImg }) {
+function InvitationCard({
+  name,
+  uId,
+  profileImg,
+}: {
+  name: string;
+  uId: string;
+  profileImg: string;
+}) {
   const [connected, setConnected] = useState(false);
   const [responded, setResponded] = useState(false);
   const [blocked, setBlocked] = useState(false);

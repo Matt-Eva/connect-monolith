@@ -4,13 +4,13 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import routes from "./routes";
-import store from "./store";
+import { store } from "./store";
 
 import "./index.css";
 
 const router = createBrowserRouter(routes);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
@@ -27,7 +27,7 @@ if ("serviceWorker" in navigator) {
     const registration = await navigator.serviceWorker.ready;
 
     const subscription = await registration.pushManager.getSubscription();
-    if (subscription) {
+    if (subscription && registration.active) {
       registration.active.postMessage({
         type: "focusState",
         isFocused: true,
@@ -39,7 +39,7 @@ if ("serviceWorker" in navigator) {
       }
 
       document.addEventListener("visibilitychange", async () => {
-        if (!document.hidden) {
+        if (!document.hidden && registration.active) {
           registration.active.postMessage({
             type: "focusState",
             isFocused: true,
@@ -49,7 +49,7 @@ if ("serviceWorker" in navigator) {
           for (let i = 0; i < notifications.length; i += 1) {
             notifications[i].close();
           }
-        } else {
+        } else if (registration.active) {
           registration.active.postMessage({
             type: "focusState",
             isFocused: false,

@@ -1,7 +1,9 @@
 import styles from "./CardImageIcon.module.css";
 
-const renderImages = ({ users }) => {
-  const length = users.length;
+import { Connection } from "../../state/connections";
+
+const renderImages = ({ users }: { users: [Connection] }) => {
+  const length: number = users.length;
 
   let imageClass = "";
   let letterClass = "";

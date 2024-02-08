@@ -2,14 +2,14 @@ import styles from "./UpdateProfileImage.module.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-function UpdateProfileImage({ name }) {
+function UpdateProfileImage() {
   const user = useSelector((state) => state.user.value);
   const { profileImg } = user;
 
   let iconDisplay = profileImg ? (
     <img src={profileImg} alt="profile image" className={styles.image} />
   ) : (
-    <span>{name.charAt(0).toUpperCase()}</span>
+    <span>{user.name.charAt(0).toUpperCase()}</span>
   );
 
   return (
