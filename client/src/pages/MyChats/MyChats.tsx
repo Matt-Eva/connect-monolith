@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import ChatCard from "../../components/ChatCard/ChatCard";
 
@@ -10,10 +10,10 @@ import { setChats } from "../../state/chats";
 import { fetchChats } from "./UtilsMyChats";
 
 function MyChats() {
-  const chatsState = useSelector((state) => state.chats.value);
+  const chatsState = useAppSelector((state) => state.chats.value);
   const isFetched = chatsState.isFetched;
   const chats = chatsState.chats;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(true);
 

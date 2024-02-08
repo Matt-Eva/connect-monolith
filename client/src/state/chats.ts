@@ -1,10 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+import { Connection } from "./connections";
+
+export interface Chats {
+  uId: [Connection];
+}
+
+const initialChatState: Object | Chats = {};
 
 export const chatsSlice = createSlice({
   name: "chats",
   initialState: {
     value: {
-      chats: {},
+      chats: initialChatState,
       isFetched: false,
     },
   },
@@ -20,9 +28,9 @@ export const chatsSlice = createSlice({
       };
       chatsState.value.chats = oneMoreChat;
     },
-    removeChat: (chatsState, action) => {
+    removeChat: (chatsState, action: PayloadAction<string>) => {
       const key = action.payload;
-      const oneLess = { ...chatsState.value.chats };
+      const oneLess: { [key: string]: any } = { ...chatsState.value.chats };
       delete oneLess[key];
       chatsState.value.chats = oneLess;
     },
