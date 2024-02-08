@@ -1,18 +1,30 @@
 import { useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import BlockedUserCard from "../../components/BlockedUserCard/BlockedUserCard";
+
 import styles from "./AccountInfo.module.css";
+
+import { destroyUser } from "../../state/user";
+
 import { fetchBlockedUsers } from "./UtilsAccountInfo";
 
 function AccountInfo() {
-  const { user, handleLogout } = useOutletContext();
-  const { name, email, profileImg, uId } = user;
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+
+  const { name, email, uId, profileImg } = user;
 
   const [blockedUsers, setBlockedUsers] = useState([]);
   const [showBlockedUsers, setShowBlockedUsers] = useState(false);
 
   const handleFetchBlockedUsers = () => {
     fetchBlockedUsers({ setBlockedUsers, setShowBlockedUsers });
+  };
+
+  const handleLogout = () => {
+    dispatch(destroyUser());
   };
 
   const displayBlockedUsers = blockedUsers.map((user) => (

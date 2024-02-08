@@ -66,7 +66,7 @@ function Root() {
 
   return (
     <div className={styles.root}>
-      {user ? <Header logout={handleLogout} /> : <Navigate to="/login" />}
+      {user ? <Header /> : <Navigate to="/login" />}
       <Outlet context={outletContext} />
       {user ? <MainNavBar /> : null}
     </div>

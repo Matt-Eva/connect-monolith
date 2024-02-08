@@ -1,9 +1,7 @@
-import { useOutletContext, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function Account() {
-  const { user, handleLogout, destroyUser } = useOutletContext();
-
-  return <Outlet context={{ user, handleLogout, destroyUser }} />;
+  return <Outlet />;
 }
 
 export default Account;
