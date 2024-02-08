@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import ConnectionCard from "../../components/ConnectionCard/ConnectionCard";
 
@@ -8,7 +8,7 @@ import styles from "./MyConnections.module.css";
 import { fetchConnections } from "./UtilsMyConnections";
 
 function MyConnections() {
-  const { user } = useOutletContext();
+  const user = useSelector((state) => state.user.value);
   const [connections, setConnections] = useState([]);
   const [search, setSearch] = useState("");
 
