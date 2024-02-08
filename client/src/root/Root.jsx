@@ -10,16 +10,18 @@ import styles from "./Root.module.css";
 import { createUser, destroyUser } from "../state/user";
 
 import { getMe, logout, login, createAccount } from "./UtilsRoot";
+import { setStartingPath } from "../state/startingPath";
 
 function Root() {
   const user = useSelector((state) => state.user.value);
+  const startingPath = useSelector((state) => state.startingPath.value);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(true);
   const [offlineDisplay, setOfflineDisplay] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [startingPath, setStartingPath] = useState(location.pathname);
 
   useEffect(() => {
     getMe({
@@ -30,18 +32,15 @@ function Root() {
       createUser,
       destroyUser,
     });
+    dispatch(setStartingPath(location.pathname));
   }, []);
-
-  const handleLogin = ({ email, password }) => {
-    login({ email, password, dispatch, createUser, navigate, startingPath });
-  };
 
   const handleLogout = () => {
     logout({ setStartingPath, dispatch, destroyUser, navigate, location });
   };
 
-  const handleCreateAccount = async ({ newUser }) => {
-    await createAccount({
+  const handleCreateAccount = ({ newUser }) => {
+    createAccount({
       newUser,
       dispatch,
       createUser,
@@ -51,10 +50,7 @@ function Root() {
   };
 
   const outletContext = {
-    user,
-    handleLogin,
     handleLogout,
-    destroyUser,
     handleCreateAccount,
   };
 

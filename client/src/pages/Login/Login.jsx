@@ -1,15 +1,25 @@
 import { useState } from "react";
-import { useOutletContext, Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import styles from "./Login.module.css";
 
+import { createUser } from "../../state/user";
+
+import { login } from "./UtilsLogin";
+
 function Login() {
-  const { handleLogin, user } = useOutletContext();
+  const user = useSelector((state) => state.user.value);
+  const startingPath = useSelector((state) => state.startingPath.value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    handleLogin({ email, password });
+    login({ email, password, startingPath, dispatch, createUser, navigate });
   };
 
   if (user) {
@@ -20,7 +30,7 @@ function Login() {
     <main className={styles.main}>
       <h1 className={styles.welcome}>CONNECT</h1>
       <h2 className={styles.title}>Login</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleLogin} className={styles.form}>
         <label htmlFor="email">email</label>
         <input
           type="text"

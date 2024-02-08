@@ -15,4 +15,20 @@ const fetchBlockedUsers = async ({ setBlockedUsers, setShowBlockedUsers }) => {
   }
 };
 
-export { fetchBlockedUsers };
+const logout = async ({
+  setStartingPath,
+  dispatch,
+  destroyUser,
+  navigate,
+  location,
+}) => {
+  await fetch("/api" + "/logout", {
+    method: "DELETE",
+    credentials: "include",
+  });
+  dispatch(setStartingPath(location.pathname));
+  dispatch(destroyUser());
+  navigate("/login");
+};
+
+export { fetchBlockedUsers, logout };

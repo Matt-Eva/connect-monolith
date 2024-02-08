@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import BlockedUserCard from "../../components/BlockedUserCard/BlockedUserCard";
@@ -7,12 +7,15 @@ import BlockedUserCard from "../../components/BlockedUserCard/BlockedUserCard";
 import styles from "./AccountInfo.module.css";
 
 import { destroyUser } from "../../state/user";
+import { setStartingPath } from "../../state/startingPath";
 
-import { fetchBlockedUsers } from "./UtilsAccountInfo";
+import { fetchBlockedUsers, logout } from "./UtilsAccountInfo";
 
 function AccountInfo() {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { name, email, uId, profileImg } = user;
 
@@ -24,7 +27,7 @@ function AccountInfo() {
   };
 
   const handleLogout = () => {
-    dispatch(destroyUser());
+    logout({ dispatch, destroyUser, setStartingPath, location, navigate });
   };
 
   const displayBlockedUsers = blockedUsers.map((user) => (
