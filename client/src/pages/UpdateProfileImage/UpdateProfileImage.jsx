@@ -1,8 +1,9 @@
 import styles from "./UpdateProfileImage.module.css";
-import { useOutletContext, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function UpdateProfileImage({ name }) {
-  const { user } = useOutletContext();
+  const user = useSelector((state) => state.user.value);
   const { profileImg } = user;
 
   let iconDisplay = profileImg ? (
