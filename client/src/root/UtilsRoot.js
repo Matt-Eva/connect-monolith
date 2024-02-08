@@ -1,12 +1,19 @@
-const getMe = async ({ navigate, setUser, setLoading, setOfflineDisplay }) => {
+const getMe = async ({
+  navigate,
+  dispatch,
+  createUser,
+  setLoading,
+  setOfflineDisplay,
+  destroyUser,
+}) => {
   try {
     const res = await fetch("/api/me");
     if (res.ok) {
       const data = await res.json();
-      setUser(data);
+      dispatch(createUser(data));
       setLoading(false);
     } else if (res.status === 401) {
-      setUser(false);
+      dispatch(destroyUser());
       setLoading(false);
       navigate("/login");
     } else {
@@ -19,7 +26,14 @@ const getMe = async ({ navigate, setUser, setLoading, setOfflineDisplay }) => {
   }
 };
 
-const login = async ({ email, password, setUser, navigate, startingPath }) => {
+const login = async ({
+  email,
+  password,
+  dispatch,
+  createUser,
+  navigate,
+  startingPath,
+}) => {
   const res = await fetch("/api" + "/login", {
     method: "POST",
     credentials: "include",
@@ -31,7 +45,7 @@ const login = async ({ email, password, setUser, navigate, startingPath }) => {
 
   if (res.ok) {
     const data = await res.json();
-    setUser(data);
+    dispatch(createUser(data));
     if (startingPath === "/login" || startingPath === "/new-account") {
       navigate("/");
     } else {
@@ -43,7 +57,13 @@ const login = async ({ email, password, setUser, navigate, startingPath }) => {
   }
 };
 
-const createAccount = async ({ newUser, setUser, navigate, startingPath }) => {
+const createAccount = async ({
+  newUser,
+  createUser,
+  dispatch,
+  navigate,
+  startingPath,
+}) => {
   try {
     const res = await fetch("/api" + "/new-account", {
       method: "POST",
@@ -55,7 +75,7 @@ const createAccount = async ({ newUser, setUser, navigate, startingPath }) => {
     });
     if (res.ok) {
       const data = await res.json();
-      setUser(data);
+      dispatch(createUser(data));
       if (startingPath === "/login" || startingPath === "/new-account") {
         navigate("/");
       } else {
@@ -70,13 +90,19 @@ const createAccount = async ({ newUser, setUser, navigate, startingPath }) => {
   }
 };
 
-const logout = async ({ setStartingPath, setUser, navigate, location }) => {
+const logout = async ({
+  setStartingPath,
+  dispatch,
+  destroyUser,
+  navigate,
+  location,
+}) => {
   await fetch("/api" + "/logout", {
     method: "DELETE",
     credentials: "include",
   });
   setStartingPath(location.pathname);
-  setUser(false);
+  dispatch(destroyUser());
   navigate("/login");
 };
 
