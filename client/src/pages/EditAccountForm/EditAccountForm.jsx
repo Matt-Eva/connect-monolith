@@ -1,6 +1,11 @@
 import { useState } from "react";
-import { useNavigate, useOutletContext, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import styles from "./EditAccountForm.module.css";
+
+import { destroyUser } from "../../state/user";
+
 import {
   updateAccount,
   updatePassword,
@@ -8,7 +13,10 @@ import {
 } from "./UtilsEditAccountForm";
 
 function EditAccountForm() {
-  const { destroyUser, user } = useOutletContext();
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { firstName, lastName, email } = user;
 
   const [enableDelete, setEnableDelete] = useState(false);
@@ -28,8 +36,6 @@ function EditAccountForm() {
     confirmPassword: "",
   };
   const [passwordState, setPasswordState] = useState(initialPasswordState);
-
-  const navigate = useNavigate();
 
   const handleInfoChange = (e) => {
     setFormState({
@@ -61,7 +67,7 @@ function EditAccountForm() {
   };
 
   const handleDeleteAccount = () => {
-    deleteAccount({ destroyUser, navigate });
+    deleteAccount({ destroyUser, dispatch, navigate });
   };
 
   return (

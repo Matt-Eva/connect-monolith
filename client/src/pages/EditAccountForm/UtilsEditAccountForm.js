@@ -59,7 +59,7 @@ const updatePassword = async ({
   }
 };
 
-const deleteAccount = async ({ destroyUser, navigate }) => {
+const deleteAccount = async ({ destroyUser, dispatch, navigate }) => {
   try {
     const res = await fetch("/api/my-account", {
       method: "DELETE",
@@ -67,7 +67,7 @@ const deleteAccount = async ({ destroyUser, navigate }) => {
     });
     if (res.ok) {
       alert("account successfully deleted");
-      destroyUser();
+      dispatch(destroyUser());
       navigate("/login");
     }
   } catch (e) {
