@@ -7,19 +7,30 @@ export interface User {
   email: string;
   profileImg: string;
   lastName: string;
+  authenticated: boolean;
 }
+
+const initialUserState: User = {
+  name: "",
+  firstName: "",
+  uId: "",
+  email: "",
+  profileImg: "",
+  lastName: "",
+  authenticated: false,
+};
 
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    value: false,
+    value: initialUserState,
   },
   reducers: {
     createUser: (userState, action) => {
       userState.value = action.payload;
     },
     destroyUser: (userState) => {
-      userState.value = false;
+      userState.value = initialUserState;
     },
   },
 });

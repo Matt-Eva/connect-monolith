@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import BlockedUserCard from "../../components/BlockedUserCard/BlockedUserCard";
 
 import styles from "./AccountInfo.module.css";
 
 import { destroyUser } from "../../state/user";
+import { User } from "../../state/user";
 import { setStartingPath } from "../../state/startingPath";
 
 import { fetchBlockedUsers, logout } from "./UtilsAccountInfo";
 
 function AccountInfo() {
-  const user = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
+  const user: User = useAppSelector((state) => state.user.value);
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
