@@ -1,4 +1,10 @@
-const fetchBlockedUsers = async ({ setBlockedUsers, setShowBlockedUsers }) => {
+const fetchBlockedUsers = async ({
+  setBlockedUsers,
+  setShowBlockedUsers,
+}: {
+  setBlockedUsers: Function;
+  setShowBlockedUsers: Function;
+}) => {
   try {
     const res = await fetch("/api/blocked-users", { credentials: "include" });
     if (res.ok) {
@@ -21,6 +27,14 @@ const logout = async ({
   destroyUser,
   navigate,
   location,
+}: {
+  setStartingPath: Function;
+  dispatch: Function;
+  destroyUser: Function;
+  navigate: Function;
+  location: {
+    pathname: string;
+  };
 }) => {
   await fetch("/api" + "/logout", {
     method: "DELETE",

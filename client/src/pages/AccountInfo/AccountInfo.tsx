@@ -7,20 +7,26 @@ import BlockedUserCard from "../../components/BlockedUserCard/BlockedUserCard";
 import styles from "./AccountInfo.module.css";
 
 import { destroyUser } from "../../state/user";
-import { User } from "../../state/user";
 import { setStartingPath } from "../../state/startingPath";
 
 import { fetchBlockedUsers, logout } from "./UtilsAccountInfo";
 
 function AccountInfo() {
-  const user: User = useAppSelector((state) => state.user.value);
+  const user = useAppSelector((state) => state.user.value);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
   const { name, email, uId, profileImg } = user;
 
-  const [blockedUsers, setBlockedUsers] = useState([]);
+  interface BlockedUser {
+    name: string;
+    uId: string;
+    profileImg: string;
+  }
+  type BlockedUserState = BlockedUser[];
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUserState>([]);
+
   const [showBlockedUsers, setShowBlockedUsers] = useState(false);
 
   const handleFetchBlockedUsers = () => {
