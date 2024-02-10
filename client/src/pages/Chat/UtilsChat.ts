@@ -1,4 +1,6 @@
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
+
+import { MessageState } from "./TypesChat";
 
 const initializeSocket = ({
   chatId,
@@ -6,6 +8,12 @@ const initializeSocket = ({
   setMessages,
   setLoading,
   setParticipants,
+}: {
+  chatId: string;
+  setSocket: Function;
+  setMessages: Function;
+  setLoading: Function;
+  setParticipants: Function;
 }) => {
   const socket = io(import.meta.env.VITE_BACKEND_URL, {
     withCredentials: true,
@@ -27,7 +35,7 @@ const initializeSocket = ({
   });
 
   socket.on("new-message", (message) => {
-    setMessages((messages) => [...messages, message]);
+    setMessages((messages: MessageState) => [...messages, message]);
   });
 
   return () => {
@@ -35,17 +43,25 @@ const initializeSocket = ({
   };
 };
 
-const handleScroll = ({ scrollRef, setJustLoaded, justLoaded }) => {
+const handleScroll = ({
+  scrollRef,
+  setJustLoaded,
+  justLoaded,
+}: {
+  scrollRef: React.RefObject<HTMLElement>;
+  setJustLoaded: Function;
+  justLoaded: boolean;
+}) => {
   if (scrollRef.current !== null) {
     const messageContainer = scrollRef.current;
-    const lastChild = messageContainer.lastChild;
+    const lastChild = messageContainer.lastChild as HTMLElement;
 
     if (justLoaded === true && lastChild) {
-      messageContainer.lastChild.scrollIntoView({ block: "end" });
+      lastChild.scrollIntoView({ block: "end" });
 
       setJustLoaded(false);
     } else if (lastChild) {
-      messageContainer.lastChild.scrollIntoView({
+      lastChild.scrollIntoView({
         behavior: "smooth",
         block: "end",
       });
@@ -53,7 +69,13 @@ const handleScroll = ({ scrollRef, setJustLoaded, justLoaded }) => {
   }
 };
 
-const leaveChat = async ({ navigate, chatId }) => {
+const leaveChat = async ({
+  navigate,
+  chatId,
+}: {
+  navigate: Function;
+  chatId: string;
+}) => {
   try {
     const res = await fetch(`/api/leave-chat/${chatId}`, {
       method: "DELETE",
@@ -69,7 +91,19 @@ const leaveChat = async ({ navigate, chatId }) => {
   }
 };
 
-const sendMessage = ({ socket, chatId, userId, input, setInput }) => {
+const sendMessage = ({
+  socket,
+  chatId,
+  userId,
+  input,
+  setInput,
+}: {
+  socket: Socket;
+  chatId: string;
+  userId: string;
+  input: string;
+  setInput: Function;
+}) => {
   if (input === "") return;
 
   const message = {

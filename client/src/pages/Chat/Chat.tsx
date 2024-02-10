@@ -1,8 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../reduxHooks";
+import { Socket } from "socket.io-client";
 
 import MessageCard from "../../components/MessageCard/MessageCard";
+
+import { MessageState } from "./TypesChat";
 
 import styles from "./Chat.module.css";
 
@@ -18,11 +21,6 @@ function Chat() {
   const [loading, setLoading] = useState(true);
   const [justLoaded, setJustLoaded] = useState(true);
 
-  type Message = [
-    { name: string; profileImg: string },
-    { text: string; uId: string }
-  ];
-  type MessageState = Message[];
   const [messages, setMessages] = useState<MessageState>([]);
 
   type Participant = { firstName: string; uId: string };
@@ -30,22 +28,24 @@ function Chat() {
   const [participants, setParticipants] = useState<ParticipantState>([]);
 
   const [input, setInput] = useState("");
-  const [socket, setSocket] = useState({});
+  const [socket, setSocket] = useState<Socket | null>(null);
 
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<HTMLElement>(null);
 
   const chatId = useParams().id;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    return initializeSocket({
-      setSocket,
-      setMessages,
-      setParticipants,
-      setLoading,
-      chatId,
-    });
+    if (chatId) {
+      return initializeSocket({
+        setSocket,
+        setMessages,
+        setParticipants,
+        setLoading,
+        chatId,
+      });
+    }
   }, [user]);
 
   useEffect(() => {
@@ -58,11 +58,15 @@ function Chat() {
 
   const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessage({ socket, chatId, userId: user.uId, input, setInput });
+    if (socket && chatId) {
+      sendMessage({ socket, chatId, userId: user.uId, input, setInput });
+    }
   };
 
   const handleLeaveChat = () => {
-    leaveChat({ chatId, navigate });
+    if (chatId) {
+      leaveChat({ chatId, navigate });
+    }
   };
 
   const displayMessages = messages.map((message) => {
