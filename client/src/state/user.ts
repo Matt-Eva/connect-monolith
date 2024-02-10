@@ -27,7 +27,7 @@ export const userSlice = createSlice({
   },
   reducers: {
     createUser: (userState, action) => {
-      userState.value = action.payload;
+      userState.value = { ...action.payload, authenticated: true };
     },
     destroyUser: (userState) => {
       userState.value = initialUserState;
