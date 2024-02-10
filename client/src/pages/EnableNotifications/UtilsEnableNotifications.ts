@@ -1,7 +1,7 @@
 const publicVapidKey =
   "BMZvid0dkRQW8pkamKz_q6KnxlxTo-QpyUUpRwNk6JS3zLpfIMyd3Lm_KRkVZSn1E4q1CwjjZtRtiTAdS6siXUc";
 
-const postSubscription = async (subscription) => {
+const postSubscription = async (subscription: PushSubscription) => {
   try {
     const response = await fetch("/api/notification-subscription", {
       method: "POST",
@@ -47,13 +47,15 @@ const enableSubscription = async () => {
 
       const ready = await navigator.serviceWorker.ready;
 
-      ready.active.postMessage({
-        type: "focusState",
-        isFocused: true,
-      });
+      if (ready.active) {
+        ready.active.postMessage({
+          type: "focusState",
+          isFocused: true,
+        });
+      }
 
       document.addEventListener("visibilitychange", async () => {
-        if (!document.hidden) {
+        if (!document.hidden && ready.active) {
           ready.active.postMessage({
             type: "focusState",
             isFocused: true,
@@ -63,7 +65,7 @@ const enableSubscription = async () => {
           for (let i = 0; i < notifications.length; i += 1) {
             notifications[i].close();
           }
-        } else {
+        } else if (ready.active) {
           ready.active.postMessage({
             type: "focusState",
             isFocused: false,

@@ -5,6 +5,13 @@ const getMe = async ({
   setLoading,
   setOfflineDisplay,
   destroyUser,
+}: {
+  navigate: Function;
+  dispatch: Function;
+  createUser: Function;
+  setLoading: Function;
+  setOfflineDisplay: Function;
+  destroyUser: Function;
 }) => {
   try {
     const res = await fetch("/api/me");
