@@ -1,20 +1,25 @@
 "use strict";
-const { server, app } = require("./config/appConfig.js");
-const { io, handleConnection } = require("./config/socketIoConfig.js");
-const neoDriver = require("./config/neo4jConfig.js");
-const path = require("path");
-server.listen(process.env.PORT, () => {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const appConfig_1 = require("./config/appConfig");
+const socketIoConfig_1 = require("./config/socketIoConfig");
+const neo4jConfig_1 = __importDefault(require("./config/neo4jConfig"));
+const path_1 = __importDefault(require("path"));
+console.log("change");
+appConfig_1.server.listen(process.env.PORT, () => {
     console.log(`Server running on ${process.env.PORT}`);
 });
-io.on("connection", handleConnection);
-app.post("/api/notification-subscription", async (req, res) => {
+socketIoConfig_1.io.on("connection", socketIoConfig_1.handleConnection);
+appConfig_1.app.post("/api/notification-subscription", async (req, res) => {
     if (!req.session.user)
         return res.status(401).send({ message: "unauthorized" });
     const subscription = req.body.subscription;
     const user = req.session.user;
     const userId = user.uId;
     if (subscription) {
-        const session = neoDriver.session();
+        const session = neo4jConfig_1.default.session();
         try {
             const query = `
         MATCH (u:User {uId: $userId})
@@ -47,6 +52,6 @@ app.post("/api/notification-subscription", async (req, res) => {
         }
     }
 });
-app.get("*", (req, res) => {
-    return res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
+appConfig_1.app.get("*", (req, res) => {
+    return res.sendFile(path_1.default.resolve(__dirname, "../client/dist/index.html"));
 });

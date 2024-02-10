@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.handleConnection = exports.io = void 0;
 const socket_io_1 = require("socket.io");
 const sessionConfig_js_1 = __importDefault(require("./sessionConfig.js"));
 const appConfig_js_1 = require("./appConfig.js");
@@ -12,7 +13,7 @@ const uuid_1 = require("uuid");
 const uuid = uuid_1.v4;
 let io;
 if (process.env.NODE_ENV === "development") {
-    io = new socket_io_1.Server(appConfig_js_1.server, {
+    exports.io = io = new socket_io_1.Server(appConfig_js_1.server, {
         cors: {
             origin: process.env.FRONTEND_URL,
             credentials: true,
@@ -20,7 +21,7 @@ if (process.env.NODE_ENV === "development") {
     });
 }
 else {
-    io = new socket_io_1.Server(appConfig_js_1.server);
+    exports.io = io = new socket_io_1.Server(appConfig_js_1.server);
 }
 io.engine.use(sessionConfig_js_1.default);
 const loadChat = async ({ socket, chatId, userId, }) => {
@@ -178,7 +179,4 @@ const handleConnection = async (socket) => {
         handleMessage({ message, chatId, userId });
     });
 };
-module.exports = {
-    io,
-    handleConnection,
-};
+exports.handleConnection = handleConnection;
