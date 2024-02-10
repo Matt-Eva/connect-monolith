@@ -1,6 +1,14 @@
 import styles from "./ParticipantCard.module.css";
 
-function ParticipantCard({ name, uId, removeParticipant }) {
+function ParticipantCard({
+  name,
+  uId,
+  removeParticipant,
+}: {
+  name: string;
+  uId: string;
+  removeParticipant: Function;
+}) {
   return (
     <div className={styles.participantCard}>
       <span key={uId} className={styles.participant}>
