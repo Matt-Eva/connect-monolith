@@ -1,10 +1,11 @@
-const argon2 = require("argon2");
-const neoDriver = require("../config/neo4jConfig.js");
-const { v4 } = require("uuid");
+import argon2 from "argon2";
+import neoDriver from "../config/neo4jConfig.js";
+import { Request, Response } from "express";
+import { v4 } from "uuid";
 const uuid = v4;
 
 // loads user for profile page
-exports.getUser = async (req, res) => {
+exports.getUser = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const selfId = req.session.user.uId;
@@ -44,7 +45,7 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.createUser = async (req, res) => {
+exports.createUser = async (req: Request, res: Response) => {
   const session = neoDriver.session();
 
   try {
@@ -102,7 +103,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const selfId = req.session.user.uId;
@@ -139,7 +140,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.updatePassword = async (req, res) => {
+exports.updatePassword = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const selfId = req.session.user.uId;
@@ -191,7 +192,7 @@ exports.updatePassword = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const selfId = req.session.user.uId;
