@@ -1,8 +1,8 @@
-const express = require("express");
-const path = require("path");
-const http = require("http");
+import express from "express";
+import path from "path";
+import http from "http";
+import router from "../router";
 
-const router = require("../router.js");
 const sessionMiddleware = require("./sessionConfig.js");
 
 const app = express();
@@ -20,4 +20,5 @@ const server = http.createServer(app);
 module.exports = {
   server,
   app,
+  express,
 };

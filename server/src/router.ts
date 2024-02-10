@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
 const authController = require("./controllers/authController.js");
@@ -53,4 +53,4 @@ router.get("/blocked-users", blockedUserController.loadBlockedUsers);
 
 router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
 
-module.exports = router;
+export default router;
