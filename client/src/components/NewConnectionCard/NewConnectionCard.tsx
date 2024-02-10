@@ -3,11 +3,19 @@ import { Link } from "react-router-dom";
 
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
 
+import { SearchResult } from "../../types/userSearch";
+
 import styles from "./NewConnectionCard.module.css";
 
 import { addConnection, acceptInvitation } from "./UtilsNewConnectionCard";
 
-function NewConnectionCard({ name, uId, pending, invited, profileImg }) {
+function NewConnectionCard({
+  name,
+  uId,
+  pending,
+  invited,
+  profileImg,
+}: SearchResult) {
   const [pendingInvite, setPendingInvite] = useState(pending);
   const [connected, setConnected] = useState(false);
 
@@ -21,6 +29,7 @@ function NewConnectionCard({ name, uId, pending, invited, profileImg }) {
 
   const iconUser = [
     {
+      firstName: name,
       name,
       profileImg,
       uId,

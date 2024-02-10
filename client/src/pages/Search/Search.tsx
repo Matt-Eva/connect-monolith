@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import NewConnectionCard from "../../components/NewConnectionCard/NewConnectionCard";
 
+import { SearchResult } from "../../types/userSearch";
+
 import styles from "./Search.module.css";
 
 import { search } from "./UtilsSearch";
@@ -9,14 +11,7 @@ import { search } from "./UtilsSearch";
 function Search() {
   const [searchInput, setSearchInput] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
-  interface SearchResult {
-    uId: string;
-    name: string;
-    firstName: string;
-    profileImg: string;
-    pending: boolean;
-    invited: boolean;
-  }
+
   type SearchResults = SearchResult[];
   const [searchResults, setSearchResults] = useState<SearchResults>([]);
 

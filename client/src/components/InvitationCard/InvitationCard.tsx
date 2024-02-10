@@ -35,6 +35,7 @@ function InvitationCard({
 
   const iconUser = [
     {
+      firstName: name,
       name,
       profileImg,
       uId,
