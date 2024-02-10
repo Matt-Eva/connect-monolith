@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
+
+import { ConnectionArray } from "../../types/connection";
 import styles from "./ChatCard.module.css";
 
-function ChatCard({ chatId, users }: { chatId: string }) {
+function ChatCard({
+  chatId,
+  users,
+}: {
+  chatId: string;
+  users: ConnectionArray;
+}) {
   const [isTruncated, setIsTruncated] = useState(true);
 
   console.log(users);
@@ -17,6 +26,7 @@ function ChatCard({ chatId, users }: { chatId: string }) {
       name: users[i].name,
       profileImg: users[i].profileImg,
       uId: users[i].uId,
+      firstName: users[i].firstName,
     });
   }
 
