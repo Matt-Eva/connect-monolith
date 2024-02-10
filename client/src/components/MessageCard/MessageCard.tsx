@@ -4,13 +4,11 @@ import styles from "./MessageCard.module.css";
 
 function MessageCard({
   name,
-  firstName,
   profileImg,
   text,
   uId,
 }: {
   name: string;
-  firstName: string;
   profileImg: string;
   text: string;
   uId: string;
@@ -18,7 +16,7 @@ function MessageCard({
   return (
     <article className={styles.messageCard}>
       <div className={styles.imageContainer}>
-        <CardImageIcon users={[{ name, profileImg, uId, firstName }]} />
+        <CardImageIcon users={[{ name, profileImg, uId }]} />
       </div>
       <span>{name}</span>
       <p className={styles.messageContent}>{text}</p>

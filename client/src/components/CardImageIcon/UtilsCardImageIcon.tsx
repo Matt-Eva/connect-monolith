@@ -1,8 +1,8 @@
-import { ConnectionArray } from "../../types/connection";
+import { CardImageIconUserArray } from "./TypesCardImageIcon";
 
 import styles from "./CardImageIcon.module.css";
 
-const renderImages = ({ users }: { users: ConnectionArray }) => {
+const renderImages = ({ users }: { users: CardImageIconUserArray }) => {
   const length: number = users.length;
 
   let imageClass = "";
