@@ -1,7 +1,9 @@
-const neoDriver = require("../config/neo4jConfig.js");
-const argon2 = require("argon2");
+import neoDriver from "../config/neo4jConfig.js";
+import argon2 from "argon2";
 
-exports.login = async (req, res) => {
+import { Request, Response } from "express";
+
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const session = neoDriver.session();
 
@@ -42,7 +44,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
+export const logout = async (req: Request, res: Response) => {
   console.log("logging out");
 
   req.session.destroy((err) => {
@@ -55,7 +57,7 @@ exports.logout = async (req, res) => {
   });
 };
 
-exports.me = (req, res) => {
+export const me = (req: Request, res: Response) => {
   if (req.session.user) {
     res.status(200).send(req.session.user);
   } else {

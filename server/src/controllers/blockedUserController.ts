@@ -1,6 +1,7 @@
-const neoDriver = require("../config/neo4jConfig.js");
+import neoDriver from "../config/neo4jConfig.js";
+import { Request, Response } from "express";
 
-exports.blockUser = async (req, res) => {
+exports.blockUser = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
@@ -34,7 +35,7 @@ exports.blockUser = async (req, res) => {
   }
 };
 
-exports.loadBlockedUsers = async (req, res) => {
+exports.loadBlockedUsers = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
@@ -65,7 +66,7 @@ exports.loadBlockedUsers = async (req, res) => {
   }
 };
 
-exports.unblockUser = async (req, res) => {
+exports.unblockUser = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
