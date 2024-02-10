@@ -1,6 +1,7 @@
-const neoDriver = require("../../config/neo4jConfig.js");
+import neoDriver from "../config/neo4jConfig";
+import { Request, Response } from "express";
 
-exports.getConnections = async (req, res) => {
+exports.getConnections = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const user = req.session.user;
@@ -37,7 +38,7 @@ exports.getConnections = async (req, res) => {
   }
 };
 
-exports.search = async (req, res) => {
+exports.search = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const name = req.params.name;
@@ -87,7 +88,7 @@ exports.search = async (req, res) => {
   }
 };
 
-exports.deleteConnection = async (req, res) => {
+exports.deleteConnection = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
