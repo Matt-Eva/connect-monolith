@@ -37,21 +37,21 @@ function EditAccountForm() {
   };
   const [passwordState, setPasswordState] = useState(initialPasswordState);
 
-  const handleInfoChange = (e) => {
+  const handleInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({
       ...formState,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordState({
       ...passwordState,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleUpdateAccount = (e) => {
+  const handleUpdateAccount = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateAccount({
       formState,
@@ -61,7 +61,7 @@ function EditAccountForm() {
     });
   };
 
-  const handleUpdatePassword = (e) => {
+  const handleUpdatePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updatePassword({ setPasswordState, passwordState, initialPasswordState });
   };
@@ -93,16 +93,12 @@ function EditAccountForm() {
             Cancel
           </button>
         )}
-        <form
-          onSubmit={handleUpdateAccount}
-          onChange={handleInfoChange}
-          disabled={true}
-          className={styles.form}
-        >
+        <form onSubmit={handleUpdateAccount} className={styles.form}>
           <label htmlFor="firstName">First Name</label>
           <input
             type="text"
             name="firstName"
+            onChange={handleInfoChange}
             value={formState.firstName}
             disabled={disableChangeInfo}
           />
@@ -110,6 +106,7 @@ function EditAccountForm() {
           <input
             type="text"
             name="lastName"
+            onChange={handleInfoChange}
             value={formState.lastName}
             disabled={disableChangeInfo}
           />
@@ -117,6 +114,7 @@ function EditAccountForm() {
           <input
             type="text"
             name="email"
+            onChange={handleInfoChange}
             value={formState.email}
             disabled={disableChangeInfo}
           />
@@ -147,15 +145,12 @@ function EditAccountForm() {
             Cancel
           </button>
         )}
-        <form
-          onSubmit={handleUpdatePassword}
-          onChange={handlePasswordChange}
-          className={styles.form}
-        >
+        <form onSubmit={handleUpdatePassword} className={styles.form}>
           <label htmlFor="currentPassword">Current Password</label>
           <input
             type="password"
             name="currentPassword"
+            onChange={handlePasswordChange}
             value={passwordState.currentPassword}
             disabled={disableChangePassword}
           />
@@ -163,6 +158,7 @@ function EditAccountForm() {
           <input
             type="password"
             name="newPassword"
+            onChange={handlePasswordChange}
             value={passwordState.newPassword}
             disabled={disableChangePassword}
           />
@@ -170,6 +166,7 @@ function EditAccountForm() {
           <input
             type="password"
             name="confirmPassword"
+            onChange={handlePasswordChange}
             value={passwordState.confirmPassword}
             disabled={disableChangePassword}
           />

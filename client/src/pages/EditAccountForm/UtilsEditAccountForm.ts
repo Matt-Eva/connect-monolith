@@ -3,6 +3,15 @@ const updateAccount = async ({
   setInitialChangeFormState,
   setDisableChangeInfo,
   formState,
+}: {
+  setFormState: Function;
+  setInitialChangeFormState: Function;
+  setDisableChangeInfo: Function;
+  formState: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
 }) => {
   try {
     const res = await fetch("/api/my-account", {
@@ -26,10 +35,19 @@ const updateAccount = async ({
   }
 };
 
+interface PasswordState {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 const updatePassword = async ({
   setPasswordState,
   passwordState,
   initialPasswordState,
+}: {
+  setPasswordState: Function;
+  passwordState: PasswordState;
+  initialPasswordState: PasswordState;
 }) => {
   if (passwordState.newPassword !== passwordState.confirmPassword) {
     alert("Password confirmation must match new password.");
@@ -59,7 +77,15 @@ const updatePassword = async ({
   }
 };
 
-const deleteAccount = async ({ destroyUser, dispatch, navigate }) => {
+const deleteAccount = async ({
+  destroyUser,
+  dispatch,
+  navigate,
+}: {
+  destroyUser: Function;
+  dispatch: Function;
+  navigate: Function;
+}) => {
   try {
     const res = await fetch("/api/my-account", {
       method: "DELETE",
