@@ -1,6 +1,7 @@
-const neoDriver = require("../config/neo4jConfig.js");
+import neoDriver from "../config/neo4jConfig.js";
+import { Request, Response } from "express";
 
-exports.getInvitations = async (req, res) => {
+exports.getInvitations = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
@@ -34,7 +35,7 @@ exports.getInvitations = async (req, res) => {
   }
 };
 
-exports.createInvitation = async (req, res) => {
+exports.createInvitation = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const { connectionId } = req.body;
@@ -60,7 +61,7 @@ exports.createInvitation = async (req, res) => {
   }
 };
 
-exports.acceptInvitation = async (req, res) => {
+exports.acceptInvitation = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
@@ -93,7 +94,7 @@ exports.acceptInvitation = async (req, res) => {
   }
 };
 
-exports.ignoreInvitation = async (req, res) => {
+exports.ignoreInvitation = async (req: Request, res: Response) => {
   if (!req.session.user)
     return res.status(401).send({ message: "unauthorized" });
 
