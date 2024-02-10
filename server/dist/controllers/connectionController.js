@@ -1,10 +1,14 @@
 "use strict";
-const neoDriver = require("../../config/neo4jConfig.js");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const neo4jConfig_1 = __importDefault(require("../config/neo4jConfig"));
 exports.getConnections = async (req, res) => {
     if (!req.session.user)
         return res.status(401).send({ error: "unauthorized" });
     const user = req.session.user;
-    const session = neoDriver.session();
+    const session = neo4jConfig_1.default.session();
     try {
         const query = `
               MATCH (user:User {uId: $userId}) - [:CONNECTED] - (c:User)
@@ -36,7 +40,7 @@ exports.search = async (req, res) => {
         return res.status(401).send({ error: "unauthorized" });
     const name = req.params.name;
     const userId = req.session.user.uId;
-    const session = neoDriver.session();
+    const session = neo4jConfig_1.default.session();
     try {
         const query = `
               MATCH (u:User {uId: $userId}) - [:CONNECTED] - (:User) - [:CONNECTED] -(c:User)
@@ -82,7 +86,7 @@ exports.deleteConnection = async (req, res) => {
         return res.status(401).send({ message: "unauthorized" });
     const connectionId = req.params.connectionId;
     const selfId = req.session.user.uId;
-    const session = neoDriver.session();
+    const session = neo4jConfig_1.default.session();
     try {
         const query = `
               MATCH (s:User {uId: $selfId}) - [c:CONNECTED] - (u:User {uId: $connectionId})

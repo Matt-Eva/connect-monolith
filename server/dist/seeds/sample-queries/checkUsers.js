@@ -1,7 +1,8 @@
 "use strict";
-const { driver, closeDriver } = require("../seedConfig.js");
+Object.defineProperty(exports, "__esModule", { value: true });
+const seedConfig_js_1 = require("../seedConfig.js");
 const checkUsers = async () => {
-    const session = driver.session();
+    const session = seedConfig_js_1.driver.session();
     try {
         const checkUsers = "MATCH (u:User) RETURN u AS user";
         const results = await session.executeRead(async (tx) => {
@@ -15,7 +16,7 @@ const checkUsers = async () => {
         console.error(error);
     }
     finally {
-        closeDriver();
+        (0, seedConfig_js_1.closeDriver)();
     }
 };
 checkUsers();

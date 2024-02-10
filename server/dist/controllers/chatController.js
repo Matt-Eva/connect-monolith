@@ -1,11 +1,15 @@
 "use strict";
-const neoDriver = require("../config/neo4jConfig.js");
-const { v4 } = require("uuid");
-const uuid = v4;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const neo4jConfig_js_1 = __importDefault(require("../config/neo4jConfig.js"));
+const uuid_1 = require("uuid");
+const uuid = uuid_1.v4;
 exports.getChats = async (req, res) => {
     if (!req.session.user)
         return res.status(401).send({ error: "unauthorized" });
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const userId = req.session.user.uId;
         const query = "MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId";
@@ -36,8 +40,9 @@ exports.createChat = async (req, res) => {
     if (!req.session.user)
         return res.status(401).send({ error: "unauthorized" });
     const participants = [...req.body.participants];
+    const userId = req.session.user.uId;
     const uIds = participants.map((participant) => participant.uId);
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const result = await session.executeWrite(async (tx) => {
             const existingChat = await tx.run(`
@@ -48,7 +53,7 @@ exports.createChat = async (req, res) => {
                   WITH chat, count(p) as count
                   WHERE count = size($uIds)
                   RETURN chat
-              `, { uIds: uIds, userId: req.session.user.uId });
+              `, { uIds, userId });
             if (existingChat.records.length !== 0) {
                 return existingChat.records[0].get("chat").properties;
             }
@@ -60,7 +65,7 @@ exports.createChat = async (req, res) => {
                   MATCH (u:User {uId: participantId})
                   CREATE (u) - [:PARTICIPATING] -> (c)
                   RETURN c AS chat
-              `, { uIds: uIds, userId: req.session.user.uId, chatId: uuid() });
+              `, { uIds, userId, chatId: uuid() });
             return newChat.records[0].get("chat").properties;
         });
         res.status(200).send(result);
@@ -78,7 +83,7 @@ exports.leaveChat = async (req, res) => {
         return res.status(401).send({ error: "unauthorized" });
     const selfId = req.session.user.uId;
     const chatId = req.params.chatId;
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const query = `
               MATCH (u:User {uId: $selfId}) - [p:PARTICIPATING] -> (c:Chat {uId: $chatId})

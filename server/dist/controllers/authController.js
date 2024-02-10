@@ -1,16 +1,21 @@
 "use strict";
-const neoDriver = require("../config/neo4jConfig.js");
-const argon2 = require("argon2");
-exports.login = async (req, res) => {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.me = exports.logout = exports.login = void 0;
+const neo4jConfig_js_1 = __importDefault(require("../config/neo4jConfig.js"));
+const argon2_1 = __importDefault(require("argon2"));
+const login = async (req, res) => {
     const { email, password } = req.body;
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const query = "MATCH (user:User {email: $email}) RETURN user";
         const result = await session.executeRead(async (tx) => tx.run(query, { email: email }));
         if (result.records.length === 0)
             return res.status(404).send({ message: "user not found" });
         const user = result.records[0].get("user").properties;
-        const authenticated = await argon2.verify(user.password, password);
+        const authenticated = await argon2_1.default.verify(user.password, password);
         if (authenticated) {
             req.session.user = {
                 name: user.name,
@@ -34,7 +39,8 @@ exports.login = async (req, res) => {
         await session.close();
     }
 };
-exports.logout = async (req, res) => {
+exports.login = login;
+const logout = async (req, res) => {
     console.log("logging out");
     req.session.destroy((err) => {
         console.log("destroying session");
@@ -46,7 +52,8 @@ exports.logout = async (req, res) => {
         }
     });
 };
-exports.me = (req, res) => {
+exports.logout = logout;
+const me = (req, res) => {
     if (req.session.user) {
         res.status(200).send(req.session.user);
     }
@@ -54,3 +61,4 @@ exports.me = (req, res) => {
         res.status(401).send({ error: "unauthorized" });
     }
 };
+exports.me = me;

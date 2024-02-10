@@ -1,8 +1,10 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createChats = void 0;
 // This file contains functions that seed Chat nodes
-const { uuid } = require("../seedConfig.js");
+const seedConfig_1 = require("../seedConfig");
 const createChats = async (driver, users) => {
-    const session = await driver.session();
+    const session = driver.session();
     for (let i = 0; i < 1; i++) {
         const user = users[i];
         try {
@@ -29,7 +31,7 @@ const createChats = async (driver, users) => {
                     MATCH (u:User {uId: connection.uId})
                     MERGE (u) - [p:PARTICIPATING] -> (c)
                     RETURN c AS chat, p AS participating, u AS user
-                `, { uId: uuid(), connections: connections });
+                `, { uId: (0, seedConfig_1.uuid)(), connections: connections });
                 return newChat;
             });
         }
@@ -39,6 +41,4 @@ const createChats = async (driver, users) => {
     }
     await session.close();
 };
-module.exports = {
-    createChats,
-};
+exports.createChats = createChats;

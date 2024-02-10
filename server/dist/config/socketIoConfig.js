@@ -1,14 +1,18 @@
 "use strict";
-const { Server } = require("socket.io");
-const sessionMiddleware = require("./sessionConfig.js");
-const { server } = require("./appConfig.js");
-const neoDriver = require("./neo4jConfig.js");
-const webPush = require("./webPushConfig.js");
-const { v4 } = require("uuid");
-const uuid = v4;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const socket_io_1 = require("socket.io");
+const sessionConfig_js_1 = __importDefault(require("./sessionConfig.js"));
+const appConfig_js_1 = require("./appConfig.js");
+const neo4jConfig_js_1 = __importDefault(require("./neo4jConfig.js"));
+const webPushConfig_js_1 = __importDefault(require("./webPushConfig.js"));
+const uuid_1 = require("uuid");
+const uuid = uuid_1.v4;
 let io;
 if (process.env.NODE_ENV === "development") {
-    io = new Server(server, {
+    io = new socket_io_1.Server(appConfig_js_1.server, {
         cors: {
             origin: process.env.FRONTEND_URL,
             credentials: true,
@@ -16,11 +20,11 @@ if (process.env.NODE_ENV === "development") {
     });
 }
 else {
-    io = new Server(server);
+    io = new socket_io_1.Server(appConfig_js_1.server);
 }
-io.engine.use(sessionMiddleware);
-const loadChat = async ({ socket, chatId, userId }) => {
-    const session = neoDriver.session();
+io.engine.use(sessionConfig_js_1.default);
+const loadChat = async ({ socket, chatId, userId, }) => {
+    const session = neo4jConfig_js_1.default.session();
     try {
         const messageQuery = `
             MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
@@ -60,8 +64,8 @@ const loadChat = async ({ socket, chatId, userId }) => {
         await session.close();
     }
 };
-const createMessage = async ({ message, chatId, userId }) => {
-    const session = neoDriver.session();
+const createMessage = async ({ message, chatId, }) => {
+    const session = neo4jConfig_js_1.default.session();
     try {
         const messageQuery = `
             MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
@@ -89,14 +93,15 @@ const createMessage = async ({ message, chatId, userId }) => {
         return newMessage;
     }
     catch (error) {
+        console.error(error);
         throw new Error(error);
     }
     finally {
         await session.close();
     }
 };
-const handlePushNotifications = async ({ message, chatId, userId }) => {
-    const session = neoDriver.session();
+const handlePushNotifications = async ({ message, chatId, userId, }) => {
+    const session = neo4jConfig_js_1.default.session();
     try {
         const subscriptionQuery = `
       MATCH (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
@@ -123,11 +128,11 @@ const handlePushNotifications = async ({ message, chatId, userId }) => {
                 body: message[1].text,
             });
             try {
-                await webPush.sendNotification(subscription, payload);
+                await webPushConfig_js_1.default.sendNotification(subscription, payload);
             }
             catch (error) {
                 if (error.statusCode === 410) {
-                    const session = neoDriver.session();
+                    const session = neo4jConfig_js_1.default.session();
                     const userId = record.get("uId");
                     const removeSubscriptionQuery = `
             MATCH (u:User {uId: $userId})
@@ -144,16 +149,16 @@ const handlePushNotifications = async ({ message, chatId, userId }) => {
         });
     }
     catch (error) {
-        throw new Error(error);
+        console.error(error);
     }
     finally {
         await session.close();
     }
 };
-const handleMessage = async ({ message, chatId, userId }) => {
-    const session = neoDriver.session();
+const handleMessage = async ({ message, chatId, userId, }) => {
+    const session = neo4jConfig_js_1.default.session();
     try {
-        const newMessage = await createMessage({ message, chatId, userId });
+        const newMessage = await createMessage({ message, chatId });
         await handlePushNotifications({ message: newMessage, chatId, userId });
     }
     catch (e) {
@@ -172,10 +177,6 @@ const handleConnection = async (socket) => {
     socket.on("message", async (message) => {
         handleMessage({ message, chatId, userId });
     });
-    // socket.on("disconnecting", () =>{
-    // })
-    // socket.on("disconnect", (reason) =>{
-    // })
 };
 module.exports = {
     io,

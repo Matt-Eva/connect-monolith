@@ -1,7 +1,12 @@
 "use strict";
-const { uuid } = require("../seedConfig.js");
-const { faker } = require("@faker-js/faker");
-const argon2 = require("argon2");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createUsers = void 0;
+const seedConfig_js_1 = require("../seedConfig.js");
+const faker_1 = require("@faker-js/faker");
+const argon2_1 = __importDefault(require("argon2"));
 const createUsersWithConnections = async (session, user1, user2) => {
     try {
         // const createConnected = `
@@ -10,8 +15,8 @@ const createUsersWithConnections = async (session, user1, user2) => {
         //   MERGE (u1) - [c:CONNECTED] - (u2)
         //   RETURN u1, u2, c
         // `
-        const user1Password = await argon2.hash(user1.password);
-        const user2Password = await argon2.hash(user2.password);
+        const user1Password = await argon2_1.default.hash(user1.password);
+        const user2Password = await argon2_1.default.hash(user2.password);
         const result = await session.executeWrite(async (tx) => {
             let newUser1 = await tx.run(`
         MATCH (u:User {email: $email}) RETURN u
@@ -44,125 +49,125 @@ const createUsersWithConnections = async (session, user1, user2) => {
 const createUserArray = () => {
     const users = [
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             firstName: "Matt",
             lastName: "French",
             name: "Matt French",
             email: "matt@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             firstName: "Wills",
             lastName: "Wolfen",
             name: "Wills Woflen",
             email: "wills@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             firstName: "Jay",
             lastName: "Jubilee",
             name: "Jay Jubilee",
             email: "jay@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             firstName: "Jay",
             lastName: "Heebles",
             name: "Jay Heebles",
             email: "jay1@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             firstName: "Tom",
             lastName: "Titanium",
             name: "Tom Titanium",
             email: "tom@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Nick Nonifont",
             firstName: "Nick",
             lastName: "Nonifont",
             email: "nick@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Jay Jangles",
             firstName: "Jay",
             lastName: "Jangles",
             email: "jay2@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Mustafa Forthworth",
             firstName: "Mustafa",
             lastName: "Forthworth",
             email: "mustafa@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Jim James",
             firstName: "Jim",
             lastName: "James",
             email: "jim@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Liz Johnson",
             firstName: "Liz",
             lastName: "Johnson",
             email: "liz@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Laura Smalls",
             firstName: "Laura",
             lastName: "Smalls",
             email: "laura@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
         {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: "Sam Singleton",
             firstName: "Sam",
             lastName: "Singleton",
             email: "sam@email.com",
             password: "test",
-            profileImg: faker.image.avatar(),
+            profileImg: faker_1.faker.image.avatar(),
         },
     ];
     for (let i = 0; i < 20; i++) {
-        const firstName = faker.person.firstName();
-        const lastName = faker.person.lastName();
+        const firstName = faker_1.faker.person.firstName();
+        const lastName = faker_1.faker.person.lastName();
         const user = {
-            uId: uuid(),
+            uId: (0, seedConfig_js_1.uuid)(),
             name: `${firstName} ${lastName}`,
             firstName: firstName,
             lastName: lastName,
-            profileImg: faker.internet.avatar(),
-            password: faker.word.sample(),
-            email: faker.internet.email(),
+            profileImg: faker_1.faker.internet.avatar(),
+            password: faker_1.faker.word.sample(),
+            email: faker_1.faker.internet.email(),
         };
         users.push(user);
     }
@@ -195,6 +200,4 @@ const createUsers = async (driver) => {
     await session.close();
     return users;
 };
-module.exports = {
-    createUsers,
-};
+exports.createUsers = createUsers;

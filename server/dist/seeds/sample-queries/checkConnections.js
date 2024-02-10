@@ -1,8 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // this file checks for the successful creation / existence of [:CONNECTED] relationships
-const { driver, closeDriver } = require("../seedConfig.js");
+const seedConfig_js_1 = require("../seedConfig.js");
 const checkConnections = async () => {
-    const session = driver.session();
+    const session = seedConfig_js_1.driver.session();
     try {
         const checkConnected = "MATCH (u1:User {name: 'Tom'}) - [:CONNECTED] - (u2:User) RETURN u1, u2";
         const results = await session.executeRead(async (tx) => {
@@ -16,7 +17,7 @@ const checkConnections = async () => {
         console.error(error);
     }
     finally {
-        closeDriver();
+        (0, seedConfig_js_1.closeDriver)();
     }
 };
 checkConnections();

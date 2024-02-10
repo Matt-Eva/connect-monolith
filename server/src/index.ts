@@ -1,7 +1,7 @@
-const { server, app } = require("./config/appConfig.js");
-const { io, handleConnection } = require("./config/socketIoConfig.js");
-const neoDriver = require("./config/neo4jConfig.js");
-const path = require("path");
+import { server, app } from "./config/appConfig";
+import { io, handleConnection } from "./config/socketIoConfig";
+import neoDriver from "./config/neo4jConfig";
+import path from "path";
 
 server.listen(process.env.PORT, () => {
   console.log(`Server running on ${process.env.PORT}`);

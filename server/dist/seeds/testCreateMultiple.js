@@ -1,10 +1,11 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // this file is for testing the dynamic creation of a chat based on the number of users input
-const { uuid } = require("./seedConfig.js");
+const seedConfig_js_1 = require("./seedConfig.js");
 const createMultiples = async (driver, users) => {
     const session = await driver.session();
     try {
-        const chat = { id: uuid() };
+        const chat = { id: (0, seedConfig_js_1.uuid)() };
         const query = `
             CREATE (c:Chat {id: $chatId})
             WITH c

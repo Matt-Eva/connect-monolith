@@ -1,6 +1,8 @@
 "use strict";
-const { uuid } = require("../seedConfig.js");
-const { faker } = require("@faker-js/faker");
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createMessages = void 0;
+const seedConfig_js_1 = require("../seedConfig.js");
+const faker_1 = require("@faker-js/faker");
 const createMessages = async (driver, users) => {
     const session = driver.session();
     for (let i = 0; i < 1; i++) {
@@ -13,7 +15,7 @@ const createMessages = async (driver, users) => {
             for (const record of chats.records) {
                 const chat = record.get("chat").properties;
                 const user = record.get("user").properties;
-                const text = faker.lorem.word();
+                const text = faker_1.faker.lorem.word();
                 const date = Date.now();
                 const result = await tx.run(`
                     MATCH (u:User {uId: $userId}), (c:Chat {uId: $chatId})
@@ -23,7 +25,7 @@ const createMessages = async (driver, users) => {
                     userId: user.uId,
                     chatId: chat.uId,
                     text: text,
-                    uId: uuid(),
+                    uId: (0, seedConfig_js_1.uuid)(),
                     date: date,
                 });
                 const message = result.records[0].get("m").properties;
@@ -34,6 +36,4 @@ const createMessages = async (driver, users) => {
     }
     await session.close();
 };
-module.exports = {
-    createMessages,
-};
+exports.createMessages = createMessages;

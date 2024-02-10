@@ -1,15 +1,19 @@
 "use strict";
-const argon2 = require("argon2");
-const neoDriver = require("../config/neo4jConfig.js");
-const { v4 } = require("uuid");
-const uuid = v4;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const argon2_1 = __importDefault(require("argon2"));
+const neo4jConfig_js_1 = __importDefault(require("../config/neo4jConfig.js"));
+const uuid_1 = require("uuid");
+const uuid = uuid_1.v4;
 // loads user for profile page
 exports.getUser = async (req, res) => {
     if (!req.session.user)
         return res.status(401).send({ error: "unauthorized" });
     const selfId = req.session.user.uId;
     const userId = req.params.id;
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const query = `
               MATCH (s:User {uId: $selfId}), (u:User {uId: $userId}) 
@@ -42,9 +46,9 @@ exports.getUser = async (req, res) => {
     }
 };
 exports.createUser = async (req, res) => {
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
-        const password = await argon2.hash(req.body.password);
+        const password = await argon2_1.default.hash(req.body.password);
         const user = await session.executeWrite(async (tx) => {
             const existingUser = await tx.run(`
                   MATCH (u:User {email: $email}) RETURN u
@@ -95,7 +99,7 @@ exports.updateUser = async (req, res) => {
         return res.status(401).send({ error: "unauthorized" });
     const selfId = req.session.user.uId;
     const newInfo = req.body.newInfo;
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const query = `
               MATCH (u:User {uId: $selfId})
@@ -128,7 +132,7 @@ exports.updatePassword = async (req, res) => {
         return res.status(401).send({ error: "unauthorized" });
     const selfId = req.session.user.uId;
     const passwordInfo = req.body.passwordInfo;
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const findQuery = `
               MATCH (u:User {uId: $selfId})
@@ -138,12 +142,12 @@ exports.updatePassword = async (req, res) => {
         if (user.records.length === 0)
             return res.status(404).send({ message: "user not found" });
         const passwordHash = user.records[0].get("password");
-        const authorized = await argon2.verify(passwordHash, passwordInfo.currentPassword);
+        const authorized = await argon2_1.default.verify(passwordHash, passwordInfo.currentPassword);
         if (!authorized)
             return res.status(401).send({
                 message: "Password entered for current password does not match current password.",
             });
-        const newPasswordHash = await argon2.hash(passwordInfo.newPassword);
+        const newPasswordHash = await argon2_1.default.hash(passwordInfo.newPassword);
         const updateQuery = `
               MATCH (u:User {uId: $selfId})
               SET u.password = $newPassword
@@ -163,7 +167,7 @@ exports.deleteUser = async (req, res) => {
     if (!req.session.user)
         return res.status(401).send({ error: "unauthorized" });
     const selfId = req.session.user.uId;
-    const session = neoDriver.session();
+    const session = neo4jConfig_js_1.default.session();
     try {
         const query = `
               MATCH (u:User {uId: $selfId})

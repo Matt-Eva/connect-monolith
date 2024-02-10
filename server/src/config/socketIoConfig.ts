@@ -281,8 +281,4 @@ const handleConnection = async (socket: any) => {
     handleMessage({ message, chatId, userId });
   });
 };
-
-module.exports = {
-  io,
-  handleConnection,
-};
+export { io, handleConnection };
