@@ -1,7 +1,9 @@
 // this file is for testing the dynamic creation of a chat based on the number of users input
-const { uuid } = require("./seedConfig.js");
+import { uuid } from "./seedConfig.js";
+import { Driver } from "neo4j-driver";
+import { User } from "./node-seeds/userSeeds.js";
 
-const createMultiples = async (driver, users) => {
+const createMultiples = async (driver: Driver, users: User[]) => {
   const session = await driver.session();
   try {
     const chat = { id: uuid() };

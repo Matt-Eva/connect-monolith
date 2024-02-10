@@ -1,7 +1,9 @@
-const { uuid } = require("../seedConfig.js");
-const { faker } = require("@faker-js/faker");
+import { uuid } from "../seedConfig.js";
+import { faker } from "@faker-js/faker";
+import { Driver } from "neo4j-driver";
+import { User } from "./userSeeds.js";
 
-const createMessages = async (driver, users) => {
+const createMessages = async (driver: Driver, users: User[]) => {
   const session = driver.session();
 
   for (let i = 0; i < 1; i++) {
@@ -48,6 +50,4 @@ const createMessages = async (driver, users) => {
   await session.close();
 };
 
-module.exports = {
-  createMessages,
-};
+export { createMessages };
