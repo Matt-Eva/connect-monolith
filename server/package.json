@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon --watch 'src/**/*.ts' --exec 'npx tsc && node -r dotenv/config dist/index.js'",
     "start": "node -r dotenv/config dist/index.js",
-    "seed": "node seeds/seeds.js"
+    "seed": "node -r dotenv/config seeds/seeds.js"
   },
   "repository": {
     "type": "git",
