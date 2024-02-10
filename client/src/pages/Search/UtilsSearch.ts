@@ -1,4 +1,12 @@
-const search = async ({ setSearchResults, searchInput, setSearchLoading }) => {
+const search = async ({
+  setSearchResults,
+  searchInput,
+  setSearchLoading,
+}: {
+  setSearchResults: Function;
+  searchInput: string;
+  setSearchLoading: Function;
+}) => {
   try {
     const res = await fetch(`/api/search-connections/${searchInput}`, {
       credentials: "include",

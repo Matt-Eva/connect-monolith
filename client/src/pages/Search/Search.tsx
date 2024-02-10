@@ -9,9 +9,18 @@ import { search } from "./UtilsSearch";
 function Search() {
   const [searchInput, setSearchInput] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
+  interface SearchResult {
+    uId: string;
+    name: string;
+    firstName: string;
+    profileImg: string;
+    pending: boolean;
+    invited: boolean;
+  }
+  type SearchResults = SearchResult[];
+  const [searchResults, setSearchResults] = useState<SearchResults>([]);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchLoading(true);
     search({ setSearchResults, searchInput, setSearchLoading });
