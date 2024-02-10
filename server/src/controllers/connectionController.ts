@@ -1,4 +1,4 @@
-const neoDriver = require("../config/neo4jConfig.js");
+const neoDriver = require("../../config/neo4jConfig.js");
 
 exports.getConnections = async (req, res) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
