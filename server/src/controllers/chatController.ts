@@ -1,8 +1,9 @@
-const neoDriver = require("../config/neo4jConfig.js");
-const { v4 } = require("uuid");
+import neoDriver from "../config/neo4jConfig.js";
+import { Request, Response } from "express";
+import { v4 } from "uuid";
 const uuid = v4;
 
-exports.getChats = async (req, res) => {
+exports.getChats = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const session = neoDriver.session();
@@ -14,7 +15,15 @@ exports.getChats = async (req, res) => {
       tx.run(query, { userId: userId }),
     );
 
-    const chatHash = {};
+    interface User {
+      firstName: string;
+      profileImg: string;
+      uId: string;
+    }
+    interface ChatHash {
+      [key: string]: User[];
+    }
+    const chatHash: ChatHash = {};
 
     for (const record of result.records) {
       const chat = record.get("chat").properties;
@@ -36,10 +45,11 @@ exports.getChats = async (req, res) => {
   }
 };
 
-exports.createChat = async (req, res) => {
+exports.createChat = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const participants = [...req.body.participants];
+  const userId = req.session.user.uId;
   const uIds = participants.map((participant) => participant.uId);
   const session = neoDriver.session();
   try {
@@ -54,7 +64,7 @@ exports.createChat = async (req, res) => {
                   WHERE count = size($uIds)
                   RETURN chat
               `,
-        { uIds: uIds, userId: req.session.user.uId },
+        { uIds, userId },
       );
 
       if (existingChat.records.length !== 0) {
@@ -71,7 +81,7 @@ exports.createChat = async (req, res) => {
                   CREATE (u) - [:PARTICIPATING] -> (c)
                   RETURN c AS chat
               `,
-        { uIds: uIds, userId: req.session.user.uId, chatId: uuid() },
+        { uIds, userId, chatId: uuid() },
       );
 
       return newChat.records[0].get("chat").properties;
@@ -86,7 +96,7 @@ exports.createChat = async (req, res) => {
   }
 };
 
-exports.leaveChat = async (req, res) => {
+exports.leaveChat = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
   const selfId = req.session.user.uId;
