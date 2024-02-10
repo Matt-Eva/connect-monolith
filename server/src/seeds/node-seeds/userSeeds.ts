@@ -1,8 +1,22 @@
-const { uuid } = require("../seedConfig.js");
-const { faker } = require("@faker-js/faker");
-const argon2 = require("argon2");
+import { uuid } from "../seedConfig.js";
+import { faker } from "@faker-js/faker";
+import argon2 from "argon2";
+import { Driver, Session } from "neo4j-driver";
 
-const createUsersWithConnections = async (session, user1, user2) => {
+export interface User {
+  uId: string;
+  firstName: string;
+  lastName: string;
+  name: string;
+  email: string;
+  password: string;
+  profileImg: string;
+}
+const createUsersWithConnections = async (
+  session: Session,
+  user1: User,
+  user2: User,
+) => {
   try {
     // const createConnected = `
     //   MERGE (u1:User {uId: $u1Id, name: $u1Name})
@@ -188,10 +202,13 @@ const createUserArray = () => {
   return users;
 };
 
-const createUsers = async (driver) => {
+const createUsers = async (driver: Driver) => {
   const session = driver.session();
   const users = createUserArray();
-  const relTracker = {};
+  interface RelTracker {
+    [key: string]: number[];
+  }
+  const relTracker: RelTracker = {};
   for (let i = 0; i < users.length; i++) {
     if (!relTracker[i]) relTracker[i] = [];
     for (let n = 1; n <= 4; n++) {
@@ -212,6 +229,4 @@ const createUsers = async (driver) => {
   return users;
 };
 
-module.exports = {
-  createUsers,
-};
+export { createUsers };

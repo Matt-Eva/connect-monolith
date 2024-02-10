@@ -1,8 +1,10 @@
 // This file contains functions that seed Chat nodes
-const { uuid } = require("../seedConfig.js");
+import { uuid } from "../seedConfig";
+import { Driver } from "neo4j-driver";
+import { User } from "./userSeeds";
 
-const createChats = async (driver, users) => {
-  const session = await driver.session();
+const createChats = async (driver: Driver, users: User[]) => {
+  const session = driver.session();
   for (let i = 0; i < 1; i++) {
     const user = users[i];
     try {
@@ -53,6 +55,4 @@ const createChats = async (driver, users) => {
   await session.close();
 };
 
-module.exports = {
-  createChats,
-};
+export { createChats };

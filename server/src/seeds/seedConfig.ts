@@ -1,20 +1,16 @@
-const dotenv = require("dotenv");
-const neo = require("neo4j-driver");
-const { v4 } = require("uuid");
+import dotenv from "dotenv";
+import neo from "neo4j-driver";
+import { v4 } from "uuid";
 const uuid = v4;
 
 dotenv.config();
 
 const { NEO_URL, NEO_USER, NEO_PASSWORD } = process.env;
 
-const driver = neo.driver(NEO_URL, neo.auth.basic(NEO_USER, NEO_PASSWORD));
+const driver = neo.driver(NEO_URL!, neo.auth.basic(NEO_USER!, NEO_PASSWORD!));
 
 const closeDriver = async () => {
   await driver.close();
 };
 
-module.exports = {
-  driver,
-  uuid,
-  closeDriver,
-};
+export { driver, uuid, closeDriver };

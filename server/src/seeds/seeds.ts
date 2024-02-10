@@ -1,8 +1,8 @@
-const { driver, closeDriver } = require("./seedConfig.js");
-const { createUsers } = require("./node-seeds/userSeeds.js");
-const { createMultiples } = require("./testCreateMultiple.js");
-const { createChats } = require("./node-seeds/chatSeeds.js");
-const { createMessages } = require("./node-seeds/messageSeeds.js");
+import { driver, closeDriver } from "./seedConfig";
+import { createUsers } from "./node-seeds/userSeeds";
+import { createMultiples } from "./testCreateMultiple";
+import { createChats } from "./node-seeds/chatSeeds";
+import { createMessages } from "./node-seeds/messageSeeds";
 
 const clearDatabase = async () => {
   console.log("clearing");
