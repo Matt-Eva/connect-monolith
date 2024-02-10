@@ -1,4 +1,21 @@
-const fetchConnections = async ({ setConnections, setLoading, dispatch }) => {
+export interface Connection {
+  firstName: string;
+  name: string;
+  uId: string;
+  profileImg: string;
+}
+
+export type ConnectionState = Connection[];
+
+const fetchConnections = async ({
+  setConnections,
+  setLoading,
+  dispatch,
+}: {
+  setConnections: Function;
+  setLoading: Function;
+  dispatch: Function;
+}) => {
   const res = await fetch("/api/my-connections", {
     credentials: "include",
   });
@@ -11,7 +28,17 @@ const fetchConnections = async ({ setConnections, setLoading, dispatch }) => {
   }
 };
 
-const createChat = async ({ participants, navigate, addChat, dispatch }) => {
+const createChat = async ({
+  participants,
+  navigate,
+  addChat,
+  dispatch,
+}: {
+  participants: ConnectionState;
+  navigate: Function;
+  addChat: Function;
+  dispatch: Function;
+}) => {
   const body = {
     participants,
   };
@@ -32,7 +59,15 @@ const createChat = async ({ participants, navigate, addChat, dispatch }) => {
   }
 };
 
-const filterConnections = ({ connections, participants, search }) => {
+const filterConnections = ({
+  connections,
+  participants,
+  search,
+}: {
+  connections: ConnectionState;
+  participants: ConnectionState;
+  search: string;
+}) => {
   return connections.filter((connection) => {
     const searchMatch = connection.name
       .toLowerCase()

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 
 import CreateChatUserCard from "../../components/CreateChatUserCard/CreateChatUserCard.jsx";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard.jsx";
@@ -15,16 +15,18 @@ import {
   fetchConnections,
   createChat,
   filterConnections,
+  Connection,
+  ConnectionState,
 } from "./UtilsNewChat.js";
 
 function NewChat() {
-  const connectionsState = useSelector((state) => state.connections.value);
-  const connections = connectionsState.connections;
+  const connectionsState = useAppSelector((state) => state.connections.value);
+  const connections: ConnectionState = connectionsState.connections;
   const isFetched = connectionsState.isFetched;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
+  const [participants, setParticipants] = useState<ConnectionState>([]);
   const [search, setSearch] = useState("");
-  const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -37,14 +39,14 @@ function NewChat() {
     }
   }, []);
 
-  const addParticipant = (user) => {
+  const addParticipant = (user: Connection) => {
     if (participants.find((participant) => participant.uId === user.uId))
       return;
     setParticipants([...participants, user]);
     setSearch("");
   };
 
-  const removeParticipant = (uId) => {
+  const removeParticipant = (uId: string) => {
     const oneLess = participants.filter(
       (participant) => participant.uId !== uId
     );
@@ -55,7 +57,7 @@ function NewChat() {
     createChat({ participants, navigate, dispatch, addChat });
   };
 
-  const filteredConnections = filterConnections({
+  const filteredConnections: ConnectionState = filterConnections({
     connections,
     participants,
     search,
@@ -83,7 +85,7 @@ function NewChat() {
   return (
     <section className={styles.newChat}>
       <div className={styles.searchContainer}>
-        <label hmtlfor="search" className={styles.searchLabel}>
+        <label htmlFor="search" className={styles.searchLabel}>
           Browse connections{" "}
         </label>
         <input
