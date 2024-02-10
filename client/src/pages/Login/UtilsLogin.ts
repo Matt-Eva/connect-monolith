@@ -5,6 +5,13 @@ const login = async ({
   createUser,
   navigate,
   startingPath,
+}: {
+  email: string;
+  password: string;
+  dispatch: Function;
+  createUser: Function;
+  navigate: Function;
+  startingPath: string;
 }) => {
   const res = await fetch("/api" + "/login", {
     method: "POST",

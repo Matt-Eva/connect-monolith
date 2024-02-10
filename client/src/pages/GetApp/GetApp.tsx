@@ -1,10 +1,10 @@
 function GetApp() {
   return (
     <main
-      styles={{
+      style={{
         padding: "5px",
-        "font-style": "italic",
-        "text-align": "center",
+        fontStyle: "italic",
+        textAlign: "center",
       }}
     >
       <p>App Download currently disabled.</p>
