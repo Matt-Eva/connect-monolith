@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon -r dotenv/config index.js",
     "start": "node -r dotenv/config index.js",

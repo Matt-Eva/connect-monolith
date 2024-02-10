@@ -1,10 +1,10 @@
 import session from "express-session";
 import ConnectNeo from "connect-neo4j";
-
-let Neo4jStore = ConnectNeo(session);
 const neoDriver = require("./neo4jConfig.js");
 
-let sessionMiddleware;
+let Neo4jStore = ConnectNeo(session);
+
+let sessionMiddleware: any;
 
 let sessionSecret = process.env.SESSION_SECRET;
 

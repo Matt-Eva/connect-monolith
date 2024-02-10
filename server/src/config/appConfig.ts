@@ -2,8 +2,7 @@ import express from "express";
 import path from "path";
 import http from "http";
 import router from "../router";
-
-const sessionMiddleware = require("./sessionConfig.js");
+import sessionMiddleware from "./sessionConfig";
 
 const app = express();
 
