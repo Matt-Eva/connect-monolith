@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 
 import styles from "./CreateAccount.module.css";
+
+import { createUser } from "../../state/user";
 
 import { createAccount } from "./UtilsCreateAccount";
 
 function CreateAccount() {
-  const user = useSelector((state) => state.user.value);
-  const startingPath = useSelector((state) => state.startingPath.value);
-  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.user.value);
+  const startingPath = useAppSelector((state) => state.startingPath.value);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const baseFormState = {
     password: "",
@@ -21,14 +24,14 @@ function CreateAccount() {
   };
   const [formState, setFormState] = useState(baseFormState);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormState({
       ...formState,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createAccount({
       startingPath,
@@ -56,11 +59,7 @@ function CreateAccount() {
     <main className={styles.main}>
       <h1 className={styles.welcome}>CONNECT</h1>
       <h2 className={styles.title}>Create Account</h2>
-      <form
-        onSubmit={handleSubmit}
-        onChange={handleChange}
-        className={styles.form}
-      >
+      <form onSubmit={handleSubmit} className={styles.form}>
         <label htmlFor="email" className="">
           email
         </label>
@@ -68,6 +67,7 @@ function CreateAccount() {
           type="text"
           name="email"
           value={formState.email}
+          onChange={handleChange}
           className={styles.input}
         />
         <label htmlFor="firstName" className="">
@@ -77,6 +77,7 @@ function CreateAccount() {
           type="text"
           name="firstName"
           value={formState.firstName}
+          onChange={handleChange}
           className={styles.input}
         />
         <label htmlFor="lastName" className="">
@@ -86,6 +87,7 @@ function CreateAccount() {
           type="text"
           name="lastName"
           value={formState.lastName}
+          onChange={handleChange}
           className={styles.input}
         />
         <label htmlFor="password" className="">
@@ -95,6 +97,7 @@ function CreateAccount() {
           type="password"
           name="password"
           value={formState.password}
+          onChange={handleChange}
           className={styles.input}
         />
         <label htmlFor="confirmPassword" className="">
@@ -104,6 +107,7 @@ function CreateAccount() {
           type="password"
           name="confirmPassword"
           value={formState.confirmPassword}
+          onChange={handleChange}
           className={styles.input}
         />
         <input

@@ -1,3 +1,11 @@
+interface FormState {
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  confirmPassword: string;
+}
+
 const createAccount = async ({
   createUser,
   dispatch,
@@ -6,6 +14,14 @@ const createAccount = async ({
   formState,
   setFormState,
   baseFormState,
+}: {
+  createUser: Function;
+  dispatch: Function;
+  startingPath: string;
+  navigate: Function;
+  formState: FormState;
+  setFormState: Function;
+  baseFormState: FormState;
 }) => {
   if (formState.email === "") {
     return alert("email is required");
