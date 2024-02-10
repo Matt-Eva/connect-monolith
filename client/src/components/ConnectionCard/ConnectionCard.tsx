@@ -2,7 +2,15 @@ import { Link, useNavigate } from "react-router-dom";
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
 import styles from "./ConnectionCard.module.css";
 
-function ConnectionCard({ name, uId, profileImg }) {
+function ConnectionCard({
+  name,
+  uId,
+  profileImg,
+}: {
+  name: string;
+  uId: string;
+  profileImg: string;
+}) {
   const navigate = useNavigate();
 
   const startChat = async () => {
@@ -28,6 +36,7 @@ function ConnectionCard({ name, uId, profileImg }) {
 
   const iconUser = [
     {
+      name: name,
       firstName: name,
       profileImg,
       uId,
