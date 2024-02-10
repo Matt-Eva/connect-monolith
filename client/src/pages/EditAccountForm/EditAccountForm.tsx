@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import styles from "./EditAccountForm.module.css";
 
@@ -13,8 +13,8 @@ import {
 } from "./UtilsEditAccountForm";
 
 function EditAccountForm() {
-  const user = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.user.value);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { firstName, lastName, email } = user;

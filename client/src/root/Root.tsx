@@ -43,9 +43,9 @@ function Root() {
 
   return (
     <div className={styles.root}>
-      {user ? <Header /> : <Navigate to="/login" />}
+      {user.authenticated ? <Header /> : <Navigate to="/login" />}
       <Outlet />
-      {user ? <MainNavBar /> : null}
+      {user.authenticated ? <MainNavBar /> : null}
     </div>
   );
 }

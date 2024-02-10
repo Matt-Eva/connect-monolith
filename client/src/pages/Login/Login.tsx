@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import styles from "./Login.module.css";
 
@@ -9,20 +9,20 @@ import { createUser } from "../../state/user";
 import { login } from "./UtilsLogin";
 
 function Login() {
-  const user = useSelector((state) => state.user.value);
-  const startingPath = useSelector((state) => state.startingPath.value);
-  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.user.value);
+  const startingPath = useAppSelector((state) => state.startingPath.value);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login({ email, password, startingPath, dispatch, createUser, navigate });
   };
 
-  if (user) {
+  if (user.authenticated) {
     return (
       <main>
         <p>You are already logged in.</p>
