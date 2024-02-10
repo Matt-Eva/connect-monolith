@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import ConnectionCard from "../../components/ConnectionCard/ConnectionCard";
 
@@ -10,12 +10,19 @@ import { setConnections } from "../../state/connections";
 import { fetchConnections } from "./UtilsMyConnections";
 
 function MyConnections() {
-  const connectionsState = useSelector((state) => state.connections.value);
-  console.log(connectionsState);
-  const connections = connectionsState.connections;
+  const connectionsState = useAppSelector((state) => state.connections.value);
   const isFetched = connectionsState.isFetched;
 
-  const dispatch = useDispatch();
+  interface Connection {
+    firstName: string;
+    name: string;
+    uId: string;
+    profileImg: string;
+  }
+  type Connections = Connection[];
+  const connections: Connections = connectionsState.connections;
+
+  const dispatch = useAppDispatch();
 
   const [search, setSearch] = useState("");
 
@@ -25,7 +32,7 @@ function MyConnections() {
     }
   }, []);
 
-  const filterUsers = (e) => {
+  const filterUsers = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 

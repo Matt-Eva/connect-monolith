@@ -1,4 +1,10 @@
-const fetchConnections = async ({ setConnections, dispatch }) => {
+const fetchConnections = async ({
+  setConnections,
+  dispatch,
+}: {
+  setConnections: Function;
+  dispatch: Function;
+}) => {
   try {
     const res = await fetch("/api/my-connections", {
       credentials: "include",
