@@ -5,27 +5,26 @@ import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import CreateChatUserCard from "../../components/CreateChatUserCard/CreateChatUserCard.jsx";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard.jsx";
 
-import styles from "./NewChat.module.css";
-
 import { setConnections } from "../../state/connections.js";
-
 import { addChat } from "../../state/chats.js";
+
+import { ConnectionArray, Connection } from "../../types/connection";
+
+import styles from "./NewChat.module.css";
 
 import {
   fetchConnections,
   createChat,
   filterConnections,
-  Connection,
-  ConnectionState,
 } from "./UtilsNewChat.js";
 
 function NewChat() {
   const connectionsState = useAppSelector((state) => state.connections.value);
-  const connections: ConnectionState = connectionsState.connections;
+  const connections: ConnectionArray = connectionsState.connections;
   const isFetched = connectionsState.isFetched;
   const dispatch = useAppDispatch();
 
-  const [participants, setParticipants] = useState<ConnectionState>([]);
+  const [participants, setParticipants] = useState<ConnectionArray>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -57,7 +56,7 @@ function NewChat() {
     createChat({ participants, navigate, dispatch, addChat });
   };
 
-  const filteredConnections: ConnectionState = filterConnections({
+  const filteredConnections: ConnectionArray = filterConnections({
     connections,
     participants,
     search,

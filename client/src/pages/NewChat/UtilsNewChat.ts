@@ -1,11 +1,4 @@
-export interface Connection {
-  firstName: string;
-  name: string;
-  uId: string;
-  profileImg: string;
-}
-
-export type ConnectionState = Connection[];
+import { ConnectionArray } from "../../types/connection";
 
 const fetchConnections = async ({
   setConnections,
@@ -34,7 +27,7 @@ const createChat = async ({
   addChat,
   dispatch,
 }: {
-  participants: ConnectionState;
+  participants: ConnectionArray;
   navigate: Function;
   addChat: Function;
   dispatch: Function;
@@ -64,8 +57,8 @@ const filterConnections = ({
   participants,
   search,
 }: {
-  connections: ConnectionState;
-  participants: ConnectionState;
+  connections: ConnectionArray;
+  participants: ConnectionArray;
   search: string;
 }) => {
   return connections.filter((connection) => {
