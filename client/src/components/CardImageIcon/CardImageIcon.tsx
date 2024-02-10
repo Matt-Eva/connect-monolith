@@ -1,10 +1,10 @@
 import styles from "./CardImageIcon.module.css";
 
-import { Connection } from "../../state/connections";
+import { ConnectionArray } from "../../types/connection";
 
 import { renderImages } from "./UtilsCardImageIcon";
 
-function CardImageIcon({ users }: { users: [Connection] }) {
+function CardImageIcon({ users }: { users: ConnectionArray }) {
   const images = renderImages({ users });
 
   return <div className={styles.icon}>{images}</div>;

@@ -1,22 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
+
+import { ConnectionArray } from "../../types/connection";
+
 import styles from "./BlockedUserCard.module.css";
 
 function BlockedUserCard({
   name,
   profileImg,
+  firstName,
   uId,
 }: {
   name: string;
+  firstName: string;
   profileImg: string;
   uId: string;
 }) {
   const [blocked, setBlocked] = useState(true);
 
-  const iconUser = [
+  const iconUser: ConnectionArray = [
     {
       name,
+      firstName,
       profileImg,
       uId,
     },
