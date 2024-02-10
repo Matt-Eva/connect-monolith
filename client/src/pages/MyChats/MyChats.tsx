@@ -12,6 +12,7 @@ import { fetchChats } from "./UtilsMyChats";
 function MyChats() {
   const chatsState = useAppSelector((state) => state.chats.value);
   const isFetched = chatsState.isFetched;
+
   const chats = chatsState.chats;
   const dispatch = useAppDispatch();
 

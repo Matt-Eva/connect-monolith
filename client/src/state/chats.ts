@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Connection } from "./connections";
+import { ConnectionArray } from "../types/connection";
 
-export interface Chats {
-  uId: [Connection];
+interface Chats {
+  [key: string]: ConnectionArray;
 }
 
-const initialChatState: Object | Chats = {};
+const initialChatState: Chats = {
+  uId: [],
+};
 
 export const chatsSlice = createSlice({
   name: "chats",

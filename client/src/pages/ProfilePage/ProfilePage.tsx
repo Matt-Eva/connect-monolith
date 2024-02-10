@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../reduxHooks";
+
+import { Profile } from "./TypesProfilePage";
 
 import styles from "./ProfilePage.module.css";
 
@@ -16,9 +18,18 @@ import {
 } from "./UtilsProfilePage";
 
 function ProfilePage() {
-  const user = useSelector((state) => state.user.value);
+  const user = useAppSelector((state) => state.user.value);
 
-  const [profile, setProfile] = useState(false);
+  const [profile, setProfile] = useState<Profile>({
+    uId: "",
+    profileImg: "",
+    name: "",
+    blocked: false,
+    connected: false,
+    invited: false,
+    pending: false,
+    loading: true,
+  });
   const [allowDisconnect, setAllowDisconnect] = useState(false);
   const [manageConnection, setManageConnection] = useState(false);
 
@@ -27,8 +38,10 @@ function ProfilePage() {
   const { id } = useParams();
 
   useEffect(() => {
-    loadProfile({ navigate, id, setProfile });
-  }, [user]);
+    if (id) {
+      loadProfile({ navigate, id, setProfile });
+    }
+  }, []);
 
   const handleStartChat = () => {
     startChat({ profile, navigate });

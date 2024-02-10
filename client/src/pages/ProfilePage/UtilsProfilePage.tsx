@@ -1,13 +1,23 @@
+import { Profile } from "./TypesProfilePage";
+
 import styles from "./ProfilePage.module.css";
 
-const loadProfile = async ({ setProfile, navigate, id }) => {
+const loadProfile = async ({
+  setProfile,
+  navigate,
+  id,
+}: {
+  setProfile: Function;
+  navigate: Function;
+  id: string;
+}) => {
   try {
     const res = await fetch(`/api/user/${id}`, {
       credentials: "include",
     });
     if (res.ok) {
       const data = await res.json();
-      setProfile(data);
+      setProfile({ ...data, loading: false });
     } else if (res.status === 404) {
       alert("Profile not found - redirecting to home page");
       navigate("/");
@@ -17,7 +27,13 @@ const loadProfile = async ({ setProfile, navigate, id }) => {
   }
 };
 
-const startChat = async ({ profile, navigate }) => {
+const startChat = async ({
+  profile,
+  navigate,
+}: {
+  profile: Profile;
+  navigate: Function;
+}) => {
   try {
     const res = await fetch("/api/new-chat", {
       method: "POST",
@@ -38,7 +54,13 @@ const startChat = async ({ profile, navigate }) => {
   }
 };
 
-const connect = async ({ profile, setProfile }) => {
+const connect = async ({
+  profile,
+  setProfile,
+}: {
+  profile: Profile;
+  setProfile: Function;
+}) => {
   try {
     const res = await fetch("/api/invite-connection", {
       method: "POST",
@@ -59,7 +81,13 @@ const connect = async ({ profile, setProfile }) => {
   }
 };
 
-const accept = async ({ setProfile, profile }) => {
+const accept = async ({
+  setProfile,
+  profile,
+}: {
+  profile: Profile;
+  setProfile: Function;
+}) => {
   try {
     const res = await fetch("/api/accept-invitation", {
       method: "POST",
@@ -77,7 +105,15 @@ const accept = async ({ setProfile, profile }) => {
   }
 };
 
-const disconnect = async ({ profile, setProfile, setAllowDisconnect }) => {
+const disconnect = async ({
+  profile,
+  setProfile,
+  setAllowDisconnect,
+}: {
+  profile: Profile;
+  setProfile: Function;
+  setAllowDisconnect: Function;
+}) => {
   try {
     const res = await fetch(`/api/delete-connection/${profile.uId}`, {
       method: "DELETE",
@@ -93,7 +129,13 @@ const disconnect = async ({ profile, setProfile, setAllowDisconnect }) => {
   }
 };
 
-const block = async ({ setProfile, profile }) => {
+const block = async ({
+  setProfile,
+  profile,
+}: {
+  profile: Profile;
+  setProfile: Function;
+}) => {
   try {
     const res = await fetch("/api/block-user", {
       method: "POST",
@@ -117,7 +159,13 @@ const block = async ({ setProfile, profile }) => {
   }
 };
 
-const unblock = async ({ profile, setProfile }) => {
+const unblock = async ({
+  profile,
+  setProfile,
+}: {
+  profile: Profile;
+  setProfile: Function;
+}) => {
   try {
     const res = await fetch(`/api/unblock-user/${profile.uId}`, {
       method: "DELETE",
@@ -134,7 +182,7 @@ const unblock = async ({ profile, setProfile }) => {
   }
 };
 
-const renderIconDisplay = ({ profile }) => {
+const renderIconDisplay = ({ profile }: { profile: Profile }) => {
   return profile.profileImg ? (
     <img
       src={profile.profileImg}
@@ -143,7 +191,7 @@ const renderIconDisplay = ({ profile }) => {
     />
   ) : (
     <span className={styles.profileIcon}>
-      {user.name.charAt(0).toUpperCase()}
+      {profile.name.charAt(0).toUpperCase()}
     </span>
   );
 };
