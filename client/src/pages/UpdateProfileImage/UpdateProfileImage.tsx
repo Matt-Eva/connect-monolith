@@ -20,7 +20,7 @@ function UpdateProfileImage() {
         Select Image
       </button>
       <button className={styles.imageButton}>Confirm</button>
-      <p style={{ "font-style": "italic" }}>
+      <p style={{ fontStyle: "italic" }}>
         Dear users - we aren't currently allowing updates to profile images at
         this time. Coming soon!
       </p>
