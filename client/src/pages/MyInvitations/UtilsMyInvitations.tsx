@@ -2,7 +2,13 @@ import InvitationCard from "../../components/InvitationCard/InvitationCard";
 
 import styles from "./MyInvitations.module.css";
 
-const fetchInvitations = async ({ setInvitations, setLoading }) => {
+const fetchInvitations = async ({
+  setInvitations,
+  setLoading,
+}: {
+  setInvitations: Function;
+  setLoading: Function;
+}) => {
   try {
     const res = await fetch("/api/my-invitations", {
       credentials: "include",
@@ -18,7 +24,18 @@ const fetchInvitations = async ({ setInvitations, setLoading }) => {
   }
 };
 
-const displayInvitations = ({ invitations }) => {
+interface Invitation {
+  name: string;
+  profileImg: string;
+  uId: string;
+}
+type InvitationState = Invitation[];
+
+const displayInvitations = ({
+  invitations,
+}: {
+  invitations: InvitationState;
+}) => {
   if (invitations.length === 0) {
     return (
       <p className={styles.noInvitation}>You have no pending invitations.</p>
