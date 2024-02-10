@@ -1,4 +1,10 @@
-function ProfileIcon({ profileImg, firstName }) {
+function ProfileIcon({
+  profileImg,
+  firstName,
+}: {
+  profileImg: string;
+  firstName: string;
+}) {
   return (
     <div>
       {profileImg ? (
