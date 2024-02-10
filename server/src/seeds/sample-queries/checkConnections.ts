@@ -1,5 +1,5 @@
 // this file checks for the successful creation / existence of [:CONNECTED] relationships
-const { driver, closeDriver } = require("../seedConfig.js");
+import { driver, closeDriver } from "../seedConfig.js";
 
 const checkConnections = async () => {
   const session = driver.session();

@@ -1,4 +1,4 @@
-const { driver, closeDriver } = require("../seedConfig.js");
+import { driver, closeDriver } from "../seedConfig.js";
 
 const checkMessages = async () => {
   const session = driver.session();
