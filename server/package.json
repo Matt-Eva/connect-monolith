@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/Matt-Eva/connect-express#readme",
   "dependencies": {
+    "@types/uuid": "^9.0.8",
+    "@types/web-push": "^3.6.3",
     "argon2": "^0.31.2",
     "connect-neo4j": "^1.0.1",
     "cors": "^2.8.5",

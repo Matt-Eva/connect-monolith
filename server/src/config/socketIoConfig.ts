@@ -1,16 +1,58 @@
-const { Server } = require("socket.io");
-
-const sessionMiddleware = require("./sessionConfig.js");
-const { server } = require("./appConfig.js");
-const neoDriver = require("./neo4jConfig.js");
-const webPush = require("./webPushConfig.js");
-const { v4 } = require("uuid");
+import { Server, Socket } from "socket.io";
+import sessionMiddleware from "./sessionConfig.js";
+import { server } from "./appConfig.js";
+import neoDriver from "./neo4jConfig.js";
+import webPush from "./webPushConfig.js";
+import { v4 } from "uuid";
 const uuid = v4;
 
-let io;
+interface ServerToClientEvents {
+  noArg: () => void;
+  basicEmit: (a: number, b: string, c: Buffer) => void;
+  withAck: (d: string, callback: (e: number) => void) => void;
+}
+
+interface ClientToServerEvents {
+  hello: () => void;
+}
+
+interface InterServerEvents {
+  ping: () => void;
+}
+
+interface SocketData {
+  name: string;
+  age: number;
+}
+
+interface IncomingMessage {
+  userId: string;
+  chatId: string;
+  text: string;
+}
+
+type CreatedMessage = [
+  {
+    name: string;
+    profileImg: string;
+  },
+  {
+    text: string;
+    uId: string;
+    date: string;
+    userId: string;
+  },
+];
+
+let io: Server;
 
 if (process.env.NODE_ENV === "development") {
-  io = new Server(server, {
+  io = new Server<
+    ClientToServerEvents,
+    ServerToClientEvents,
+    InterServerEvents,
+    SocketData
+  >(server, {
     cors: {
       origin: process.env.FRONTEND_URL,
       credentials: true,
@@ -22,7 +64,15 @@ if (process.env.NODE_ENV === "development") {
 
 io.engine.use(sessionMiddleware);
 
-const loadChat = async ({ socket, chatId, userId }) => {
+const loadChat = async ({
+  socket,
+  chatId,
+  userId,
+}: {
+  socket: Socket;
+  chatId: string;
+  userId: string;
+}) => {
   const session = neoDriver.session();
 
   try {
@@ -74,7 +124,13 @@ const loadChat = async ({ socket, chatId, userId }) => {
   }
 };
 
-const createMessage = async ({ message, chatId, userId }) => {
+const createMessage = async ({
+  message,
+  chatId,
+}: {
+  message: IncomingMessage;
+  chatId: string;
+}) => {
   const session = neoDriver.session();
   try {
     const messageQuery = `
@@ -98,7 +154,7 @@ const createMessage = async ({ message, chatId, userId }) => {
 
     const messageRecord = messageResult.records[0];
 
-    const newMessage = [
+    const newMessage: CreatedMessage = [
       {
         name: messageRecord.get("name"),
         profileImg: messageRecord.get("profileImg"),
@@ -109,14 +165,23 @@ const createMessage = async ({ message, chatId, userId }) => {
     io.to(chatId).emit("new-message", newMessage);
 
     return newMessage;
-  } catch (error) {
+  } catch (error: any) {
+    console.error(error);
     throw new Error(error);
   } finally {
     await session.close();
   }
 };
 
-const handlePushNotifications = async ({ message, chatId, userId }) => {
+const handlePushNotifications = async ({
+  message,
+  chatId,
+  userId,
+}: {
+  message: CreatedMessage;
+  chatId: string;
+  userId: string;
+}) => {
   const session = neoDriver.session();
 
   try {
@@ -153,7 +218,7 @@ const handlePushNotifications = async ({ message, chatId, userId }) => {
 
       try {
         await webPush.sendNotification(subscription, payload);
-      } catch (error) {
+      } catch (error: any) {
         if (error.statusCode === 410) {
           const session = neoDriver.session();
           const userId = record.get("uId");
@@ -176,17 +241,25 @@ const handlePushNotifications = async ({ message, chatId, userId }) => {
       }
     });
   } catch (error) {
-    throw new Error(error);
+    console.error(error);
   } finally {
     await session.close();
   }
 };
 
-const handleMessage = async ({ message, chatId, userId }) => {
+const handleMessage = async ({
+  message,
+  chatId,
+  userId,
+}: {
+  message: IncomingMessage;
+  chatId: string;
+  userId: string;
+}) => {
   const session = neoDriver.session();
 
   try {
-    const newMessage = await createMessage({ message, chatId, userId });
+    const newMessage: CreatedMessage = await createMessage({ message, chatId });
 
     await handlePushNotifications({ message: newMessage, chatId, userId });
   } catch (e) {
@@ -196,7 +269,7 @@ const handleMessage = async ({ message, chatId, userId }) => {
   }
 };
 
-const handleConnection = async (socket) => {
+const handleConnection = async (socket: any) => {
   if (!socket.request.session.user) return socket.disconnect();
 
   const chatId = socket.handshake.query.chatId;
@@ -204,17 +277,9 @@ const handleConnection = async (socket) => {
 
   loadChat({ socket, chatId, userId });
 
-  socket.on("message", async (message) => {
+  socket.on("message", async (message: IncomingMessage) => {
     handleMessage({ message, chatId, userId });
   });
-
-  // socket.on("disconnecting", () =>{
-
-  // })
-
-  // socket.on("disconnect", (reason) =>{
-
-  // })
 };
 
 module.exports = {

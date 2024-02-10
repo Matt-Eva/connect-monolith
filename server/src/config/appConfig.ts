@@ -16,8 +16,4 @@ app.use("/api", router);
 
 const server = http.createServer(app);
 
-module.exports = {
-  server,
-  app,
-  express,
-};
+export { server, app, express };
