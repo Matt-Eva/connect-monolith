@@ -1,4 +1,12 @@
-const fetchChats = async ({ setChats, setLoading, dispatch }) => {
+const fetchChats = async ({
+  setChats,
+  setLoading,
+  dispatch,
+}: {
+  setChats: Function;
+  setLoading: Function;
+  dispatch: Function;
+}) => {
   const res = await fetch("/api/my-chats", {
     credentials: "include",
   });
