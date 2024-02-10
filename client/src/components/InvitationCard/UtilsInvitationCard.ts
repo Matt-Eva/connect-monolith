@@ -1,4 +1,12 @@
-const accept = async ({ uId, setResponded, setConnected }) => {
+const accept = async ({
+  uId,
+  setResponded,
+  setConnected,
+}: {
+  uId: string;
+  setResponded: Function;
+  setConnected: Function;
+}) => {
   try {
     const res = await fetch("/api/accept-invitation", {
       method: "POST",
@@ -17,7 +25,15 @@ const accept = async ({ uId, setResponded, setConnected }) => {
   }
 };
 
-const ignore = async ({ uId, setResponded, setIgnored }) => {
+const ignore = async ({
+  uId,
+  setResponded,
+  setIgnored,
+}: {
+  uId: string;
+  setResponded: Function;
+  setIgnored: Function;
+}) => {
   try {
     const res = await fetch("/api/ignore-invitation", {
       method: "POST",
@@ -36,7 +52,15 @@ const ignore = async ({ uId, setResponded, setIgnored }) => {
   }
 };
 
-const block = async ({ uId, setBlocked, setResponded }) => {
+const block = async ({
+  uId,
+  setBlocked,
+  setResponded,
+}: {
+  uId: string;
+  setBlocked: Function;
+  setResponded: Function;
+}) => {
   try {
     const res = await fetch("/api/block-user", {
       method: "POST",

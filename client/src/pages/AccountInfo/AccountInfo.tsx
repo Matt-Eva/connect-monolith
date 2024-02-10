@@ -22,6 +22,7 @@ function AccountInfo() {
   interface BlockedUser {
     name: string;
     uId: string;
+    firstName: string;
     profileImg: string;
   }
   type BlockedUserState = BlockedUser[];

@@ -1,4 +1,10 @@
-const addConnection = async ({ uId, setPendingInvite }) => {
+const addConnection = async ({
+  uId,
+  setPendingInvite,
+}: {
+  uId: string;
+  setPendingInvite: Function;
+}) => {
   try {
     const res = await fetch("/api/invite-connection", {
       method: "POST",
@@ -19,7 +25,13 @@ const addConnection = async ({ uId, setPendingInvite }) => {
   }
 };
 
-const acceptInvitation = async ({ uId, setConnected }) => {
+const acceptInvitation = async ({
+  uId,
+  setConnected,
+}: {
+  uId: string;
+  setConnected: Function;
+}) => {
   try {
     const res = await fetch("/api/accept-invitation", {
       method: "POST",
