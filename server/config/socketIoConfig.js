@@ -28,7 +28,7 @@ const loadChat = async ({ socket, chatId, userId }) => {
   try {
     const messageQuery = `
             MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
-            RETURN u.name AS name, u.profileImg AS profileImg, m
+            RETURN u.name AS name, u.profileImg AS profileImg, u.uId AS userId, m
             ORDER BY m.date
         `;
     const messageResults = await session.executeRead(async (tx) =>
@@ -42,6 +42,7 @@ const loadChat = async ({ socket, chatId, userId }) => {
       const user = {
         name: record.get("name"),
         profileImg: record.get("profileImg"),
+        uId: record.get("userId"),
       };
       messages.push([user, message]);
     }

@@ -58,7 +58,7 @@ exports.search = async (req, res) => {
               AND NOT (c) - [:CONNECTED] - (u)
               AND NOT (c) - [:BLOCKED] - (u)
               AND c <> u
-              RETURN c.uId AS uId, c.name AS name, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
+              RETURN c.uId AS uId, c.name AS name, c.firstName AS firstName, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
               LIMIT 50
           `;
     const result = await session.executeRead((tx) =>
@@ -70,6 +70,7 @@ exports.search = async (req, res) => {
       const user = {
         uId: record.get("uId"),
         name: record.get("name"),
+        firstName: record.get("firstName"),
         pending: record.get("pending"),
         invited: record.get("invited"),
         profileImg: record.get("profileImg"),
