@@ -3,6 +3,8 @@ import sessionMiddleware from "./sessionConfig.js";
 import { server } from "./appConfig.js";
 import neoDriver from "./neo4jConfig.js";
 import webPush from "./webPushConfig.js";
+import redisClient from "./redisConfig.js";
+import { createAdapter } from "@socket.io/redis-adapter";
 import { v4 } from "uuid";
 const uuid = v4;
 
@@ -61,6 +63,8 @@ if (process.env.NODE_ENV === "development") {
 } else {
   io = new Server(server);
 }
+
+io.adapter(createAdapter(redisClient, redisClient.duplicate()));
 
 io.engine.use(sessionMiddleware);
 
