@@ -1,17 +1,17 @@
 import session from "express-session";
-import ConnectNeo from "connect-neo4j";
-import neoDriver from "./neo4jConfig.js";
+import RedisStore from "connect-redis";
+import redisClient from "./redisConfig.js";
 import { RequestHandler } from "express";
 
-let Neo4jStore = ConnectNeo(session);
+const redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "connect",
+});
 
 let sessionSecret = process.env.SESSION_SECRET;
 
 const sessionMiddleware: RequestHandler = session({
-  store: new Neo4jStore({
-    client: neoDriver,
-    ttl: 60 * 60 * 1000,
-  }),
+  store: redisStore,
   secret: sessionSecret!,
   saveUninitialized: false,
   resave: false,

@@ -25,10 +25,12 @@
     "@types/web-push": "^3.6.3",
     "argon2": "^0.31.2",
     "connect-neo4j": "^1.0.1",
+    "connect-redis": "^7.1.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "neo4j-driver": "^5.14.0",
+    "redis": "^4.6.13",
     "socket.io": "^4.7.2",
     "uuid": "^9.0.1",
     "web-push": "^3.6.7"

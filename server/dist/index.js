@@ -53,5 +53,5 @@ appConfig_1.app.post("/api/notification-subscription", async (req, res) => {
     }
 });
 appConfig_1.app.get("*", (req, res) => {
-    return res.sendFile(path_1.default.resolve(__dirname, "../client/dist/index.html"));
+    return res.sendFile(path_1.default.resolve(__dirname, "../../client/dist/index.html"));
 });
