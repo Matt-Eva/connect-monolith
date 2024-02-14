@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import sessionMiddleware from "./sessionConfig.js";
+import cassDriver from "./cassandraConfig.js";
 import { server } from "./appConfig.js";
 import neoDriver from "./neo4jConfig.js";
 import webPush from "./webPushConfig.js";
