@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import sessionMiddleware from "./sessionConfig.js";
-import cassDriver from "./cassandraConfig.js";
+import astraClient from "./cassandraConfig.js";
 import { server } from "./appConfig.js";
 import neoDriver from "./neo4jConfig.js";
 import webPush from "./webPushConfig.js";
@@ -129,6 +129,30 @@ const loadChat = async ({
   }
 };
 
+const createAstraMessage = async ({
+  message,
+  chatId,
+}: {
+  message: IncomingMessage;
+  chatId: string;
+}) => {
+  try {
+    const connect_messages = await astraClient.collection("connect_messages");
+
+    const newMessage = {
+      ...message,
+      chat_id: chatId,
+      user_profile_url: "",
+      user_name_url: "",
+    };
+
+    const result = await connect_messages.insertOne(newMessage);
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const createMessage = async ({
   message,
   chatId,
@@ -136,6 +160,7 @@ const createMessage = async ({
   message: IncomingMessage;
   chatId: string;
 }) => {
+  createAstraMessage({ message, chatId });
   const session = neoDriver.session();
   try {
     const messageQuery = `
