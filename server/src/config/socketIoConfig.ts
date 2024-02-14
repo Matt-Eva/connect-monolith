@@ -181,7 +181,7 @@ const createAstraMessage = async ({
     };
 
     const result = await connect_messages.insertOne(newMessage);
-    console.log(result);
+    return result;
   } catch (error) {
     console.error(error);
   }
@@ -194,36 +194,20 @@ const createMessage = async ({
   message: IncomingMessage;
   chatId: string;
 }) => {
-  createAstraMessage({ message, chatId });
-  const session = neoDriver.session();
   try {
-    const messageQuery = `
-            MATCH (user:User {uId: $userId}), (c:Chat {uId: $chatId})
-            CREATE (user) - [:SENT] -> (message:Message {uId: $uId, text: $text, date: $date, userId: $userId}) - [:SENT_IN_CHAT] ->(c)
-            RETURN user.name AS name, user.profileImg AS profileImg, message
-            ORDER BY message.date DESC
-        `;
-
-    const messageQueryObj = {
-      userId: message.userId,
-      uId: uuid(),
-      text: message.text,
-      date: Date.now(),
-      chatId: message.chatId,
-    };
-
-    const messageResult = await session.executeWrite(async (tx) =>
-      tx.run(messageQuery, messageQueryObj),
-    );
-
-    const messageRecord = messageResult.records[0];
+    const messageRecord = await createAstraMessage({ message, chatId });
 
     const newMessage: CreatedMessage = [
       {
-        name: messageRecord.get("name"),
-        profileImg: messageRecord.get("profileImg"),
+        name: "you",
+        profileImg: "",
       },
-      messageRecord.get("message").properties,
+      {
+        uId: messageRecord.id,
+        text: messageRecord.text,
+        userId: messageRecord.user_id,
+        date: messageRecord.date,
+      },
     ];
 
     io.to(chatId).emit("new-message", newMessage);
@@ -232,8 +216,6 @@ const createMessage = async ({
   } catch (error: any) {
     console.error(error);
     throw new Error(error);
-  } finally {
-    await session.close();
   }
 };
 
