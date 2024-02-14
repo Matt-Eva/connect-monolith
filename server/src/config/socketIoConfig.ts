@@ -69,6 +69,12 @@ io.adapter(createAdapter(redisClient, redisClient.duplicate()));
 
 io.engine.use(sessionMiddleware);
 
+const loadAstraMessages = async ({ chatId }: { chatId: string }) => {
+  const connect_messages = await astraClient.collection("connect_messages");
+  const result = await connect_messages.find({ chat_id: chatId }).toArray();
+  console.log(result);
+};
+
 const loadChat = async ({
   socket,
   chatId,
@@ -78,6 +84,7 @@ const loadChat = async ({
   chatId: string;
   userId: string;
 }) => {
+  loadAstraMessages({ chatId });
   const session = neoDriver.session();
 
   try {
