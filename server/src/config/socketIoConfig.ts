@@ -6,6 +6,7 @@ import neoDriver from "./neo4jConfig.js";
 import webPush from "./webPushConfig.js";
 import redisClient from "./redisConfig.js";
 import { createAdapter } from "@socket.io/redis-adapter";
+import { User } from "../@types/sessionUser.js";
 import { v4 } from "uuid";
 const uuid = v4;
 
@@ -93,20 +94,21 @@ const loadAstraMessages = async ({
 const loadChat = async ({
   socket,
   chatId,
-  userId,
+  user,
 }: {
   socket: Socket;
   chatId: string;
-  userId: string;
+  user: User;
 }) => {
+  console.log("chatId", chatId);
   const session = neoDriver.session();
   try {
     const participantsQuery = `
-    MATCH (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
-    RETURN u.firstName AS firstName, u.uId AS uId, u.name AS name, u.profileImg AS
+    MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+    RETURN u.firstName AS firstName, u.uId AS uId, u.name AS name, u.profileImg AS profileImg
     `;
     const participantResults = await session.executeRead(async (tx) =>
-      tx.run(participantsQuery, { userId: userId, chatId: chatId }),
+      tx.run(participantsQuery, { userId: user.uId, chatId: chatId }),
     );
 
     const participants = participantResults.records.map((record) => {
@@ -132,6 +134,20 @@ const loadChat = async ({
             {
               name: participant.name,
               profileImg: participant.profileImg,
+            },
+            {
+              uId: record.id,
+              text: record.text,
+              userId: record.user_id,
+              date: record.date,
+            },
+          ];
+          messages.push(createMessage);
+        } else {
+          const createMessage: CreatedMessage = [
+            {
+              name: user.name,
+              profileImg: user.profileImg,
             },
             {
               uId: record.id,
@@ -181,6 +197,9 @@ const createAstraMessage = async ({
     };
 
     const result = await connect_messages.insertOne(newMessage);
+    if (result.acknowledged === true) {
+      return newMessage;
+    }
     return result;
   } catch (error) {
     console.error(error);
@@ -190,17 +209,19 @@ const createAstraMessage = async ({
 const createMessage = async ({
   message,
   chatId,
+  user,
 }: {
   message: IncomingMessage;
   chatId: string;
+  user: User;
 }) => {
   try {
     const messageRecord = await createAstraMessage({ message, chatId });
 
     const newMessage: CreatedMessage = [
       {
-        name: "you",
-        profileImg: "",
+        name: user.name,
+        profileImg: user.profileImg,
       },
       {
         uId: messageRecord.id,
@@ -296,18 +317,26 @@ const handlePushNotifications = async ({
 const handleMessage = async ({
   message,
   chatId,
-  userId,
+  user,
 }: {
   message: IncomingMessage;
   chatId: string;
-  userId: string;
+  user: User;
 }) => {
   const session = neoDriver.session();
 
   try {
-    const newMessage: CreatedMessage = await createMessage({ message, chatId });
+    const newMessage: CreatedMessage = await createMessage({
+      user,
+      message,
+      chatId,
+    });
 
-    await handlePushNotifications({ message: newMessage, chatId, userId });
+    await handlePushNotifications({
+      message: newMessage,
+      chatId,
+      userId: user.uId,
+    });
   } catch (e) {
     console.error(e);
   } finally {
@@ -319,12 +348,12 @@ const handleConnection = async (socket: any) => {
   if (!socket.request.session.user) return socket.disconnect();
 
   const chatId = socket.handshake.query.chatId;
-  const userId = socket.request.session.user.uId;
+  const user = socket.request.session.user;
 
-  loadChat({ socket, chatId, userId });
+  loadChat({ socket, chatId, user });
 
   socket.on("message", async (message: IncomingMessage) => {
-    handleMessage({ message, chatId, userId });
+    handleMessage({ message, chatId, user });
   });
 };
 export { io, handleConnection };
