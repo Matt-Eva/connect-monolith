@@ -1,5 +1,6 @@
 import { server, app } from "./config/appConfig";
 import { io, handleConnection } from "./config/socketIoConfig";
+import astraClient from "./config/cassandraConfig";
 import neoDriver from "./config/neo4jConfig";
 import path from "path";
 
@@ -10,6 +11,13 @@ server.listen(process.env.PORT, () => {
 });
 
 io.on("connection", handleConnection);
+
+const verifyAstra = async () => {
+  const connect_messages = await astraClient.collection("connect_messages");
+  console.log(connect_messages);
+};
+
+verifyAstra();
 
 app.post("/api/notification-subscription", async (req, res) => {
   if (!req.session.user)

@@ -1,29 +1,8 @@
-import cassandra from "cassandra-driver";
-import { create } from "domain";
+import { AstraDB, Collection } from "@datastax/astra-db-ts";
 
-const cassDriver = new cassandra.Client({
-  contactPoints: [process.env.CASSANDRA_ENDPOINT!],
-  localDataCenter: "datacenter1",
-  keyspace: "default_keyspace",
-});
+const astraClient = new AstraDB(
+  process.env.CASSANDRA_TOKEN,
+  "https://6e6d83d9-66c9-46f0-b043-3dda06cd3149-us-east1.apps.astra.datastax.com",
+);
 
-const createMessageTable = async () => {
-  const createMessageTableQuery = `
-        CREATE TABLE IF NOT EXISTS connect_messages (
-            content text
-            chat_id text
-            time_created int
-            user_id text
-            user_profile_url text
-            user_name_url text
-            PRIMARY KEY(chat_id, time_created)
-        ) WITH CLUSTERING ORDER BY (time_created DESC)
-    `;
-
-  const result = await cassDriver.execute(createMessageTableQuery);
-  console.log(result);
-};
-
-createMessageTable();
-
-export default cassDriver;
+export default astraClient;
