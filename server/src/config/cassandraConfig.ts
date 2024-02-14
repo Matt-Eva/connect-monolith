@@ -1,4 +1,4 @@
-import { AstraDB, Collection } from "@datastax/astra-db-ts";
+import { AstraDB } from "@datastax/astra-db-ts";
 
 const astraClient = new AstraDB(
   process.env.CASSANDRA_TOKEN,
