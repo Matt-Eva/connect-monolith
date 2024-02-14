@@ -42,7 +42,7 @@ type CreatedMessage = [
   {
     text: string;
     uId: string;
-    date: string;
+    date: number;
     userId: string;
   },
 ];
@@ -69,10 +69,25 @@ io.adapter(createAdapter(redisClient, redisClient.duplicate()));
 
 io.engine.use(sessionMiddleware);
 
-const loadAstraMessages = async ({ chatId }: { chatId: string }) => {
-  const connect_messages = await astraClient.collection("connect_messages");
-  const result = await connect_messages.find({ chat_id: chatId }).toArray();
-  console.log(result);
+interface AstraMessage {
+  chat_id: string;
+  user_id: string;
+  text: string;
+  id: string;
+  date: number;
+}
+const loadAstraMessages = async ({
+  chatId,
+}: {
+  chatId: string;
+}): Promise<AstraMessage[] | undefined> => {
+  try {
+    const connect_messages = await astraClient.collection("connect_messages");
+    const result = await connect_messages.find({ chat_id: chatId }).toArray();
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const loadChat = async ({
@@ -84,42 +99,51 @@ const loadChat = async ({
   chatId: string;
   userId: string;
 }) => {
-  loadAstraMessages({ chatId });
   const session = neoDriver.session();
-
   try {
-    const messageQuery = `
-            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:SENT_IN_CHAT] - (m:Message) <- [:SENT] - (u:User)
-            RETURN u.name AS name, u.profileImg AS profileImg, u.uId AS userId, m
-            ORDER BY m.date
-        `;
-    const messageResults = await session.executeRead(async (tx) =>
-      tx.run(messageQuery, { userId: userId, chatId: chatId }),
-    );
-
-    const messages = [];
-
-    for (const record of messageResults.records) {
-      const message = record.get("m").properties;
-      const user = {
-        name: record.get("name"),
-        profileImg: record.get("profileImg"),
-        uId: record.get("userId"),
-      };
-      messages.push([user, message]);
-    }
-
     const participantsQuery = `
-            MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
-            RETURN u.firstName AS firstName, u.uId AS uId
-        `;
+    MATCH (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+    RETURN u.firstName AS firstName, u.uId AS uId, u.name AS name, u.profileImg AS
+    `;
     const participantResults = await session.executeRead(async (tx) =>
       tx.run(participantsQuery, { userId: userId, chatId: chatId }),
     );
 
     const participants = participantResults.records.map((record) => {
-      return { firstName: record.get("firstName"), uId: record.get("uId") };
+      return {
+        firstName: record.get("firstName"),
+        uId: record.get("uId"),
+        name: record.get("name"),
+        profileImg: record.get("profileImg"),
+      };
     });
+
+    const astraMessages: AstraMessage[] | undefined = await loadAstraMessages({
+      chatId,
+    });
+
+    const messages: CreatedMessage[] = [];
+
+    if (astraMessages) {
+      for (const record of astraMessages) {
+        const participant = participants.find((p) => p.uId === record.user_id);
+        if (participant) {
+          const createMessage: CreatedMessage = [
+            {
+              name: participant.name,
+              profileImg: participant.profileImg,
+            },
+            {
+              uId: record.id,
+              text: record.text,
+              userId: record.user_id,
+              date: record.date,
+            },
+          ];
+          messages.push(createMessage);
+        }
+      }
+    }
 
     socket.join(chatId);
 
@@ -147,10 +171,13 @@ const createAstraMessage = async ({
     const connect_messages = await astraClient.collection("connect_messages");
 
     const newMessage = {
-      ...message,
+      text: message.text,
+      user_id: message.userId,
       chat_id: chatId,
       user_profile_url: "",
       user_name_url: "",
+      date: Date.now(),
+      id: uuid(),
     };
 
     const result = await connect_messages.insertOne(newMessage);

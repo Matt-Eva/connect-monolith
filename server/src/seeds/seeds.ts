@@ -2,7 +2,6 @@ import { driver, closeDriver } from "./seedConfig";
 import { createUsers } from "./node-seeds/userSeeds";
 // import { createMultiples } from "./testCreateMultiple";
 import { createChats } from "./node-seeds/chatSeeds";
-import { createMessages } from "./node-seeds/messageSeeds";
 
 const clearDatabase = async () => {
   console.log("clearing");
@@ -23,11 +22,9 @@ const seed = async () => {
   const users = await createUsers(driver);
   console.log("seeded users");
   console.log("seeding chats");
-  const chats = await createChats(driver, users);
+  await createChats(driver, users);
   console.log("chats seeded");
-  console.log("seeding messages");
-  const messages = await createMessages(driver, users);
-  console.log("messages seeded");
+  console.log("seeding done");
   await closeDriver();
 };
 
