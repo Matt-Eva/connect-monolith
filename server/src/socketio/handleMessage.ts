@@ -79,6 +79,7 @@ const handlePushNotifications = async ({
   chatId: string;
   userId: string;
 }) => {
+  console.log("push notification running");
   const session = neoDriver.session();
 
   try {
@@ -109,11 +110,13 @@ const handlePushNotifications = async ({
       };
 
       const payload = JSON.stringify({
+        chatId,
         title: message.user.name,
         body: message.message.text,
       });
 
       try {
+        console.log("pushing notification", payload);
         await webPush.sendNotification(subscription, payload);
       } catch (error: any) {
         if (error.statusCode === 410) {
