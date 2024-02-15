@@ -1,6 +1,5 @@
 import { server, app } from "./config/appConfig";
-import { io, handleConnection } from "./config/socketIoConfig";
-import astraClient from "./config/cassandraConfig";
+import { io, handleConnection } from "./socketio/socketIoConfig";
 import neoDriver from "./config/neo4jConfig";
 import path from "path";
 
