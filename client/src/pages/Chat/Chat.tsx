@@ -70,8 +70,8 @@ function Chat() {
   };
 
   const displayMessages = messages.map((message) => {
-    const user = message[0];
-    const content = message[1];
+    const user = message.user;
+    const content = message.message;
     return <MessageCard key={content.uId} {...user} {...content} />;
   });
 
