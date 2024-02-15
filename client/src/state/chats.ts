@@ -36,9 +36,12 @@ export const chatsSlice = createSlice({
       delete oneLess[key];
       chatsState.value.chats = oneLess;
     },
+    clearChats: (chatsState) => {
+      chatsState.value = { chats: initialChatState, isFetched: false };
+    },
   },
 });
 
-export const { setChats, addChat, removeChat } = chatsSlice.actions;
+export const { setChats, addChat, removeChat, clearChats } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

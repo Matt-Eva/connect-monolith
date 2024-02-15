@@ -13,9 +13,12 @@ export const connectionsSlice = createSlice({
       connectionsState.value.connections = action.payload;
       connectionsState.value.isFetched = true;
     },
+    clearConnections: (connectionsState) => {
+      connectionsState.value = { connections: [], isFetched: false };
+    },
   },
 });
 
-export const { setConnections } = connectionsSlice.actions;
+export const { setConnections, clearConnections } = connectionsSlice.actions;
 
 export default connectionsSlice.reducer;
