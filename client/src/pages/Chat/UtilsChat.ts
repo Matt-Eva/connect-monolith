@@ -97,12 +97,14 @@ const sendMessage = ({
   userId,
   input,
   setInput,
+  combinedUsernames,
 }: {
   socket: Socket;
   chatId: string;
   userId: string;
   input: string;
   setInput: Function;
+  combinedUsernames: string;
 }) => {
   if (input === "") return;
 
@@ -110,6 +112,7 @@ const sendMessage = ({
     userId,
     chatId,
     text: input,
+    usernames: combinedUsernames,
   };
 
   socket.emit("message", message);

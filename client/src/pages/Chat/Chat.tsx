@@ -56,13 +56,6 @@ function Chat() {
     return <h2>Loading...</h2>;
   }
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (socket && chatId) {
-      sendMessage({ socket, chatId, userId: user.uId, input, setInput });
-    }
-  };
-
   const handleLeaveChat = () => {
     if (chatId) {
       leaveChat({ chatId, navigate });
@@ -82,6 +75,20 @@ function Chat() {
   });
 
   const combinedUsernames = usernames.join(", ");
+
+  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (socket && chatId) {
+      sendMessage({
+        socket,
+        chatId,
+        userId: user.uId,
+        input,
+        setInput,
+        combinedUsernames,
+      });
+    }
+  };
 
   return (
     <main className={styles.main}>
