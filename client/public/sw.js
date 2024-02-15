@@ -2,14 +2,30 @@ const userFocus = {
   isFocused: false,
 };
 
-self.addEventListener("push", (event) => {
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener("push", async (event) => {
   const data = event.data.json();
 
-  console.log("push event", userFocus);
-
   if (!userFocus.isFocused) {
+    const notifications = await self.registration.getNotifications();
+    notifications.forEach(async (notification) => {
+      if (notification.data.chatId === data.chatId) {
+        console.log("match");
+        await notification.close();
+      }
+    });
     self.registration.showNotification(data.title, {
       body: data.body,
+      data: {
+        chatId: data.chatId,
+      },
     });
   }
 });
@@ -17,6 +33,5 @@ self.addEventListener("push", (event) => {
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "focusState") {
     userFocus.isFocused = event.data.isFocused;
-    console.log(userFocus);
   }
 });
