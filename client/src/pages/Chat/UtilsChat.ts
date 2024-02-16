@@ -106,6 +106,7 @@ const sendMessage = ({
   setInput: Function;
   combinedUsernames: string;
 }) => {
+  console.log(combinedUsernames);
   if (input === "") return;
 
   const message = {
