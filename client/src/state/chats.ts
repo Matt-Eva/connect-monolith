@@ -3,12 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ConnectionArray } from "../types/connection";
 
 interface Chats {
-  [key: string]: ConnectionArray;
+  [key: string]: {
+    unread: boolean;
+    users: ConnectionArray;
+  };
 }
 
-const initialChatState: Chats = {
-  uId: [],
-};
+const initialChatState: Chats = {};
 
 export const chatsSlice = createSlice({
   name: "chats",

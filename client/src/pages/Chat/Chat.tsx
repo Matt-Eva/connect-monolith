@@ -52,6 +52,22 @@ function Chat() {
     handleScroll({ scrollRef, justLoaded, setJustLoaded });
   }, [messages]);
 
+  useEffect(() => {
+    return () => {
+      console.log("closing");
+      try {
+        fetch(`/api/update-read/${chatId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  }, []);
+
   if (loading) {
     return <h2>Loading...</h2>;
   }

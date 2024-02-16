@@ -31,7 +31,7 @@ function MyChats() {
   for (const key in chats) {
     const chat = {
       chatId: key,
-      users: chats[key],
+      users: chats[key].users,
     };
     displayChats.push(<ChatCard key={key} {...chat} />);
   }
