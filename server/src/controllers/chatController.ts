@@ -109,6 +109,7 @@ exports.leaveChat = async (req: Request, res: Response) => {
   const selfId = req.session.user.uId;
   const chatId = req.params.chatId;
   const session = neoDriver.session();
+
   try {
     const query = `
               MATCH (u:User {uId: $selfId}) - [p:PARTICIPATING] -> (c:Chat {uId: $chatId})
@@ -124,6 +125,30 @@ exports.leaveChat = async (req: Request, res: Response) => {
   } catch (e) {
     console.error(e);
     res.status(500).send({ message: "internal server error" });
+  } finally {
+    await session.close();
+  }
+};
+
+exports.updateRead = async (req: Request, res: Response) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
+  const selfId = req.session.user.uId;
+  const chatId = req.params.chatId;
+  const session = neoDriver.session();
+
+  try {
+    const query = `
+    MATCH (:User {uId: $selfId}) - [p:PARTICIPATING] -> (:Chat {uId: $chatId})
+    SET p.read = $now
+    RETURN p.read AS read
+    `;
+    const result = await session.executeWrite((tx) =>
+      tx.run(query, { selfId, chatId, now: Date.now() }),
+    );
+    console.log(result.records[0].get("read"));
+  } catch (error) {
+    console.error(error);
   } finally {
     await session.close();
   }

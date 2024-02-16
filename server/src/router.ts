@@ -28,6 +28,8 @@ router.get("/my-chats", chatController.getChats);
 
 router.post("/new-chat", chatController.createChat);
 
+router.patch("/update-read/:chatId", chatController.updateRead);
+
 router.delete("/leave-chat/:chatId", chatController.leaveChat);
 
 router.get("/my-connections", connectionController.getConnections);
