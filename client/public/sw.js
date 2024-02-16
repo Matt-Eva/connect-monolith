@@ -17,7 +17,6 @@ self.addEventListener("push", async (event) => {
     const notifications = await self.registration.getNotifications();
     notifications.forEach(async (notification) => {
       if (notification.data.chatId === data.chatId) {
-        console.log("match");
         await notification.close();
       }
     });

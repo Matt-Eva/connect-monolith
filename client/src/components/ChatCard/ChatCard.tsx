@@ -15,8 +15,6 @@ function ChatCard({
 }) {
   const [isTruncated, setIsTruncated] = useState(true);
 
-  console.log(users);
-
   const userNameArray = users.map((user) => user.firstName);
 
   const userImages = [];
