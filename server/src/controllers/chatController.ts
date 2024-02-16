@@ -9,8 +9,11 @@ exports.getChats = async (req: Request, res: Response) => {
   const session = neoDriver.session();
   try {
     const userId = req.session.user.uId;
-    const query =
-      "MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId";
+    const query = `
+    MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) 
+    RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId
+    ORDER BY chat.updated
+    `;
     const result = await session.executeRead((tx) =>
       tx.run(query, { userId: userId }),
     );
