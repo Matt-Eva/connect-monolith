@@ -34,16 +34,18 @@ const createChats = async (driver: Driver, users: User[]) => {
           return returnArray;
         }
 
+        const now = Date.now();
+
         const newChat = await tx.run(
           `
-                    CREATE (c:Chat {uId: $uId})
+                    CREATE (c:Chat {uId: $uId, updated: $updated})
                     WITH c
                     UNWIND $connections AS connection
                     MATCH (u:User {uId: connection.uId})
-                    MERGE (u) - [p:PARTICIPATING] -> (c)
+                    MERGE (u) - [p:PARTICIPATING {read: $read}] -> (c)
                     RETURN c AS chat, p AS participating, u AS user
                 `,
-          { uId: uuid(), connections: connections },
+          { uId: uuid(), connections: connections, updated: now, read: now },
         );
 
         return newChat;
