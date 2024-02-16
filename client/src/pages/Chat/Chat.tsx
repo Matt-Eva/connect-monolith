@@ -74,7 +74,9 @@ function Chat() {
     return <span key={p.uId}>{p.firstName}, </span>;
   });
 
-  const combinedUsernames = participants.map((p) => p.firstName).join(", ");
+  const combinedUsernames = [...participants, user]
+    .map((p) => p.firstName)
+    .join(", ");
 
   const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
