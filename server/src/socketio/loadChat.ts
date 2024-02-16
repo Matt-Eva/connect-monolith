@@ -35,11 +35,12 @@ const loadNeoParticipants = async ({
   const session = neoDriver.session();
   try {
     const participantsQuery = `
-      MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+      MATCH (:User {uId: $userId}) - [p:PARTICIPATING] -> (c:Chat {uId: $chatId}) <- [:PARTICIPATING] - (u:User)
+      SET p.read = $now
       RETURN u.firstName AS firstName, u.uId AS uId, u.name AS name, u.profileImg AS profileImg
       `;
-    const participantResults = await session.executeRead(async (tx) =>
-      tx.run(participantsQuery, { userId, chatId }),
+    const participantResults = await session.executeWrite(async (tx) =>
+      tx.run(participantsQuery, { userId, chatId, now: Date.now() }),
     );
 
     const participants = participantResults.records.map((record) => {
