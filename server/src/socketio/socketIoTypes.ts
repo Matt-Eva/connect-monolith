@@ -12,6 +12,7 @@ export interface IncomingMessage {
   userId: string;
   chatId: string;
   text: string;
+  usernames: string;
 }
 
 export interface CreatedMessage {

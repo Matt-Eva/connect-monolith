@@ -70,16 +70,21 @@ const createMessage = async ({
   }
 };
 
+interface PushMessage {
+  participants: string;
+  username: string;
+  text: string;
+}
 const handlePushNotifications = async ({
   message,
   chatId,
   userId,
 }: {
-  message: CreatedMessage;
+  message: PushMessage;
   chatId: string;
   userId: string;
 }) => {
-  console.log("push notification running");
+  console.log("push notification running", message);
   const session = neoDriver.session();
 
   try {
@@ -111,8 +116,8 @@ const handlePushNotifications = async ({
 
       const payload = JSON.stringify({
         chatId,
-        title: message.user.name,
-        body: message.message.text,
+        title: message.participants,
+        body: `${message.username}: ${message.text}`,
       });
 
       try {
@@ -158,18 +163,25 @@ const handleMessage = async ({
   user: User;
   io: Server;
 }) => {
+  console.log("incoming message", message);
   const session = neoDriver.session();
 
   try {
-    const newMessage: CreatedMessage = await createMessage({
+    await createMessage({
       user,
       message,
       chatId,
       io,
     });
 
+    const pushMessage: PushMessage = {
+      participants: message.usernames,
+      username: user.name,
+      text: message.text,
+    };
+
     await handlePushNotifications({
-      message: newMessage,
+      message: pushMessage,
       chatId,
       userId: user.uId,
     });
