@@ -12,7 +12,7 @@ exports.getChats = async (req: Request, res: Response) => {
     const query = `
     MATCH (:User {uId: $userId}) - [:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) 
     RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId
-    ORDER BY chat.updated
+    ORDER BY chat.updated DESC
     `;
     const result = await session.executeRead((tx) =>
       tx.run(query, { userId: userId }),

@@ -34,6 +34,24 @@ const createAstraMessage = async ({
   }
 };
 
+const updateChat = async ({ chatId }: { chatId: string }) => {
+  const session = neoDriver.session();
+  try {
+    const query = `
+    MATCH (c:Chat {uId: $chatId})
+    SET c.updated = $now
+    `;
+    await session.executeWrite((tx) =>
+      tx.run(query, { chatId, now: Date.now() }),
+    );
+  } catch (error: any) {
+    console.error(error);
+    throw new Error(error);
+  } finally {
+    await session.close();
+  }
+};
+
 const createMessage = async ({
   message,
   chatId,
@@ -47,6 +65,7 @@ const createMessage = async ({
 }) => {
   try {
     const record = await createAstraMessage({ message, chatId });
+    await updateChat({ chatId });
 
     const newMessage: CreatedMessage = {
       user: {
