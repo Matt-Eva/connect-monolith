@@ -11,7 +11,7 @@ exports.getChats = async (req: Request, res: Response) => {
     const userId = req.session.user.uId;
     const query = `
     MATCH (:User {uId: $userId}) - [p:PARTICIPATING] -> (chat:Chat) <- [:PARTICIPATING] - (user:User) 
-    RETURN chat, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId, p.read < chat.updated AS unread
+    RETURN chat.uId AS chatId, user.firstName AS firstName, user.profileImg AS profileImg, user.uId AS uId, p.read < chat.updated AS unread
     ORDER BY chat.updated DESC
     `;
     const result = await session.executeRead((tx) =>
@@ -32,15 +32,15 @@ exports.getChats = async (req: Request, res: Response) => {
     const chatHash: ChatHash = {};
 
     for (const record of result.records) {
-      const chat = record.get("chat").properties;
+      const chatId = record.get("chatId");
       const unread = record.get("unread");
       const user = {
         firstName: record.get("firstName"),
         profileImg: record.get("profileImg"),
         uId: record.get("uId"),
       };
-      if (!chatHash[chat.uId]) chatHash[chat.uId] = { unread, users: [] };
-      chatHash[chat.uId].users.push(user);
+      if (!chatHash[chatId]) chatHash[chatId] = { unread, users: [] };
+      chatHash[chatId].users.push(user);
     }
 
     res.status(200).send(chatHash);
