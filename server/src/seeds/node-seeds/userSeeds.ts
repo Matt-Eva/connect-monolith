@@ -10,7 +10,6 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  profileImg: string;
 }
 const createUsersWithConnections = async (
   session: Session,
@@ -83,7 +82,6 @@ const createUserArray = () => {
       name: "Matt French",
       email: "matt@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -92,7 +90,6 @@ const createUserArray = () => {
       name: "Wills Woflen",
       email: "wills@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -101,7 +98,6 @@ const createUserArray = () => {
       name: "Jay Jubilee",
       email: "jay@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -110,7 +106,6 @@ const createUserArray = () => {
       name: "Jay Heebles",
       email: "jay1@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -119,7 +114,6 @@ const createUserArray = () => {
       name: "Tom Titanium",
       email: "tom@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -128,7 +122,6 @@ const createUserArray = () => {
       lastName: "Nonifont",
       email: "nick@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -137,7 +130,6 @@ const createUserArray = () => {
       lastName: "Jangles",
       email: "jay2@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -146,7 +138,6 @@ const createUserArray = () => {
       lastName: "Forthworth",
       email: "mustafa@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -155,7 +146,6 @@ const createUserArray = () => {
       lastName: "James",
       email: "jim@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -164,7 +154,6 @@ const createUserArray = () => {
       lastName: "Johnson",
       email: "liz@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -173,7 +162,6 @@ const createUserArray = () => {
       lastName: "Smalls",
       email: "laura@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
     {
       uId: uuid(),
@@ -182,7 +170,6 @@ const createUserArray = () => {
       lastName: "Singleton",
       email: "sam@email.com",
       password: "test",
-      profileImg: faker.image.avatar(),
     },
   ];
   for (let i = 0; i < 20; i++) {
@@ -193,7 +180,6 @@ const createUserArray = () => {
       name: `${firstName} ${lastName}`,
       firstName: firstName,
       lastName: lastName,
-      profileImg: faker.internet.avatar(),
       password: faker.word.sample(),
       email: faker.internet.email(),
     };
