@@ -19,6 +19,8 @@ import GetApp from "./pages/GetApp/GetApp";
 import Donate from "./pages/Donate/Donate";
 import EnableNotifications from "./pages/EnableNotifications/EnableNotifications";
 import Posts from "./pages/Posts/Posts";
+import Feed from "./pages/Feed/Feed";
+import CreatePost from "./pages/CreatePost/CreatePost";
 
 const routes = [
   {
@@ -110,6 +112,16 @@ const routes = [
       {
         path: "/posts",
         element: <Posts />,
+        children: [
+          {
+            path: "/posts",
+            element: <Feed />,
+          },
+          {
+            path: "/posts/new",
+            element: <CreatePost />,
+          },
+        ],
       },
     ],
   },
