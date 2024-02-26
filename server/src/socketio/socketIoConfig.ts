@@ -4,7 +4,7 @@ import { server } from "../config/appConfig.js";
 import redisClient from "../config/redisConfig.js";
 import loadChat from "./loadChat.js";
 import handleMessage from "./handleMessage.js";
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import { IncomingMessage } from "./socketIoTypes.js";
 
 interface ServerToClientEvents {

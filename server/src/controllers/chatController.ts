@@ -146,7 +146,6 @@ exports.updateRead = async (req: Request, res: Response) => {
     const result = await session.executeWrite((tx) =>
       tx.run(query, { selfId, chatId, now: Date.now() }),
     );
-    console.log(result.records[0].get("read"));
   } catch (error) {
     console.error(error);
   } finally {

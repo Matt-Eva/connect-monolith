@@ -19,6 +19,7 @@ const loadAstraMessages = async ({
   try {
     const connect_messages = await astraClient.collection("connect_messages");
     const result = await connect_messages.find({ chat_id: chatId }).toArray();
+
     return result;
   } catch (error) {
     console.error(error);
