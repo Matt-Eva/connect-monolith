@@ -3,8 +3,6 @@ import { io, handleConnection } from "./socketio/socketIoConfig";
 import neoDriver from "./config/neo4jConfig";
 import path from "path";
 
-console.log("change");
-
 server.listen(process.env.PORT, () => {
   console.log(`Server running on ${process.env.PORT}`);
 });
