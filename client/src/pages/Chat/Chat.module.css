@@ -1,51 +1,49 @@
 .main {
-    grid-row: 2;
-    height: 100%;
-    width: 100%;
-    padding: 5px;
-    display: grid;
-    grid-template-columns: calc(100% - 6rem) 6rem;
-    grid-template-rows: 2rem calc(100% - 5rem) 3rem;
-    align-items: start;
+  grid-row: 2;
+  height: 100%;
+  width: 100%;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: calc(100% - 6rem) 6rem;
+  grid-template-rows: 2rem calc(100% - 5rem) 3rem;
+  align-items: start;
 }
 
-
 .participants {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1rem;
-    margin-right: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  margin-right: 5px;
 }
 
 .messageContainer {
-    background-color: hsl(0, 0%, 30%);
-    border-radius: 5px;
-    padding: 0 5px;
-    grid-row: 2;
-    grid-column: span 2;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    overflow: auto;
+  border-radius: 5px;
+  padding: 0 5px;
+  grid-row: 2;
+  grid-column: span 2;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: auto;
 }
 
 .textInputForm {
-    align-self: center;
-    grid-row: 3;
-    grid-column: span 2;
-    width: 100%;
-    display: flex;
+  align-self: center;
+  grid-row: 3;
+  grid-column: span 2;
+  width: 100%;
+  display: flex;
 }
 
 .textInputForm input[type="text"] {
-    width: calc(100% - 4rem - 5px);
-    margin-right: 5px;
-    height: 2rem;
+  width: calc(100% - 4rem - 5px);
+  margin-right: 5px;
+  height: 2rem;
 }
 
 .textInputForm input[type="submit"] {
-    width: 4rem;
-    height: 2rem;
+  width: 4rem;
+  height: 2rem;
 }
