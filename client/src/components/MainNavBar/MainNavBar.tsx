@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom"
-import styles from "./MainNavBar.module.css"
+import { NavLink } from "react-router-dom";
+import styles from "./MainNavBar.module.css";
 
 function MainNavBar() {
   return (
@@ -11,9 +11,12 @@ function MainNavBar() {
         <NavLink to="/people" className="underline">
           people
         </NavLink>
+        <NavLink to="/posts" className="underline">
+          posts
+        </NavLink>
       </nav>
     </footer>
-  )
+  );
 }
 
-export default MainNavBar
+export default MainNavBar;

@@ -1,12 +1,12 @@
-.footer{
-    grid-row: 3;
-    border-top: solid 1px;
-    border-color: #999999;
-} 
+.footer {
+  grid-row: 3;
+  border-top: solid 1px;
+  border-color: #999999;
+}
 
 .nav {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    padding-top: .2rem;
-    justify-items: center;
+  display: flex;
+
+  padding-top: 0.2rem;
+  justify-content: space-evenly;
 }
