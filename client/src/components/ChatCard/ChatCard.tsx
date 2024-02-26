@@ -9,9 +9,11 @@ import styles from "./ChatCard.module.css";
 function ChatCard({
   chatId,
   users,
+  unread,
 }: {
   chatId: string;
   users: ConnectionArray;
+  unread: boolean;
 }) {
   const [isTruncated, setIsTruncated] = useState(true);
 
@@ -34,7 +36,10 @@ function ChatCard({
 
   return (
     <article className={`${styles.card}`}>
-      <CardImageIcon users={userImages} />
+      <div className={styles.imageContainer}>
+        <CardImageIcon users={userImages} />
+      </div>
+      {unread ? <span className={styles.unread}>unread</span> : null}
       <span
         className={nameClass}
         title={userNames}

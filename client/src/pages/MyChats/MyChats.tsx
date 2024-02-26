@@ -16,6 +16,8 @@ function MyChats() {
   const chats = chatsState.chats;
   const dispatch = useAppDispatch();
 
+  console.log(chats);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ function MyChats() {
     const chat = {
       chatId: key,
       users: chats[key].users,
+      unread: chats[key].unread,
     };
     displayChats.push(<ChatCard key={key} {...chat} />);
   }
