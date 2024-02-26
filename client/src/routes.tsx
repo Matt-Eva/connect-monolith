@@ -18,6 +18,7 @@ import About from "./pages/About/About";
 import GetApp from "./pages/GetApp/GetApp";
 import Donate from "./pages/Donate/Donate";
 import EnableNotifications from "./pages/EnableNotifications/EnableNotifications";
+import Posts from "./pages/Posts/Posts";
 
 const routes = [
   {
@@ -105,6 +106,10 @@ const routes = [
       {
         path: "/donate",
         element: <Donate />,
+      },
+      {
+        path: "/posts",
+        element: <Posts />,
       },
     ],
   },
