@@ -40,9 +40,17 @@ export const chatsSlice = createSlice({
     clearChats: (chatsState) => {
       chatsState.value = { chats: initialChatState, isFetched: false };
     },
+    markChatRead: (chatsState, action: PayloadAction<string>) => {
+      const chatId = action.payload;
+      chatsState.value.chats[chatId] = {
+        ...chatsState.value.chats[chatId],
+        unread: false,
+      };
+    },
   },
 });
 
-export const { setChats, addChat, removeChat, clearChats } = chatsSlice.actions;
+export const { setChats, addChat, removeChat, clearChats, markChatRead } =
+  chatsSlice.actions;
 
 export default chatsSlice.reducer;

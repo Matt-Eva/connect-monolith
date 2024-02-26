@@ -1,13 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../reduxHooks";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 import { Socket } from "socket.io-client";
 
 import MessageCard from "../../components/MessageCard/MessageCard";
 
-import { MessageState } from "./TypesChat";
-
 import styles from "./Chat.module.css";
+
+import { markChatRead } from "../../state/chats";
+
+import { MessageState } from "./TypesChat";
 
 import {
   initializeSocket,
@@ -36,8 +38,11 @@ function Chat() {
 
   const navigate = useNavigate();
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (chatId) {
+      dispatch(markChatRead(chatId));
       return initializeSocket({
         setSocket,
         setMessages,

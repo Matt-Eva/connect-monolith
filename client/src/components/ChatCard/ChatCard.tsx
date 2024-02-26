@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
 
 import { ConnectionArray } from "../../types/connection";
+
 import styles from "./ChatCard.module.css";
 
 function ChatCard({
