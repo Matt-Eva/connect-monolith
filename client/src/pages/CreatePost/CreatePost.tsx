@@ -12,6 +12,9 @@ interface ChildObject {
 }
 function CreatePost() {
   const [content, setContent] = useState<ChildObject[]>([]);
+  const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(
+    null
+  );
 
   const recursivelyHandleChildNodes = (
     node: ChildNode,
@@ -21,14 +24,18 @@ function CreatePost() {
     for (const child of node.childNodes) {
       if (child.childNodes.length !== 0) {
         const nestedChildren = recursivelyHandleChildNodes(child, node);
+        const nodeName =
+          child.nodeName === "DIV" ? "p" : child.nodeName.toLowerCase();
         children.push({
-          nodeName: child.nodeName,
+          nodeName: nodeName,
           nodeText: "",
           children: nestedChildren,
         });
       } else {
+        const nodeName =
+          child.nodeName === "DIV" ? "p" : child.nodeName.toLowerCase();
         children.push({
-          nodeName: child.nodeName,
+          nodeName: nodeName,
           nodeText: child.textContent,
           children: [],
         });
@@ -69,38 +76,78 @@ function CreatePost() {
     }, 1);
   };
 
-  const handleInput = (e: React.FormEvent) => {
-    const editor = e.target as HTMLElement;
-  };
-
   const recursivelyRenderChildren = (
     children: ChildObject[]
   ): Iterable<React.ReactNode> => {
     return children.map((child) => {
       if (child.nodeName === "#text") {
         return child.nodeText;
-      } else if (child.nodeName === "BR") {
-        console.log(child.nodeName);
+      } else if (child.nodeName === "br") {
         return <br></br>;
       } else {
         const children = child.children;
-        const tagName = child.nodeName.toLowerCase();
         const displayChildren = recursivelyRenderChildren(children);
-        return createElement(tagName, {}, displayChildren);
+        return createElement(
+          child.nodeName,
+          {
+            onClick: (e: React.MouseEvent) => {
+              const target = e.target as HTMLElement;
+              setFocusedElement(target);
+            },
+          },
+          displayChildren
+        );
       }
     });
   };
 
   const displayContent = recursivelyRenderChildren(content);
 
+  const handleClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    console.log(target);
+    if (target.id !== "editorjs") {
+      setFocusedElement(target);
+    }
+  };
+
+  const recursivelyTraverseUpNodeHierarchy = (
+    element: HTMLElement | null
+  ): HTMLElement | undefined => {
+    if (element !== null) {
+      if (
+        element.nodeName === "U" ||
+        element.nodeName === "B" ||
+        element.nodeName === "I"
+      ) {
+        return recursivelyTraverseUpNodeHierarchy(element.parentElement);
+      } else {
+        return element;
+      }
+    }
+  };
+
+  const makeHeader = (e: React.MouseEvent) => {
+    console.log(focusedElement);
+    let elementToChange = recursivelyTraverseUpNodeHierarchy(focusedElement);
+    if (elementToChange) {
+      const header: HTMLElement = document.createElement("h2");
+      header.textContent = elementToChange.textContent;
+      elementToChange.parentNode?.replaceChild(header, elementToChange);
+    }
+  };
+
   return (
     <div className={styles.container}>
+      <div>
+        <button onClick={makeHeader}>H</button>
+      </div>
       <div
         id="editorjs"
         className={styles.editor}
         contentEditable={true}
         onKeyDown={handleKeyDown}
-        onInput={handleInput}
+        onClick={handleClick}
       ></div>
       <div>{displayContent}</div>
     </div>
