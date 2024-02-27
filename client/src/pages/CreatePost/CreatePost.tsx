@@ -74,6 +74,10 @@ function CreatePost() {
       console.log(content);
       setContent(content);
     }, 1);
+
+    if (e.key === "Tab") {
+      e.preventDefault();
+    }
   };
 
   const recursivelyRenderChildren = (
