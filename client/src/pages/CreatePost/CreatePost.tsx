@@ -9,16 +9,24 @@ type ContentArray = Element[];
 function CreatePost() {
   const [content, setContent] = useState([]);
 
+  const recursivelyHandleChildNodes = (node: ChildNode) => {
+    console.log(node.childNodes);
+    for (const child of node.childNodes) {
+      console.log(child.childNodes);
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    const selected = e.target as HTMLElement;
-    if (selected.children.length === 0 && e.key.length === 1) {
+    const editor = e.target as HTMLElement;
+
+    if (editor.children.length === 0 && e.key.length === 1) {
       setTimeout(() => {
-        const textContent = selected.textContent;
+        const textContent = editor.textContent;
         console.log(textContent);
-        selected.textContent = "";
+        editor.textContent = "";
         const p = document.createElement("p");
         p.textContent = textContent;
-        selected.append(p);
+        editor.append(p);
         const position = textContent?.length;
         const range = document.createRange();
         const sel = document.getSelection();
@@ -29,25 +37,17 @@ function CreatePost() {
         sel?.removeAllRanges();
         sel?.addRange(range);
 
-        selected.focus();
+        editor.focus();
       }, 1);
+    }
+
+    for (const childNode of editor.childNodes) {
+      recursivelyHandleChildNodes(childNode);
     }
   };
 
   const handleInput = (e: React.FormEvent) => {
     const editor = e.target as HTMLElement;
-
-    for (const child of editor.children) {
-      console.log(child.nodeName);
-      console.log(child.textContent);
-      console.log(child.children);
-      for (const node of child.children) {
-        console.log(node.children);
-        for (const element of node.children) {
-          console.log(element.children);
-        }
-      }
-    }
   };
 
   return (
