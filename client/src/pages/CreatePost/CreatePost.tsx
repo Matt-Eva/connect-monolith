@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import EditorJS from "@editorjs/editorjs";
 import LinkTool from "@editorjs/link";
 import Header from "@editorjs/header";
@@ -7,10 +7,9 @@ import styles from "./CreatePost.module.css";
 
 type ContentArray = Element[];
 function CreatePost() {
-  const [contentArray, setContentArray] = useState<ContentArray>([]);
-  const [firstEnter, setFirstEnter] = useState(true);
+  const [content, setContent] = useState([]);
 
-  const handleKeyDown = async (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     const selected = e.target as HTMLElement;
     if (selected.children.length === 0 && e.key.length === 1) {
       setTimeout(() => {
@@ -35,14 +34,30 @@ function CreatePost() {
     }
   };
 
+  const handleInput = (e: React.FormEvent) => {
+    const editor = e.target as HTMLElement;
+
+    for (const child of editor.children) {
+      console.log(child.nodeName);
+      console.log(child.textContent);
+      console.log(child.children);
+      for (const node of child.children) {
+        console.log(node.children);
+        for (const element of node.children) {
+          console.log(element.children);
+        }
+      }
+    }
+  };
+
   return (
-    <div>
-      CreatePost
+    <div className={styles.container}>
       <div
         id="editorjs"
         className={styles.editor}
         contentEditable={true}
         onKeyDown={handleKeyDown}
+        onInput={handleInput}
       ></div>
     </div>
   );
