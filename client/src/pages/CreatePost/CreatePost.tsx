@@ -5,15 +5,36 @@ import Header from "@editorjs/header";
 
 import styles from "./CreatePost.module.css";
 
-type ContentArray = Element[];
+interface ChildObject {
+  nodeName: string;
+  nodeText: string | null;
+  children: ChildObject[];
+}
 function CreatePost() {
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState<ChildObject[]>([]);
 
-  const recursivelyHandleChildNodes = (node: ChildNode) => {
-    console.log(node.childNodes);
+  const recursivelyHandleChildNodes = (
+    node: ChildNode,
+    parent?: ChildNode
+  ): ChildObject[] => {
+    const children = [];
     for (const child of node.childNodes) {
-      console.log(child.childNodes);
+      if (child.childNodes.length !== 0) {
+        const nestedChildren = recursivelyHandleChildNodes(child, node);
+        children.push({
+          nodeName: child.nodeName,
+          nodeText: child.textContent,
+          children: nestedChildren,
+        });
+      } else {
+        children.push({
+          nodeName: child.nodeName,
+          nodeText: child.textContent,
+          children: [],
+        });
+      }
     }
+    return children;
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -42,7 +63,8 @@ function CreatePost() {
     }
 
     for (const childNode of editor.childNodes) {
-      recursivelyHandleChildNodes(childNode);
+      const content = recursivelyHandleChildNodes(childNode);
+      console.log(content);
     }
   };
 
