@@ -8,40 +8,32 @@ import styles from "./CreatePost.module.css";
 type ContentArray = Element[];
 function CreatePost() {
   const [contentArray, setContentArray] = useState<ContentArray>([]);
-  console.log(contentArray);
-  // const editor = new EditorJS({
-  //   tools: {
-  //     header: {
-  //       class: Header,
-  //       inlineToolbar: ["link"],
-  //     },
-  //     linkTool: {
-  //       class: LinkTool,
-  //     },
-  //   },
-  // });
+  const [firstEnter, setFirstEnter] = useState(true);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleKeyDown = async (e: React.KeyboardEvent) => {
     const selected = e.target as HTMLElement;
-    const elementType = selected.tagName;
-    if (selected.parentNode) {
-      const parent = selected.parentNode;
-      console.log(parent);
+    if (selected.children.length === 0 && e.key.length === 1) {
+      setTimeout(() => {
+        const textContent = selected.textContent;
+        console.log(textContent);
+        selected.textContent = "";
+        const p = document.createElement("p");
+        p.textContent = textContent;
+        selected.append(p);
+        const position = textContent?.length;
+        const range = document.createRange();
+        const sel = document.getSelection();
+
+        range.setStart(p, position!);
+        range.collapse(true);
+
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+
+        selected.focus();
+      }, 1);
     }
   };
-
-  const handleInput = (e: React.FormEvent) => {
-    const selected = e.target as HTMLElement;
-    console.log("selected", selected);
-    const childNodes = selected.children;
-    const stateArray = [];
-    for (const node of childNodes) {
-      stateArray.push(node);
-    }
-    setContentArray(stateArray);
-  };
-
-  const content = "<div>start writing</div>";
 
   return (
     <div>
@@ -50,11 +42,8 @@ function CreatePost() {
         id="editorjs"
         className={styles.editor}
         contentEditable={true}
-        onClick={handleClick}
-        onInput={handleInput}
-      >
-        {content}
-      </div>
+        onKeyDown={handleKeyDown}
+      ></div>
     </div>
   );
 }
