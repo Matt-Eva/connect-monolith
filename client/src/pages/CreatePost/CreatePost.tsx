@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createElement } from "react";
 import EditorJS from "@editorjs/editorjs";
 import LinkTool from "@editorjs/link";
 import Header from "@editorjs/header";
@@ -23,7 +23,7 @@ function CreatePost() {
         const nestedChildren = recursivelyHandleChildNodes(child, node);
         children.push({
           nodeName: child.nodeName,
-          nodeText: child.textContent,
+          nodeText: "",
           children: nestedChildren,
         });
       } else {
@@ -62,15 +62,36 @@ function CreatePost() {
       }, 1);
     }
 
-    for (const childNode of editor.childNodes) {
-      const content = recursivelyHandleChildNodes(childNode);
+    setTimeout(() => {
+      const content = recursivelyHandleChildNodes(editor);
       console.log(content);
-    }
+      setContent(content);
+    }, 1);
   };
 
   const handleInput = (e: React.FormEvent) => {
     const editor = e.target as HTMLElement;
   };
+
+  const recursivelyRenderChildren = (
+    children: ChildObject[]
+  ): Iterable<React.ReactNode> => {
+    return children.map((child) => {
+      if (child.nodeName === "#text") {
+        return child.nodeText;
+      } else if (child.nodeName === "BR") {
+        console.log(child.nodeName);
+        return <br></br>;
+      } else {
+        const children = child.children;
+        const tagName = child.nodeName.toLowerCase();
+        const displayChildren = recursivelyRenderChildren(children);
+        return createElement(tagName, {}, displayChildren);
+      }
+    });
+  };
+
+  const displayContent = recursivelyRenderChildren(content);
 
   return (
     <div className={styles.container}>
@@ -81,6 +102,7 @@ function CreatePost() {
         onKeyDown={handleKeyDown}
         onInput={handleInput}
       ></div>
+      <div>{displayContent}</div>
     </div>
   );
 }
