@@ -7,3 +7,8 @@
   height: 50%;
   background-color: hsl(0, 0%, 30%);
 }
+
+.container a {
+  text-decoration: underline;
+  color: hsl(200, 100%, 80%);
+}
