@@ -5,6 +5,7 @@
 
 .editor {
   height: 50%;
+  width: 100vw;
   background-color: hsl(0, 0%, 30%);
 }
 

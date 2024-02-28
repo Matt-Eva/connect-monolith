@@ -21,6 +21,8 @@ function CreatePost() {
   const [linkInput, setLinkInput] = useState("");
   const [linkErrorMessage, setLinkErrorMessage] = useState(false);
 
+  console.log(content);
+
   const recursivelyHandleChildNodes = (
     node: ChildNode,
     parent?: ChildNode
@@ -31,6 +33,7 @@ function CreatePost() {
         const nestedChildren = recursivelyHandleChildNodes(child, node);
         const nodeName =
           child.nodeName === "DIV" ? "p" : child.nodeName.toLowerCase();
+        console.log(nodeName);
         if (nodeName === "a" && child.nodeType == Node.ELEMENT_NODE) {
           const element = child as HTMLElement;
           const href = element.getAttribute("href");
@@ -41,7 +44,24 @@ function CreatePost() {
             children: nestedChildren,
             href: href,
           });
+        } else if (nodeName === "span") {
+          const spanNode = child as HTMLElement;
+          if (spanNode.className === "span-indent") {
+            children.push({
+              nodeName: nodeName,
+              nodeText: child.textContent,
+              children: [],
+              className: "span-indent",
+            });
+          } else {
+            children.push({
+              nodeName: nodeName,
+              nodeText: child.textContent,
+              children: [],
+            });
+          }
         } else {
+          console.log("pushing");
           children.push({
             nodeName: nodeName,
             nodeText: "",
@@ -51,11 +71,29 @@ function CreatePost() {
       } else {
         const nodeName =
           child.nodeName === "DIV" ? "p" : child.nodeName.toLowerCase();
-        children.push({
-          nodeName: nodeName,
-          nodeText: child.textContent,
-          children: [],
-        });
+        if (nodeName === "span") {
+          const spanNode = child as HTMLElement;
+          if (spanNode.className === "span-indent") {
+            children.push({
+              nodeName: nodeName,
+              nodeText: child.textContent,
+              children: [],
+              className: "span-indent",
+            });
+          } else {
+            children.push({
+              nodeName: nodeName,
+              nodeText: child.textContent,
+              children: [],
+            });
+          }
+        } else {
+          children.push({
+            nodeName: nodeName,
+            nodeText: child.textContent,
+            children: [],
+          });
+        }
       }
     }
     return children;
@@ -154,7 +192,7 @@ function CreatePost() {
     }
   };
 
-  const handleMouseUp = (e: React.MouseEvent) => {
+  const handleMouseUp = () => {
     const selection = window.getSelection();
     if (selection?.rangeCount && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
@@ -163,7 +201,7 @@ function CreatePost() {
     }
   };
 
-  const makeHeader = (e: React.MouseEvent) => {
+  const makeHeader = () => {
     console.log(focusedElement);
     let elementToChange = recursivelyTraverseUpNodeHierarchy(focusedElement);
     if (elementToChange && elementToChange.nodeName !== "H2") {
@@ -177,7 +215,7 @@ function CreatePost() {
     }
   };
 
-  const showLink = (e: React.MouseEvent) => {
+  const showLink = () => {
     setShowLinkInput(!showLinkInput);
   };
 
@@ -218,6 +256,23 @@ function CreatePost() {
     }
   };
 
+  const indent = () => {
+    if (focusedElement) {
+      console.log(focusedElement);
+      const firstChild = focusedElement.firstChild;
+      if (firstChild && firstChild.nodeName !== "SPAN") {
+        const span = document.createElement("span");
+        span.style.display = "inline-block";
+        span.style.width = "20px";
+        span.className = "span-indent";
+        focusedElement.insertBefore(span, firstChild);
+      } else if (firstChild) {
+        focusedElement.removeChild(firstChild);
+      }
+      // focusedElement.style.marginLeft = "20px";
+    }
+  };
+
   return (
     <div className={styles.container} onMouseUp={handleMouseUp}>
       <div>
@@ -226,6 +281,7 @@ function CreatePost() {
         <button onClick={removeLink}>
           <s>Link</s>
         </button>
+        <button onClick={indent}>{"->"}</button>
       </div>
       {showLinkInput ? (
         <form onSubmit={handleLinkSubmit}>
