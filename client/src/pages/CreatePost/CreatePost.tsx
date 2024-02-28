@@ -17,9 +17,9 @@ function CreatePost() {
     null
   );
   const [selectedText, setSelectedText] = useState("");
-
-  console.log("focusedElement", focusedElement);
-  console.log("content", content);
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  const [linkInput, setLinkInput] = useState("");
+  const [linkErrorMessage, setLinkErrorMessage] = useState(false);
 
   const recursivelyHandleChildNodes = (
     node: ChildNode,
@@ -59,6 +59,13 @@ function CreatePost() {
       }
     }
     return children;
+  };
+
+  const updateContentState = () => {
+    // setTimeout(() => {
+    //   const content = recursivelyHandleChildNodes(editor);
+    //   setContent(content);
+    // }, 1);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -123,10 +130,6 @@ function CreatePost() {
 
   const displayContent = recursivelyRenderChildren(content);
 
-  const handleClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-  };
-
   const recursivelyTraverseUpNodeHierarchy = (
     element: HTMLElement | null
   ): HTMLElement | undefined => {
@@ -163,28 +166,55 @@ function CreatePost() {
   const makeHeader = (e: React.MouseEvent) => {
     console.log(focusedElement);
     let elementToChange = recursivelyTraverseUpNodeHierarchy(focusedElement);
-    if (elementToChange) {
+    if (elementToChange && elementToChange.nodeName !== "H2") {
       const header: HTMLElement = document.createElement("h2");
       header.textContent = elementToChange.textContent;
       elementToChange.parentNode?.replaceChild(header, elementToChange);
+    } else if (elementToChange) {
+      const p: HTMLElement = document.createElement("p");
+      p.textContent = elementToChange.textContent;
+      elementToChange.parentNode?.replaceChild(p, elementToChange);
     }
   };
 
-  const makeLink = (e: React.MouseEvent) => {
-    // if (focusedElement) {
-    //   const startPosition = focusedElement.textContent?.indexOf(selectedText);
-    //   console.log(startPosition);
-    //   if (startPosition) {
-    //     const endPosition = startPosition + selectedText.length;
-    //     console.log(endPosition);
-    //   }
-    // }
+  const showLink = (e: React.MouseEvent) => {
+    setShowLinkInput(!showLinkInput);
+  };
+
+  const handleLinkSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     const selection = window.getSelection();
-    if (selection?.rangeCount && selection.rangeCount > 0) {
+    if (
+      selection?.rangeCount &&
+      selection.rangeCount > 0 &&
+      selection.toString().length !== 0
+    ) {
       const range = selection.getRangeAt(0);
       const aTag = document.createElement("a");
-      aTag.href = "https://www.google.com";
-      range.surroundContents(aTag);
+      aTag.href = linkInput;
+      console.log(selection.toString());
+      try {
+        range.surroundContents(aTag);
+        setShowLinkInput(false);
+        setLinkInput("");
+        setLinkErrorMessage(false);
+      } catch (e) {
+        setLinkErrorMessage(true);
+      }
+    }
+  };
+
+  const removeLink = () => {
+    if (
+      focusedElement &&
+      focusedElement.textContent &&
+      focusedElement.nodeName === "A"
+    ) {
+      console.log(focusedElement?.nodeName);
+      const textNode = document.createTextNode(focusedElement.textContent);
+      focusedElement.parentNode?.insertBefore(textNode, focusedElement);
+      focusedElement.parentNode?.removeChild(focusedElement);
+      setFocusedElement(null);
     }
   };
 
@@ -192,14 +222,31 @@ function CreatePost() {
     <div className={styles.container} onMouseUp={handleMouseUp}>
       <div>
         <button onClick={makeHeader}>H</button>
-        <button onClick={makeLink}>Link</button>
+        <button onClick={showLink}>Link</button>
+        <button onClick={removeLink}>
+          <s>Link</s>
+        </button>
       </div>
+      {showLinkInput ? (
+        <form onSubmit={handleLinkSubmit}>
+          <label htmlFor="linkInput">Add Link</label>
+          <input
+            name="linkInput"
+            type="text"
+            value={linkInput}
+            onChange={(e) => setLinkInput(e.target.value)}
+          />
+          <input type="submit" />
+        </form>
+      ) : null}
+      {linkErrorMessage ? (
+        <p>cannot link across text with different formatting</p>
+      ) : null}
       <div
         id="editorjs"
         className={styles.editor}
         contentEditable={true}
         onKeyDown={handleKeyDown}
-        onClick={handleClick}
         onMouseDown={handleMouseDown}
       ></div>
       <div>{displayContent}</div>
