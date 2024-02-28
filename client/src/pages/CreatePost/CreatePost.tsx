@@ -269,7 +269,16 @@ function CreatePost() {
       } else if (firstChild) {
         focusedElement.removeChild(firstChild);
       }
-      // focusedElement.style.marginLeft = "20px";
+    }
+  };
+
+  const center = () => {
+    if (focusedElement && focusedElement.className === "") {
+      focusedElement.style.textAlign = "center";
+      focusedElement.className = "text-align-center";
+    } else if (focusedElement) {
+      focusedElement.style.textAlign = "start";
+      focusedElement.className = "";
     }
   };
 
@@ -281,7 +290,8 @@ function CreatePost() {
         <button onClick={removeLink}>
           <s>Link</s>
         </button>
-        <button onClick={indent}>{"->"}</button>
+        <button onClick={indent}>Indent</button>
+        <button onClick={center}>Center</button>
       </div>
       {showLinkInput ? (
         <form onSubmit={handleLinkSubmit}>
