@@ -13,7 +13,7 @@ interface ChildObject {
   className?: string | null;
 }
 function CreatePost() {
-  const [content, setContent] = useState<ChildObject[]>([]);
+  const [secondaryContent, setSecondaryContent] = useState<ChildObject[]>([]);
   const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(
     null
   );
@@ -23,7 +23,7 @@ function CreatePost() {
   const [linkErrorMessage, setLinkErrorMessage] = useState(false);
   const [editor, setEditor] = useState<HTMLElement | null>(null);
 
-  console.log(content);
+  console.log(secondaryContent);
 
   useEffect(() => {
     const editor = document.getElementById("editorjs");
@@ -78,7 +78,7 @@ function CreatePost() {
     if (editor) {
       setTimeout(() => {
         const content = recursivelyHandleChildNodes(editor);
-        setContent(content);
+        setSecondaryContent(content);
       }, 1);
     }
   };
@@ -145,7 +145,7 @@ function CreatePost() {
     });
   };
 
-  const displayContent = recursivelyRenderChildren(content);
+  const displaySecondaryContent = recursivelyRenderChildren(secondaryContent);
 
   const recursivelyTraverseUpNodeHierarchy = (
     element: HTMLElement | null
@@ -183,8 +183,8 @@ function CreatePost() {
   const makeHeader = () => {
     console.log(focusedElement);
     let elementToChange = recursivelyTraverseUpNodeHierarchy(focusedElement);
-    if (elementToChange && elementToChange.nodeName !== "H2") {
-      const header: HTMLElement = document.createElement("h2");
+    if (elementToChange && elementToChange.nodeName !== "H3") {
+      const header: HTMLElement = document.createElement("h3");
       header.textContent = elementToChange.textContent;
       elementToChange.parentNode?.replaceChild(header, elementToChange);
     } else if (elementToChange) {
@@ -268,38 +268,47 @@ function CreatePost() {
 
   return (
     <div className={styles.container} onMouseUp={handleMouseUp}>
-      <div>
-        <button onClick={makeHeader}>H</button>
-        <button onClick={showLink}>Link</button>
-        <button onClick={removeLink}>
-          <s>Link</s>
-        </button>
-        <button onClick={indent}>Indent</button>
-        <button onClick={center}>Center</button>
-      </div>
-      {showLinkInput ? (
-        <form onSubmit={handleLinkSubmit}>
-          <label htmlFor="linkInput">Add Link</label>
-          <input
-            name="linkInput"
-            type="text"
-            value={linkInput}
-            onChange={(e) => setLinkInput(e.target.value)}
-          />
-          <input type="submit" />
-        </form>
-      ) : null}
-      {linkErrorMessage ? (
-        <p>cannot link across text with different formatting</p>
-      ) : null}
-      <div
-        id="editorjs"
-        className={styles.editor}
-        contentEditable={true}
-        onKeyDown={handleKeyDown}
-        onMouseDown={handleMouseDown}
-      ></div>
-      <div>{displayContent}</div>
+      <section>
+        <h2>Main Post</h2>
+        <textarea></textarea>
+      </section>
+
+      <section className={styles.secondaryContent}>
+        <h2>Secondary Content</h2>
+        <div>
+          <button onClick={makeHeader}>H</button>
+          <button onClick={showLink}>Link</button>
+          <button onClick={removeLink}>
+            <s>Link</s>
+          </button>
+          <button onClick={indent}>Indent</button>
+          <button onClick={center}>Center</button>
+        </div>
+        {showLinkInput ? (
+          <form onSubmit={handleLinkSubmit}>
+            <label htmlFor="linkInput">Add Link</label>
+            <input
+              name="linkInput"
+              type="text"
+              value={linkInput}
+              onChange={(e) => setLinkInput(e.target.value)}
+            />
+            <input type="submit" />
+          </form>
+        ) : null}
+        {linkErrorMessage ? (
+          <p>cannot link across text with different formatting</p>
+        ) : null}
+
+        <div
+          id="editorjs"
+          className={styles.editor}
+          contentEditable={true}
+          onKeyDown={handleKeyDown}
+          onMouseDown={handleMouseDown}
+        ></div>
+        <div>{displaySecondaryContent}</div>
+      </section>
     </div>
   );
 }

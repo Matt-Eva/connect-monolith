@@ -1,10 +1,15 @@
 .container {
   overflow: auto;
   padding: 5px;
+  height: 100%;
+}
+
+.secondaryContent {
+  height: 80%;
 }
 
 .editor {
-  height: 50%;
+  height: 90%;
   width: 100vw;
   background-color: hsl(0, 0%, 30%);
 }
