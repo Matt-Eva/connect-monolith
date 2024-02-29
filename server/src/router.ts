@@ -7,6 +7,7 @@ const chatController = require("./controllers/chatController.js");
 const connectionController = require("./controllers/connectionController.js");
 const invitationController = require("./controllers/invitationController.js");
 const blockedUserController = require("./controllers/blockedUserController.js");
+const postController = require("./controllers/postController");
 
 router.post("/login", authController.login);
 
@@ -54,5 +55,7 @@ router.post("/block-user", blockedUserController.blockUser);
 router.get("/blocked-users", blockedUserController.loadBlockedUsers);
 
 router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
+
+router.post("/posts", postController.newPost);
 
 export default router;
