@@ -1,7 +1,5 @@
 import { useState, createElement, useRef, useEffect } from "react";
-import EditorJS from "@editorjs/editorjs";
-import LinkTool from "@editorjs/link";
-import Header from "@editorjs/header";
+import { useAppSelector } from "../../reduxHooks";
 
 import styles from "./CreatePost.module.css";
 
@@ -13,6 +11,7 @@ interface ChildObject {
   className?: string | null;
 }
 function CreatePost() {
+  const user = useAppSelector((state) => state.user.value);
   const [mainContent, setMainContent] = useState("");
   const [mainContentLengthError, setMainContentLengthError] = useState(false);
   const [linkText, setLinkText] = useState("");
@@ -324,13 +323,20 @@ function CreatePost() {
   });
 
   const saveDraft = async () => {
+    const uploadContent = {
+      src: "editorjs",
+      main_post_content: mainContent,
+      main_post_links_text: mainContentLinksText,
+      main_post_links_links: mainContentLinksLinks,
+      secondary_content: secondaryContent,
+    };
     try {
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ test: "test" }),
+        body: JSON.stringify(uploadContent),
       });
       const data = await res.json();
       console.log(data);
