@@ -1,4 +1,4 @@
-import { useState, createElement } from "react";
+import { useState, createElement, useRef, useEffect } from "react";
 import EditorJS from "@editorjs/editorjs";
 import LinkTool from "@editorjs/link";
 import Header from "@editorjs/header";
@@ -10,6 +10,7 @@ interface ChildObject {
   nodeText: string | null;
   children: ChildObject[];
   href?: string | null;
+  className?: string | null;
 }
 function CreatePost() {
   const [content, setContent] = useState<ChildObject[]>([]);
@@ -20,8 +21,14 @@ function CreatePost() {
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkInput, setLinkInput] = useState("");
   const [linkErrorMessage, setLinkErrorMessage] = useState(false);
+  const [editor, setEditor] = useState<HTMLElement | null>(null);
 
   console.log(content);
+
+  useEffect(() => {
+    const editor = document.getElementById("editorjs");
+    setEditor(editor);
+  }, []);
 
   const recursivelyHandleChildNodes = (
     node: ChildNode,
@@ -29,81 +36,51 @@ function CreatePost() {
   ): ChildObject[] => {
     const children = [];
     for (const child of node.childNodes) {
-      if (child.childNodes.length !== 0) {
-        const nestedChildren = recursivelyHandleChildNodes(child, node);
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        const element = child as HTMLElement;
         const nodeName =
-          child.nodeName === "DIV" ? "p" : child.nodeName.toLowerCase();
-        console.log(nodeName);
-        if (nodeName === "a" && child.nodeType == Node.ELEMENT_NODE) {
-          const element = child as HTMLElement;
+          element.nodeName === "DIV" ? "p" : element.nodeName.toLowerCase();
+
+        let nestedChildren: ChildObject[] = [];
+        if (child.childNodes.length !== 0) {
+          nestedChildren = recursivelyHandleChildNodes(element, node);
+        }
+
+        if (nodeName === "a") {
           const href = element.getAttribute("href");
-          console.log(href);
           children.push({
             nodeName: nodeName,
             nodeText: "",
             children: nestedChildren,
             href: href,
+            className: element.className,
           });
-        } else if (nodeName === "span") {
-          const spanNode = child as HTMLElement;
-          if (spanNode.className === "span-indent") {
-            children.push({
-              nodeName: nodeName,
-              nodeText: child.textContent,
-              children: [],
-              className: "span-indent",
-            });
-          } else {
-            children.push({
-              nodeName: nodeName,
-              nodeText: child.textContent,
-              children: [],
-            });
-          }
         } else {
-          console.log("pushing");
           children.push({
             nodeName: nodeName,
-            nodeText: "",
+            nodeText: element.textContent,
             children: nestedChildren,
+            className: element.className,
           });
         }
       } else {
-        const nodeName =
-          child.nodeName === "DIV" ? "p" : child.nodeName.toLowerCase();
-        if (nodeName === "span") {
-          const spanNode = child as HTMLElement;
-          if (spanNode.className === "span-indent") {
-            children.push({
-              nodeName: nodeName,
-              nodeText: child.textContent,
-              children: [],
-              className: "span-indent",
-            });
-          } else {
-            children.push({
-              nodeName: nodeName,
-              nodeText: child.textContent,
-              children: [],
-            });
-          }
-        } else {
-          children.push({
-            nodeName: nodeName,
-            nodeText: child.textContent,
-            children: [],
-          });
-        }
+        children.push({
+          nodeName: child.nodeName,
+          nodeText: child.textContent,
+          children: [],
+        });
       }
     }
     return children;
   };
 
   const updateContentState = () => {
-    // setTimeout(() => {
-    //   const content = recursivelyHandleChildNodes(editor);
-    //   setContent(content);
-    // }, 1);
+    if (editor) {
+      setTimeout(() => {
+        const content = recursivelyHandleChildNodes(editor);
+        setContent(content);
+      }, 1);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -130,10 +107,7 @@ function CreatePost() {
       }, 1);
     }
 
-    setTimeout(() => {
-      const content = recursivelyHandleChildNodes(editor);
-      setContent(content);
-    }, 1);
+    updateContentState();
 
     if (e.key === "Tab") {
       e.preventDefault();
@@ -155,13 +129,18 @@ function CreatePost() {
           "a",
           {
             href: child.href,
+            className: child.className,
           },
           displayChildren
         );
       } else {
         const children = child.children;
         const displayChildren = recursivelyRenderChildren(children);
-        return createElement(child.nodeName, {}, displayChildren);
+        return createElement(
+          child.nodeName,
+          { className: child.className },
+          displayChildren
+        );
       }
     });
   };
@@ -213,6 +192,7 @@ function CreatePost() {
       p.textContent = elementToChange.textContent;
       elementToChange.parentNode?.replaceChild(p, elementToChange);
     }
+    updateContentState();
   };
 
   const showLink = () => {
@@ -236,6 +216,7 @@ function CreatePost() {
         setShowLinkInput(false);
         setLinkInput("");
         setLinkErrorMessage(false);
+        updateContentState();
       } catch (e) {
         setLinkErrorMessage(true);
       }
@@ -253,6 +234,7 @@ function CreatePost() {
       focusedElement.parentNode?.insertBefore(textNode, focusedElement);
       focusedElement.parentNode?.removeChild(focusedElement);
       setFocusedElement(null);
+      updateContentState();
     }
   };
 
@@ -269,17 +251,19 @@ function CreatePost() {
       } else if (firstChild) {
         focusedElement.removeChild(firstChild);
       }
+      updateContentState();
     }
   };
 
   const center = () => {
     if (focusedElement && focusedElement.className === "") {
       focusedElement.style.textAlign = "center";
-      focusedElement.className = "text-align-center";
+      focusedElement.className = "center-text";
     } else if (focusedElement) {
       focusedElement.style.textAlign = "start";
       focusedElement.className = "";
     }
+    updateContentState();
   };
 
   return (
