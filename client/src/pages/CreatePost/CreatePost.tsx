@@ -298,9 +298,12 @@ function CreatePost() {
       const repeatLink = mainContentLinksLinks.find(
         (link) => link === linkLink
       );
-      if (!repeatLink) {
+      const repeatText = mainContentLinksText.find((text) => text === linkText);
+
+      if (!repeatLink && !repeatText) {
         const newText = [...mainContentLinksText, linkText];
         setMainContentLinksText(newText);
+
         const newHyperlink = [...mainContentLinksLinks, linkLink];
         setMainContentLinksLinks(newHyperlink);
       } else {
@@ -320,7 +323,21 @@ function CreatePost() {
     );
   });
 
-  console.log(linkLink);
+  const saveDraft = async () => {
+    try {
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ test: "test" }),
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className={styles.container} onMouseUp={handleMouseUp}>
@@ -395,7 +412,7 @@ function CreatePost() {
           <div>{displaySecondaryContent}</div>
         </section>
       ) : null}
-      <button>Save Draft</button>
+      <button onClick={saveDraft}>Save Draft</button>
       <button>Post</button>
     </div>
   );
