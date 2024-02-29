@@ -4,14 +4,10 @@
   height: 100%;
 }
 
-.secondaryContent {
-  height: 80%;
-}
-
-.editor {
-  height: 90%;
-  width: 100vw;
-  background-color: hsl(0, 0%, 30%);
+.container textarea {
+  font-family: Lato;
+  width: 100%;
+  min-height: 120px;
 }
 
 .container a {
@@ -24,4 +20,14 @@
   color: black;
   border-radius: 1px;
   margin: 5px 2px 5px 0px;
+}
+
+.secondaryContent {
+  height: 80%;
+}
+
+.editor {
+  height: 90%;
+  width: 100vw;
+  background-color: hsl(0, 0%, 30%);
 }

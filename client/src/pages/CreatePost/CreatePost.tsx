@@ -13,6 +13,18 @@ interface ChildObject {
   className?: string | null;
 }
 function CreatePost() {
+  const [mainContent, setMainContent] = useState("");
+  const [mainContentLengthError, setMainContentLengthError] = useState(false);
+  const [linkText, setLinkText] = useState("");
+  const [linkLink, setLinkLink] = useState("");
+  const [mainContentLinksText, setMainContentLinksText] = useState<string[]>(
+    []
+  );
+  const [mainContentLinksLinks, setMainContentLinksLinks] = useState<string[]>(
+    []
+  );
+  const [linkQuantityError, setLinkQuantityError] = useState(false);
+  const [addSecondaryContent, setAddSecondaryContent] = useState(false);
   const [secondaryContent, setSecondaryContent] = useState<ChildObject[]>([]);
   const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(
     null
@@ -266,49 +278,116 @@ function CreatePost() {
     updateContentState();
   };
 
+  const updateMainContent = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const textArea = e.target as HTMLTextAreaElement;
+    const text = textArea.value;
+    if (text.length < 300) {
+      setMainContent(text);
+      if (mainContentLengthError) {
+        setMainContentLengthError(false);
+      }
+    } else {
+      setMainContentLengthError(true);
+    }
+  };
+
+  const updateMainContentLinks = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mainContentLinksText.length < 5) {
+      const newText = [...mainContentLinksText, linkText];
+      setMainContentLinksText(newText);
+      const newHyperlink = [...mainContentLinksLinks, linkLink];
+      setMainContentLinksLinks(newHyperlink);
+    } else {
+      setLinkQuantityError(true);
+    }
+  };
+
+  const displayLinks = mainContentLinksText.map((text, index) => {
+    const href = mainContentLinksLinks[index];
+    return (
+      <a href={href} key={href}>
+        {text}
+      </a>
+    );
+  });
+
+  console.log(linkLink);
+
   return (
     <div className={styles.container} onMouseUp={handleMouseUp}>
       <section>
         <h2>Main Post</h2>
-        <textarea></textarea>
-      </section>
-
-      <section className={styles.secondaryContent}>
-        <h2>Secondary Content</h2>
-        <div>
-          <button onClick={makeHeader}>H</button>
-          <button onClick={showLink}>Link</button>
-          <button onClick={removeLink}>
-            <s>Link</s>
-          </button>
-          <button onClick={indent}>Indent</button>
-          <button onClick={center}>Center</button>
-        </div>
-        {showLinkInput ? (
-          <form onSubmit={handleLinkSubmit}>
-            <label htmlFor="linkInput">Add Link</label>
+        <textarea value={mainContent} onChange={updateMainContent}></textarea>
+        {mainContentLengthError ? <p>Character limit 300</p> : null}
+        <section>
+          {displayLinks}
+          <h3>Add Link</h3>
+          <form onSubmit={updateMainContentLinks}>
+            <label htmlFor="linkText">Add Link Text</label>
             <input
-              name="linkInput"
               type="text"
-              value={linkInput}
-              onChange={(e) => setLinkInput(e.target.value)}
+              placeholder="add link text"
+              name="linkText"
+              value={linkText}
+              onChange={(e) => setLinkText(e.target.value)}
             />
-            <input type="submit" />
+            <label htmlFor="hyperlink">Add Hyperlink</label>
+            <input
+              type="text"
+              placeholder="add hyerplink"
+              name="hyperlink"
+              value={linkLink}
+              onChange={(e) => setLinkLink(e.target.value)}
+            />
+            <input type="submit" value="Add Link" />
           </form>
-        ) : null}
-        {linkErrorMessage ? (
-          <p>cannot link across text with different formatting</p>
-        ) : null}
-
-        <div
-          id="editorjs"
-          className={styles.editor}
-          contentEditable={true}
-          onKeyDown={handleKeyDown}
-          onMouseDown={handleMouseDown}
-        ></div>
-        <div>{displaySecondaryContent}</div>
+          {linkQuantityError ? <p>Cannot add more than 5 links</p> : null}
+        </section>
       </section>
+      <button onClick={() => setAddSecondaryContent(!addSecondaryContent)}>
+        {addSecondaryContent ? "Cancel" : "Add More"}
+      </button>
+      {addSecondaryContent ? (
+        <section className={styles.secondaryContent}>
+          <h2>Secondary Content</h2>
+          <div>
+            <button onClick={makeHeader}>H</button>
+            <button onClick={showLink}>Link</button>
+            <button onClick={removeLink}>
+              <s>Link</s>
+            </button>
+            <button onClick={indent}>Indent</button>
+            <button onClick={center}>Center</button>
+          </div>
+          {showLinkInput ? (
+            <form onSubmit={handleLinkSubmit}>
+              <label htmlFor="linkInput">Add Link</label>
+              <input
+                name="linkInput"
+                type="text"
+                value={linkInput}
+                onChange={(e) => setLinkInput(e.target.value)}
+              />
+              <input type="submit" />
+            </form>
+          ) : null}
+          {linkErrorMessage ? (
+            <p>cannot link across text with different formatting</p>
+          ) : null}
+
+          <div
+            id="editorjs"
+            className={styles.editor}
+            contentEditable={true}
+            onKeyDown={handleKeyDown}
+            onMouseDown={handleMouseDown}
+          ></div>
+          <div>{displaySecondaryContent}</div>
+        </section>
+      ) : null}
+      <button>Save Draft</button>
+      <button>Post</button>
     </div>
   );
 }
