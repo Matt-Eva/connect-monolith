@@ -24,6 +24,7 @@ function CreatePost() {
     []
   );
   const [linkQuantityError, setLinkQuantityError] = useState(false);
+  const [linkRepeatError, setLinkRepeatError] = useState(false);
   const [addSecondaryContent, setAddSecondaryContent] = useState(false);
   const [secondaryContent, setSecondaryContent] = useState<ChildObject[]>([]);
   const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(
@@ -294,10 +295,17 @@ function CreatePost() {
   const updateMainContentLinks = (e: React.FormEvent) => {
     e.preventDefault();
     if (mainContentLinksText.length < 5) {
-      const newText = [...mainContentLinksText, linkText];
-      setMainContentLinksText(newText);
-      const newHyperlink = [...mainContentLinksLinks, linkLink];
-      setMainContentLinksLinks(newHyperlink);
+      const repeatLink = mainContentLinksLinks.find(
+        (link) => link === linkLink
+      );
+      if (!repeatLink) {
+        const newText = [...mainContentLinksText, linkText];
+        setMainContentLinksText(newText);
+        const newHyperlink = [...mainContentLinksLinks, linkLink];
+        setMainContentLinksLinks(newHyperlink);
+      } else {
+        setLinkRepeatError(true);
+      }
     } else {
       setLinkQuantityError(true);
     }
@@ -343,6 +351,7 @@ function CreatePost() {
             <input type="submit" value="Add Link" />
           </form>
           {linkQuantityError ? <p>Cannot add more than 5 links</p> : null}
+          {linkRepeatError ? <p>Each link must be unique</p> : null}
         </section>
       </section>
       <button onClick={() => setAddSecondaryContent(!addSecondaryContent)}>
