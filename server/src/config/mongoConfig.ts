@@ -2,7 +2,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 const uri = process.env.MONGO_TOKEN;
 
-let mongoClient;
+let mongoClient: MongoClient | undefined;
 
 if (uri) {
   mongoClient = new MongoClient(uri, {
