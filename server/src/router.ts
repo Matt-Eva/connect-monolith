@@ -56,6 +56,6 @@ router.get("/blocked-users", blockedUserController.loadBlockedUsers);
 
 router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
 
-router.post("/posts", postController.newPost);
+router.post("/post-draft", postController.savePostDraft);
 
 export default router;

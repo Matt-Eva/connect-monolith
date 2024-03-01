@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
 import mongoClient from "../config/mongoConfig";
 
-exports.newPost = async (req: Request, res: Response) => {
+exports.savePostDraft = async (req: Request, res: Response) => {
   try {
-    await mongoClient?.connect();
-    await mongoClient?.db("admin").command({ ping: 1 });
-    console.log("connected to mongodb");
+    const collection = mongoClient.db("connect").collection("posts");
+    const result = await collection.insertOne(req.body);
+    console.log(result);
+    res.status(200).send({ message: "success" });
   } catch (error) {
     console.error(error);
+    res.status(500).send({ error: error });
   } finally {
     await mongoClient?.close();
   }
-  const body = req.body;
-  console.log(body);
-  res.status(200).send(body);
 };
