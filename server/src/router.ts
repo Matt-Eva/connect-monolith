@@ -58,4 +58,6 @@ router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
 
 router.post("/post-draft", postController.savePostDraft);
 
+router.post("/publish-post", postController.publishPost);
+
 export default router;
