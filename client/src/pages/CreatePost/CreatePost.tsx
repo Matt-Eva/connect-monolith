@@ -324,6 +324,7 @@ function CreatePost() {
 
   const saveDraft = async () => {
     const uploadContent = {
+      user_id: user.uId,
       src: "editorjs",
       main_post_content: mainContent,
       main_post_links_text: mainContentLinksText,
