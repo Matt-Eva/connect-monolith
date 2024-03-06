@@ -4,10 +4,12 @@ import styles from "./ProfilePage.module.css";
 
 const loadProfile = async ({
   setProfile,
+  setPosts,
   navigate,
   id,
 }: {
   setProfile: Function;
+  setPosts: Function;
   navigate: Function;
   id: string;
 }) => {
@@ -17,7 +19,9 @@ const loadProfile = async ({
     });
     if (res.ok) {
       const data = await res.json();
-      setProfile({ ...data, loading: false });
+      console.log(data);
+      setProfile({ ...data.user, loading: false });
+      setPosts([...data.posts]);
     } else if (res.status === 404) {
       alert("Profile not found - redirecting to home page");
       navigate("/");
@@ -26,6 +30,8 @@ const loadProfile = async ({
     console.error(e);
   }
 };
+
+const loadMyPosts = async () => {};
 
 const startChat = async ({
   profile,

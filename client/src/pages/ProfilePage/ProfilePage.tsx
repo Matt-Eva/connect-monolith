@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useAppSelector } from "../../reduxHooks";
 
+import PostCard from "../../components/PostCard/PostCard";
+
+import { Post } from "../../pages/Feed/Feed";
 import { Profile } from "./TypesProfilePage";
 
 import styles from "./ProfilePage.module.css";
@@ -32,14 +35,18 @@ function ProfilePage() {
   });
   const [allowDisconnect, setAllowDisconnect] = useState(false);
   const [manageConnection, setManageConnection] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const navigate = useNavigate();
 
   const { id } = useParams();
 
+  console.log(posts);
+
   useEffect(() => {
-    if (id) {
-      loadProfile({ navigate, id, setProfile });
+    if (id && id === user.uId) {
+    } else if (id) {
+      loadProfile({ navigate, id, setProfile, setPosts });
     }
   }, []);
 
@@ -72,6 +79,15 @@ function ProfilePage() {
   }
 
   const iconDisplay = renderIconDisplay({ profile });
+
+  const displayPosts = posts.map((post) => (
+    <PostCard
+      userId={profile.uId}
+      username={profile.name}
+      post={post}
+      key={post.uId}
+    />
+  ));
 
   if (user.uId === profile.uId) {
     return (
@@ -139,6 +155,7 @@ function ProfilePage() {
           </button>
         </div>
       )}
+      {displayPosts}
     </main>
   );
 }

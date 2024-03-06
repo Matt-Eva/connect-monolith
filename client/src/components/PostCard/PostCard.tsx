@@ -47,7 +47,6 @@ function PostCard({
     }
   };
 
-  console.log(post);
   return (
     <article>
       <h3>{username}</h3>

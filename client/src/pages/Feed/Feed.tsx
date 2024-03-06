@@ -13,7 +13,7 @@ export interface Post {
   secondaryContent: boolean;
 }
 
-interface Neo4jPost {
+export interface Neo4jPost {
   post: Post;
   username: string;
   userId: string;
@@ -30,8 +30,6 @@ function Feed() {
 
     fetchPosts();
   }, []);
-
-  console.log(posts);
 
   const postCards = posts.map((post) => (
     <PostCard
