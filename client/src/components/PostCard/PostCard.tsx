@@ -59,7 +59,11 @@ function PostCard({
 
   const deletePost = async () => {
     try {
-      await fetch(`/api/posts/${post.mongoId}`, { method: "DELETE" });
+      const res = await fetch(`/api/posts/${post.mongoId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+      }
     } catch (error) {
       console.error(error);
     }
@@ -68,7 +72,7 @@ function PostCard({
   return (
     <article>
       <h3>{username}</h3>
-      {editable ? <button onClick={edit}>edit</button> : null}
+      {/* {editable ? <button onClick={edit}>edit</button> : null} */}
       {editable ? <button onClick={deletePost}>delete</button> : null}
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
