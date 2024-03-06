@@ -5,8 +5,9 @@
 }
 
 .nav {
-  display: flex;
+  display: grid;
 
   padding-top: 0.2rem;
-  justify-content: space-evenly;
+  grid-template-columns: 33% 34% 33%;
+  justify-items: center;
 }

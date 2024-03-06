@@ -1,6 +1,7 @@
 .nav {
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: 33% 34% 33%;
+  justify-items: center;
   align-items: center;
   border-top: solid 1px var(--border-color);
 }

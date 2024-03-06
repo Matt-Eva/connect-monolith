@@ -7,6 +7,7 @@ function PostsNavBar() {
     <nav className={styles.nav}>
       <NavLink to="/posts">feed</NavLink>
       <NavLink to="/posts/new">new post</NavLink>
+      <NavLink to="/profile">my posts</NavLink>
     </nav>
   );
 }
