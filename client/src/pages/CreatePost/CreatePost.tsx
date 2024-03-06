@@ -1,9 +1,11 @@
-import { useState, createElement, useRef, useEffect } from "react";
+import { useState, createElement, useEffect } from "react";
 import { useAppSelector } from "../../reduxHooks";
+
+import PostPreview from "../../components/PostPreview/PostPreview";
 
 import styles from "./CreatePost.module.css";
 
-interface ChildObject {
+export interface ChildObject {
   nodeName: string;
   nodeText: string | null;
   children: ChildObject[];
@@ -199,10 +201,12 @@ function CreatePost() {
       const header: HTMLElement = document.createElement("h3");
       header.textContent = elementToChange.textContent;
       elementToChange.parentNode?.replaceChild(header, elementToChange);
+      setFocusedElement(header);
     } else if (elementToChange) {
       const p: HTMLElement = document.createElement("p");
       p.textContent = elementToChange.textContent;
       elementToChange.parentNode?.replaceChild(p, elementToChange);
+      setFocusedElement(p);
     }
     updateContentState();
   };
@@ -440,10 +444,15 @@ function CreatePost() {
             onKeyDown={handleKeyDown}
             onMouseDown={handleMouseDown}
           ></div>
-          <div>{displaySecondaryContent}</div>
         </section>
       ) : null}
-      <button onClick={saveDraft}>Save Draft</button>
+      <button onClick={saveDraft}>Save</button>
+      <PostPreview
+        linkTextArray={mainContentLinksText}
+        linkLinkArray={mainContentLinksLinks}
+        mainContent={mainContent}
+        secondaryContent={secondaryContent}
+      />
       <button onClick={publishPost}>Post</button>
     </div>
   );
