@@ -15,11 +15,15 @@ exports.getUser = async (req: Request, res: Response) => {
     const query = `
               MATCH (s:User {uId: $selfId}), (u:User {uId: $userId}) 
               WHERE NOT (s) <- [:BLOCKED] - (u)
-              RETURN u.profileImg AS profileImg, u.name AS name, exists((s) - [:CONNECTED] - (u)) AS connected, exists((s) - [:INVITED] -> (u)) AS pending, exists((s) <- [:INVITED] - (u)) AS invited, exists((s) - [:BLOCKED] -> (u)) AS blocked, exists((s) - [:IGNORED] -> (u)) AS ignored`;
+              WITH u, s
+              OPTIONAL MATCH (u) - [:POSTED] -> (p:Post)
+              RETURN u.profileImg AS profileImg, u.name AS name, exists((s) - [:CONNECTED] - (u)) AS connected, exists((s) - [:INVITED] -> (u)) AS pending, exists((s) <- [:INVITED] - (u)) AS invited, exists((s) - [:BLOCKED] -> (u)) AS blocked, exists((s) - [:IGNORED] -> (u)) AS ignored, p AS post`;
 
     const result = await session.executeRead((tx) =>
       tx.run(query, { userId: userId, selfId: selfId }),
     );
+
+    console.log(result.records);
 
     if (result.records.length !== 0) {
       const user = {
@@ -33,7 +37,11 @@ exports.getUser = async (req: Request, res: Response) => {
         uId: userId,
       };
 
-      res.status(200).send(user);
+      const posts = result.records.map((record) => {
+        return record.get("post").properties;
+      });
+
+      res.status(200).send({ user, posts });
     } else {
       res.status(404).send({ message: "user not found" });
     }

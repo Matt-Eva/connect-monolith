@@ -62,4 +62,10 @@ router.post("/publish-post", postController.publishPost);
 
 router.get("/posts", postController.getPosts);
 
+router.get("/secondary-post/:mongoId", postController.getSecondaryPostContent);
+
+router.get("/my-posts", postController.getMyPosts);
+
+router.delete("/posts/:mongoId", postController.deletePost);
+
 export default router;

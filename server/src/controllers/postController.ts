@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
 import mongoClient from "../config/mongoConfig";
 import neoDriver from "../config/neo4jConfig";
 import { v4 } from "uuid";
@@ -17,6 +18,8 @@ exports.savePostDraft = async (req: Request, res: Response) => {
 };
 
 exports.publishPost = async (req: Request, res: Response) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
   try {
     const collection = mongoClient.db("connect").collection("posts");
     const mongoResult = await collection.insertOne(req.body);
@@ -24,12 +27,17 @@ exports.publishPost = async (req: Request, res: Response) => {
       const session = neoDriver.session();
       try {
         const userId = req.session.user!.uId;
+        let secondaryContent = false;
+        if (req.body.secondaryContent.length !== 0) {
+          secondaryContent = true;
+        }
         const neoPost = {
           uId: uuid(),
           mongoId: mongoResult.insertedId.toString(),
           mainPostContent: req.body.main_post_content,
           mainPostLinksText: req.body.main_post_links_text,
           mainPostLinksLinks: req.body.main_post_links_links,
+          secondaryContent,
         };
         const query = `
             MATCH (u:User {uId: $userId})
@@ -59,7 +67,9 @@ exports.publishPost = async (req: Request, res: Response) => {
 };
 
 exports.getPosts = async (req: Request, res: Response) => {
-  const userId = req.session.user?.uId;
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
+  const userId = req.session.user.uId;
   const session = neoDriver.session();
   try {
     if (userId) {
@@ -86,6 +96,82 @@ exports.getPosts = async (req: Request, res: Response) => {
     } else {
       throw new Error("userId is undefined");
     }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await session.close();
+  }
+};
+
+exports.getSecondaryPostContent = async (req: Request, res: Response) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+  try {
+    const mongoId = req.params.mongoId;
+    const collection = mongoClient.db("connect").collection("posts");
+    const postId = new ObjectId(mongoId);
+    const mongoPost = await collection.findOne({ _id: postId });
+    if (mongoPost) {
+      const secondaryContent = mongoPost.secondary_content;
+      res.status(200).send(secondaryContent);
+    } else {
+      res.status(404).send({ message: "could not find post" });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+exports.getMyPosts = async (req: Request, res: Response) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+  const userId = req.session.user.uId;
+  const session = neoDriver.session();
+  try {
+    if (userId) {
+      const query = `
+      MATCH (u:User {uId: $userId}) - [:POSTED] -> (p:Post)
+      Return p AS post
+      `;
+      const result = await session.executeRead((tx) =>
+        tx.run(query, { userId }),
+      );
+
+      const posts = result.records.map(
+        (record) => record.get("post").properties,
+      );
+
+      res.status(200).send(posts);
+    } else {
+      res.status(401).end();
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await session.close();
+  }
+};
+
+exports.deletePost = async (req: Request, res: Response) => {
+  if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
+
+  const mongoId = req.params.mongoId;
+  const session = neoDriver.session();
+  try {
+    const neoQuery = `
+    MATCH (p:Post {mongoId: $mongoId})
+    DETACH DELETE p
+    `;
+    const neoResult = session.executeWrite((tx) =>
+      tx.run(neoQuery, { mongoId }),
+    );
+
+    const collection = mongoClient.db("connect").collection("posts");
+    const postId = new ObjectId(mongoId);
+
+    const mongoResult = await collection.deleteOne({ _id: postId });
+
+    await Promise.all([neoResult, mongoResult]);
+
+    res.status(201).end();
   } catch (error) {
     console.error(error);
   } finally {
