@@ -60,4 +60,6 @@ router.post("/post-draft", postController.savePostDraft);
 
 router.post("/publish-post", postController.publishPost);
 
+router.get("/posts", postController.getPosts);
+
 export default router;

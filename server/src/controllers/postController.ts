@@ -57,3 +57,38 @@ exports.publishPost = async (req: Request, res: Response) => {
     res.status(500).send({ error: error });
   }
 };
+
+exports.getPosts = async (req: Request, res: Response) => {
+  const userId = req.session.user?.uId;
+  const session = neoDriver.session();
+  try {
+    if (userId) {
+      const query = `
+      MATCH (u:User {uId: $userId}) - [:CONNECTED] - (c:User) - [:POSTED] -> (p:Post)
+      RETURN p AS post, c.name AS username, c.uId AS userId
+      LIMIT 100 
+    `;
+
+      const result = await session.executeRead((tx) =>
+        tx.run(query, { userId }),
+      );
+
+      const posts = [];
+      for (const record of result.records) {
+        posts.push({
+          post: record.get("post").properties,
+          username: record.get("username"),
+          userId: record.get("userId"),
+        });
+      }
+
+      res.status(200).send(posts);
+    } else {
+      throw new Error("userId is undefined");
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await session.close();
+  }
+};
