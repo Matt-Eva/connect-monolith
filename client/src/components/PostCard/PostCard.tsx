@@ -1,6 +1,14 @@
+import { useState, ReactNode } from "react";
+
 import styles from "./PostCard.module.css";
 
 import { Post } from "../../pages/Feed/Feed";
+import {
+  ChildObject,
+  recursivelyRenderChildren,
+} from "../../pages/CreatePost/CreatePost";
+
+type SecondaryContent = Array<ReactNode>;
 
 function PostCard({
   userId,
@@ -11,6 +19,10 @@ function PostCard({
   post: Post;
   username: string;
 }) {
+  const [secondaryContent, setSecondaryContent] = useState<SecondaryContent>(
+    []
+  );
+  const [showSecondaryContent, setShowSecondaryContent] = useState(false);
   const linkArray = post.mainPostLinksText.map((text, index) => {
     return (
       <a key={text} href={post.mainPostLinksLinks[index]}>
@@ -19,12 +31,31 @@ function PostCard({
     );
   });
 
+  const displaySecondaryContent = async () => {
+    if (secondaryContent.length === 0) {
+      try {
+        const res = await fetch(`/api/secondary-post/${post.mongoId}`);
+        const data = await res.json();
+        const secondaryContent = recursivelyRenderChildren(data);
+        setSecondaryContent(secondaryContent);
+        setShowSecondaryContent(true);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      setShowSecondaryContent(!showSecondaryContent);
+    }
+  };
+
   console.log(post);
   return (
     <article>
       <h3>{username}</h3>
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
+      {post.secondaryContent ? <button>read more</button> : null}
+      <button onClick={displaySecondaryContent}>read more</button>
+      {showSecondaryContent ? secondaryContent : null}
     </article>
   );
 }

@@ -10,6 +10,7 @@ export interface Post {
   mainPostLinksText: string[];
   mainPostLinksLinks: string[];
   mainPostContent: string;
+  secondaryContent: boolean;
 }
 
 interface Neo4jPost {

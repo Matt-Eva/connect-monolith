@@ -12,6 +12,38 @@ export interface ChildObject {
   href?: string | null;
   className?: string | null;
 }
+
+export const recursivelyRenderChildren = (
+  children: ChildObject[]
+): Array<React.ReactNode> => {
+  return children.map((child) => {
+    if (child.nodeName === "#text") {
+      return child.nodeText;
+    } else if (child.nodeName === "br") {
+      return <br></br>;
+    } else if (child.nodeName === "a") {
+      const children = child.children;
+      const displayChildren = recursivelyRenderChildren(children);
+      return createElement(
+        "a",
+        {
+          href: child.href,
+          className: child.className,
+        },
+        displayChildren
+      );
+    } else {
+      const children = child.children;
+      const displayChildren = recursivelyRenderChildren(children);
+      return createElement(
+        child.nodeName,
+        { className: child.className },
+        displayChildren
+      );
+    }
+  });
+};
+
 function CreatePost() {
   const user = useAppSelector((state) => state.user.value);
   const [mainContent, setMainContent] = useState("");
@@ -126,37 +158,6 @@ function CreatePost() {
     if (e.key === "Tab") {
       e.preventDefault();
     }
-  };
-
-  const recursivelyRenderChildren = (
-    children: ChildObject[]
-  ): Iterable<React.ReactNode> => {
-    return children.map((child) => {
-      if (child.nodeName === "#text") {
-        return child.nodeText;
-      } else if (child.nodeName === "br") {
-        return <br></br>;
-      } else if (child.nodeName === "a") {
-        const children = child.children;
-        const displayChildren = recursivelyRenderChildren(children);
-        return createElement(
-          "a",
-          {
-            href: child.href,
-            className: child.className,
-          },
-          displayChildren
-        );
-      } else {
-        const children = child.children;
-        const displayChildren = recursivelyRenderChildren(children);
-        return createElement(
-          child.nodeName,
-          { className: child.className },
-          displayChildren
-        );
-      }
-    });
   };
 
   const displaySecondaryContent = recursivelyRenderChildren(secondaryContent);
