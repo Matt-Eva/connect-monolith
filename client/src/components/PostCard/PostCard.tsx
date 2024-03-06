@@ -1,4 +1,5 @@
 import { useState, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./PostCard.module.css";
 
@@ -25,6 +26,9 @@ function PostCard({
     []
   );
   const [showSecondaryContent, setShowSecondaryContent] = useState(false);
+
+  const navigate = useNavigate();
+
   const linkArray = post.mainPostLinksText.map((text, index) => {
     return (
       <a key={text} href={post.mainPostLinksLinks[index]}>
@@ -49,10 +53,23 @@ function PostCard({
     }
   };
 
+  const edit = () => {
+    navigate("/posts/new");
+  };
+
+  const deletePost = async () => {
+    try {
+      await fetch(`/api/posts/${post.mongoId}`, { method: "DELETE" });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <article>
       <h3>{username}</h3>
-      {editable ? <button>edit</button> : null}
+      {editable ? <button onClick={edit}>edit</button> : null}
+      {editable ? <button onClick={deletePost}>delete</button> : null}
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
       {post.secondaryContent ? <button>read more</button> : null}
