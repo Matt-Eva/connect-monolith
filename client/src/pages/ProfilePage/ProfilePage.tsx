@@ -18,6 +18,7 @@ import {
   block,
   unblock,
   renderIconDisplay,
+  loadMyPosts,
 } from "./UtilsProfilePage";
 
 function ProfilePage() {
@@ -41,10 +42,9 @@ function ProfilePage() {
 
   const { id } = useParams();
 
-  console.log(posts);
-
   useEffect(() => {
     if (id && id === user.uId) {
+      loadMyPosts({ userId: user.uId, setPosts });
     } else if (id) {
       loadProfile({ navigate, id, setProfile, setPosts });
     }
@@ -78,22 +78,41 @@ function ProfilePage() {
     return <h2>Loading...</h2>;
   }
 
-  const iconDisplay = renderIconDisplay({ profile });
+  const iconDisplay = renderIconDisplay({
+    profileImg: profile.profileImg,
+    name: profile.name,
+  });
 
-  const displayPosts = posts.map((post) => (
-    <PostCard
-      userId={profile.uId}
-      username={profile.name}
-      post={post}
-      key={post.uId}
-    />
-  ));
+  const displayPosts = posts.map((post) => {
+    if (user.uId === id) {
+      return (
+        <PostCard
+          editable={true}
+          userId={user.uId}
+          username={user.name}
+          post={post}
+          key={post.uId}
+        />
+      );
+    } else {
+      return (
+        <PostCard
+          editable={false}
+          userId={profile.uId}
+          username={profile.name}
+          post={post}
+          key={post.uId}
+        />
+      );
+    }
+  });
 
-  if (user.uId === profile.uId) {
+  if (user.uId === id) {
     return (
       <main className={styles.main}>
-        {iconDisplay}
-        <h2 className={styles.name}>{profile.name}</h2>
+        {renderIconDisplay({ profileImg: user.profileImg, name: user.name })}
+        <h2 className={styles.name}>{user.name}</h2>
+        {displayPosts}
       </main>
     );
   }

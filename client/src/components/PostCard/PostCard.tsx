@@ -14,10 +14,12 @@ function PostCard({
   userId,
   post,
   username,
+  editable,
 }: {
   userId: string;
   post: Post;
   username: string;
+  editable: boolean;
 }) {
   const [secondaryContent, setSecondaryContent] = useState<SecondaryContent>(
     []
@@ -50,6 +52,7 @@ function PostCard({
   return (
     <article>
       <h3>{username}</h3>
+      {editable ? <button>edit</button> : null}
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
       {post.secondaryContent ? <button>read more</button> : null}

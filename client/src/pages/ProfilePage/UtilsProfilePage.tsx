@@ -31,7 +31,21 @@ const loadProfile = async ({
   }
 };
 
-const loadMyPosts = async () => {};
+const loadMyPosts = async ({
+  userId,
+  setPosts,
+}: {
+  userId: string;
+  setPosts: Function;
+}) => {
+  try {
+    const res = await fetch("/api/my-posts");
+    const posts = await res.json();
+    setPosts(posts);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const startChat = async ({
   profile,
@@ -188,17 +202,17 @@ const unblock = async ({
   }
 };
 
-const renderIconDisplay = ({ profile }: { profile: Profile }) => {
-  return profile.profileImg ? (
-    <img
-      src={profile.profileImg}
-      alt="profile img"
-      className={styles.profileImage}
-    />
+const renderIconDisplay = ({
+  profileImg,
+  name,
+}: {
+  profileImg: string;
+  name: string;
+}) => {
+  return profileImg ? (
+    <img src={profileImg} alt="profile img" className={styles.profileImage} />
   ) : (
-    <span className={styles.profileIcon}>
-      {profile.name.charAt(0).toUpperCase()}
-    </span>
+    <span className={styles.profileIcon}>{name.charAt(0).toUpperCase()}</span>
   );
 };
 
@@ -211,4 +225,5 @@ export {
   block,
   unblock,
   renderIconDisplay,
+  loadMyPosts,
 };

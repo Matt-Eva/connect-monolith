@@ -33,6 +33,7 @@ function Feed() {
 
   const postCards = posts.map((post) => (
     <PostCard
+      editable={false}
       key={post.post.uId}
       post={post.post}
       username={post.username}
