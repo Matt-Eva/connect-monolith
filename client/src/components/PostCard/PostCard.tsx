@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./PostCard.module.css";
 
 import { Post } from "../../pages/Feed/Feed";
-import {
-  ChildObject,
-  recursivelyRenderChildren,
-} from "../../pages/CreatePost/CreatePost";
+import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
 
 type SecondaryContent = Array<ReactNode>;
 
@@ -42,7 +39,7 @@ function PostCard({
       try {
         const res = await fetch(`/api/secondary-post/${post.mongoId}`);
         const data = await res.json();
-        const secondaryContent = recursivelyRenderChildren(data);
+        const secondaryContent = recursivelyRenderSecondaryPostContent(data);
         setSecondaryContent(secondaryContent);
         setShowSecondaryContent(true);
       } catch (error) {

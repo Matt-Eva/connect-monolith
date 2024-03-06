@@ -3,6 +3,7 @@ import { createElement } from "react";
 import styles from "./PostPreview.module.css";
 
 import { ChildObject } from "../../pages/CreatePost/CreatePost";
+import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
 
 function PostPreview({
   linkTextArray,
@@ -23,38 +24,8 @@ function PostPreview({
     );
   });
 
-  const recursivelyRenderChildren = (
-    children: ChildObject[]
-  ): Iterable<React.ReactNode> => {
-    return children.map((child) => {
-      if (child.nodeName === "#text") {
-        return child.nodeText;
-      } else if (child.nodeName === "br") {
-        return <br></br>;
-      } else if (child.nodeName === "a") {
-        const children = child.children;
-        const displayChildren = recursivelyRenderChildren(children);
-        return createElement(
-          "a",
-          {
-            href: child.href,
-            className: child.className,
-          },
-          displayChildren
-        );
-      } else {
-        const children = child.children;
-        const displayChildren = recursivelyRenderChildren(children);
-        return createElement(
-          child.nodeName,
-          { className: child.className },
-          displayChildren
-        );
-      }
-    });
-  };
-
-  const displaySecondaryContent = recursivelyRenderChildren(secondaryContent);
+  const displaySecondaryContent =
+    recursivelyRenderSecondaryPostContent(secondaryContent);
 
   return (
     <article>
