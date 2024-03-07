@@ -1,34 +1,26 @@
 import { useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import PostCard from "../../components/PostCard/PostCard";
 
+import { setPosts } from "../../state/posts";
+
 import styles from "./Feed.module.css";
 
-export interface Post {
-  uId: string;
-  mongoId: string;
-  mainPostLinksText: string[];
-  mainPostLinksLinks: string[];
-  mainPostContent: string;
-  secondaryContent: boolean;
-}
-
-export interface Neo4jPost {
-  post: Post;
-  username: string;
-  userId: string;
-}
 function Feed() {
-  const [posts, setPosts] = useState<Neo4jPost[]>([]);
+  const postsState = useAppSelector((state) => state.posts.value);
+  const posts = postsState.posts;
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await fetch("/api/posts");
       const data = await res.json();
-      setPosts(data);
+      dispatch(setPosts(data));
     };
-
-    fetchPosts();
+    if (!postsState.isFetched) {
+      fetchPosts();
+    }
   }, []);
 
   const postCards = posts.map((post) => (

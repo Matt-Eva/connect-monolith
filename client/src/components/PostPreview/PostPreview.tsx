@@ -2,7 +2,7 @@ import { createElement } from "react";
 
 import styles from "./PostPreview.module.css";
 
-import { ChildObject } from "../../pages/CreatePost/CreatePost";
+import { SecondaryContentObject } from "../../types/post";
 import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
 
 function PostPreview({
@@ -14,7 +14,7 @@ function PostPreview({
   linkTextArray: string[];
   linkLinkArray: string[];
   mainContent: string;
-  secondaryContent: ChildObject[];
+  secondaryContent: SecondaryContentObject[];
 }) {
   const linkArray = linkTextArray.map((text, index) => {
     return (

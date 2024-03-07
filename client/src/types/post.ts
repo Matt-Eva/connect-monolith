@@ -13,6 +13,7 @@ export interface Neo4jPost {
   mainPostLinksLinks: string[];
   mainPostContent: string;
   isSecondaryContent: boolean;
+  secondaryContentFetched: boolean;
   secondaryContent: SecondaryContentObject[];
 }
 

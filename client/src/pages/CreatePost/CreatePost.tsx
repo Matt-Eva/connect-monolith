@@ -5,44 +5,7 @@ import PostPreview from "../../components/PostPreview/PostPreview";
 
 import styles from "./CreatePost.module.css";
 
-export interface ChildObject {
-  nodeName: string;
-  nodeText: string | null;
-  children: ChildObject[];
-  href?: string | null;
-  className?: string | null;
-}
-
-export const recursivelyRenderChildren = (
-  children: ChildObject[]
-): Array<React.ReactNode> => {
-  return children.map((child) => {
-    if (child.nodeName === "#text") {
-      return child.nodeText;
-    } else if (child.nodeName === "br") {
-      return <br></br>;
-    } else if (child.nodeName === "a") {
-      const children = child.children;
-      const displayChildren = recursivelyRenderChildren(children);
-      return createElement(
-        "a",
-        {
-          href: child.href,
-          className: child.className,
-        },
-        displayChildren
-      );
-    } else {
-      const children = child.children;
-      const displayChildren = recursivelyRenderChildren(children);
-      return createElement(
-        child.nodeName,
-        { className: child.className },
-        displayChildren
-      );
-    }
-  });
-};
+import { SecondaryContentObject } from "../../types/post";
 
 function CreatePost() {
   const user = useAppSelector((state) => state.user.value);
@@ -59,11 +22,13 @@ function CreatePost() {
   const [linkQuantityError, setLinkQuantityError] = useState(false);
   const [linkRepeatError, setLinkRepeatError] = useState(false);
   const [addSecondaryContent, setAddSecondaryContent] = useState(false);
-  const [secondaryContent, setSecondaryContent] = useState<ChildObject[]>([]);
+  const [secondaryContent, setSecondaryContent] = useState<
+    SecondaryContentObject[]
+  >([]);
   const [focusedElement, setFocusedElement] = useState<HTMLElement | null>(
     null
   );
-  const [selectedText, setSelectedText] = useState("");
+
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkInput, setLinkInput] = useState("");
   const [linkErrorMessage, setLinkErrorMessage] = useState(false);
@@ -77,9 +42,8 @@ function CreatePost() {
   }, []);
 
   const recursivelyHandleChildNodes = (
-    node: ChildNode,
-    parent?: ChildNode
-  ): ChildObject[] => {
+    node: ChildNode
+  ): SecondaryContentObject[] => {
     const children = [];
     for (const child of node.childNodes) {
       if (child.nodeType === Node.ELEMENT_NODE) {
@@ -87,9 +51,9 @@ function CreatePost() {
         const nodeName =
           element.nodeName === "DIV" ? "p" : element.nodeName.toLowerCase();
 
-        let nestedChildren: ChildObject[] = [];
+        let nestedChildren: SecondaryContentObject[] = [];
         if (child.childNodes.length !== 0) {
-          nestedChildren = recursivelyHandleChildNodes(element, node);
+          nestedChildren = recursivelyHandleChildNodes(element);
         }
 
         if (nodeName === "a") {
@@ -150,6 +114,7 @@ function CreatePost() {
         sel?.addRange(range);
 
         editor.focus();
+        setFocusedElement(p);
       }, 1);
     }
 
@@ -159,8 +124,6 @@ function CreatePost() {
       e.preventDefault();
     }
   };
-
-  const displaySecondaryContent = recursivelyRenderChildren(secondaryContent);
 
   const recursivelyTraverseUpNodeHierarchy = (
     element: HTMLElement | null
@@ -191,7 +154,6 @@ function CreatePost() {
     if (selection?.rangeCount && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const text = range.toString();
-      setSelectedText(text);
     }
   };
 
@@ -201,11 +163,17 @@ function CreatePost() {
     if (elementToChange && elementToChange.nodeName !== "H3") {
       const header: HTMLElement = document.createElement("h3");
       header.textContent = elementToChange.textContent;
+      if (elementToChange.className) {
+        header.className = elementToChange.className;
+      }
       elementToChange.parentNode?.replaceChild(header, elementToChange);
       setFocusedElement(header);
     } else if (elementToChange) {
       const p: HTMLElement = document.createElement("p");
       p.textContent = elementToChange.textContent;
+      if (elementToChange.className) {
+        p.className = elementToChange.className;
+      }
       elementToChange.parentNode?.replaceChild(p, elementToChange);
       setFocusedElement(p);
     }

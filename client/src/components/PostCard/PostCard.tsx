@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import styles from "./PostCard.module.css";
 
-import { Post } from "../../pages/Feed/Feed";
+import { Neo4jPost } from "../../types/post";
 import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
 
 type SecondaryContent = Array<ReactNode>;
@@ -15,7 +15,7 @@ function PostCard({
   editable,
 }: {
   userId: string;
-  post: Post;
+  post: Neo4jPost;
   username: string;
   editable: boolean;
 }) {

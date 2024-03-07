@@ -3,6 +3,7 @@ import userReducer from "./state/user";
 import startingPathReducer from "./state/startingPath";
 import chatsReducer from "./state/chats";
 import connectionsReducer from "./state/connections";
+import postsReducer from "./state/posts";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     startingPath: startingPathReducer,
     chats: chatsReducer,
     connections: connectionsReducer,
+    posts: postsReducer,
   },
 });
 
