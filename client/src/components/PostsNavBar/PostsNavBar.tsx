@@ -5,7 +5,7 @@ import styles from "./PostsNavBar.module.css";
 
 function PostsNavBar() {
   const user = useAppSelector((state) => state.user.value);
-  console.log(user);
+
   return (
     <nav className={styles.nav}>
       <NavLink to="/posts">feed</NavLink>

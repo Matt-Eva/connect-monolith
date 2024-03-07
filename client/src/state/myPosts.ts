@@ -36,10 +36,17 @@ export const myPostsSlice = createSlice({
       postsState.value.myPosts = initialPostState;
       postsState.value.isFetched = false;
     },
+    addPost: (postsState, action) => {
+      postsState.value.myPosts = [action.payload, ...postsState.value.myPosts];
+    },
   },
 });
 
-export const { setMyPosts, updateMyPostSecondaryContent, clearMyPosts } =
-  myPostsSlice.actions;
+export const {
+  setMyPosts,
+  updateMyPostSecondaryContent,
+  clearMyPosts,
+  addPost,
+} = myPostsSlice.actions;
 
 export default myPostsSlice.reducer;

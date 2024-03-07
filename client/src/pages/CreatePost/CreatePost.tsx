@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
-import { useAppSelector } from "../../reduxHooks";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import PostPreview from "../../components/PostPreview/PostPreview";
 
 import styles from "./CreatePost.module.css";
 
+import { addPost } from "../../state/myPosts";
+
 import { SecondaryContentObject } from "../../types/post";
 
 function CreatePost() {
   const user = useAppSelector((state) => state.user.value);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [mainContent, setMainContent] = useState("");
   const [mainContentLengthError, setMainContentLengthError] = useState(false);
   const [linkText, setLinkText] = useState("");
@@ -301,15 +308,16 @@ function CreatePost() {
 
   const saveDraft = async () => {
     console.log("saving draft");
-    const uploadContent = {
-      user_id: user.uId,
-      src: "editorjs",
-      main_post_content: mainContent,
-      main_post_links_text: mainContentLinksText,
-      main_post_links_links: mainContentLinksLinks,
-      secondary_content: secondaryContent,
-    };
     if (mongoId === "") {
+      const uploadContent = {
+        user_id: user.uId,
+        src: "editorjs",
+        main_post_content: mainContent,
+        main_post_links_text: mainContentLinksText,
+        main_post_links_links: mainContentLinksLinks,
+        secondary_content: secondaryContent,
+        created_at: Date.now(),
+      };
       try {
         const res = await fetch("/api/save-new-post-draft", {
           method: "POST",
@@ -321,6 +329,7 @@ function CreatePost() {
         if (res.ok) {
           const data = await res.json();
           setMongoId(data.mongoId);
+          alert("Post Successfully Saved!");
         } else {
           const error = await res.json();
           console.error(error);
@@ -329,6 +338,14 @@ function CreatePost() {
         console.error(error);
       }
     } else {
+      const uploadContent = {
+        user_id: user.uId,
+        src: "editorjs",
+        main_post_content: mainContent,
+        main_post_links_text: mainContentLinksText,
+        main_post_links_links: mainContentLinksLinks,
+        secondary_content: secondaryContent,
+      };
       const res = await fetch(`/api/save-existing-post-draft/${mongoId}`, {
         method: "POST",
         headers: {
@@ -336,32 +353,39 @@ function CreatePost() {
         },
         body: JSON.stringify(uploadContent),
       });
-      const data = await res.json();
-      console.log(data);
+      if (res.ok) {
+        alert("Post Successfully Updated!");
+      }
     }
   };
 
   const publishPost = async () => {
-    const uploadContent = {
-      user_id: user.uId,
-      src: "editorjs",
-      main_post_content: mainContent,
-      main_post_links_text: mainContentLinksText,
-      main_post_links_links: mainContentLinksLinks,
-      secondary_content: secondaryContent,
-    };
-    try {
-      const res = await fetch("/api/publish-post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(uploadContent),
-      });
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+    if (mongoId !== "") {
+      const uploadContent = {
+        user_id: user.uId,
+        src: "editorjs",
+        main_post_content: mainContent,
+        main_post_links_text: mainContentLinksText,
+        main_post_links_links: mainContentLinksLinks,
+        secondary_content: secondaryContent,
+      };
+      try {
+        const res = await fetch(`/api/publish-post/${mongoId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(uploadContent),
+        });
+        if (res.ok) {
+          alert("Post Successfully Published!");
+          const data = await res.json();
+          dispatch(addPost(data));
+          navigate(`/profile/${user.uId}`);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -451,7 +475,7 @@ function CreatePost() {
       {mongoId === "" ? (
         <button disabled={true}>Post</button>
       ) : (
-        <button onClick={publishPost}>Post</button>
+        <button onClick={publishPost}>Publish</button>
       )}
     </div>
   );
