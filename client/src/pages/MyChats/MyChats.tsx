@@ -16,8 +16,6 @@ function MyChats() {
   const chats = chatsState.chats;
   const dispatch = useAppDispatch();
 
-  console.log(chats);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
