@@ -4,7 +4,7 @@ import { useAppDispatch } from "../../reduxHooks";
 
 import styles from "./PostCard.module.css";
 
-import { Neo4jPost, SecondaryContentObject } from "../../types/post";
+import { PostContent, SecondaryContentObject } from "../../types/post";
 
 import { updatePostSecondaryContent } from "../../state/posts";
 
@@ -17,7 +17,7 @@ function PostCard({
   editable,
 }: {
   userId: string;
-  post: Neo4jPost;
+  post: PostContent;
   username: string;
   editable: boolean;
 }) {

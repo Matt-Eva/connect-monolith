@@ -53,7 +53,13 @@ function ProfilePage() {
       if (myPostsState.isFetched) {
         setPosts(myPosts);
       } else {
-        loadMyPosts({ setPosts, dispatch, setMyPosts });
+        loadMyPosts({
+          setPosts,
+          dispatch,
+          setMyPosts,
+          username: user.name,
+          userId: user.uId,
+        });
       }
     } else if (id) {
       loadProfile({ navigate, id, setProfile, setPosts });

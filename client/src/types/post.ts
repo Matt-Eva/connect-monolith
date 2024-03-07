@@ -6,8 +6,18 @@ export interface SecondaryContentObject {
   className?: string | null;
 }
 
-export interface Neo4jPost {
-  uId: string;
+export interface MongoPost {
+  main_post_content: string;
+  main_post_links_links: string[];
+  main_post_links_text: string[];
+  secondary_content: SecondaryContentObject[];
+  src: string;
+  user_id: string;
+  _id: string;
+}
+
+export interface PostContent {
+  uId?: string;
   mongoId: string;
   mainPostLinksText: string[];
   mainPostLinksLinks: string[];
@@ -18,7 +28,7 @@ export interface Neo4jPost {
 }
 
 export interface Post {
-  post: Neo4jPost;
+  post: PostContent;
   username: string;
   userId: string;
 }

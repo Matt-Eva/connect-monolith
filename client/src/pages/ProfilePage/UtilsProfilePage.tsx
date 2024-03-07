@@ -1,4 +1,5 @@
 import { Profile } from "./TypesProfilePage";
+import { MongoPost, Post, PostContent } from "../../types/post";
 
 import styles from "./ProfilePage.module.css";
 
@@ -19,9 +20,27 @@ const loadProfile = async ({
     });
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
-      setProfile({ ...data.user, loading: false });
-      setPosts([...data.posts]);
+      const user = { ...data.user };
+      const mongoPosts: MongoPost[] = [...data.posts];
+      const posts: Post[] = mongoPosts.map((mongoPost) => {
+        const postContent: PostContent = {
+          mainPostContent: mongoPost.main_post_content,
+          mainPostLinksLinks: mongoPost.main_post_links_links,
+          mainPostLinksText: mongoPost.main_post_links_text,
+          secondaryContent: mongoPost.secondary_content,
+          isSecondaryContent:
+            mongoPost.secondary_content.length !== 0 ? true : false,
+          secondaryContentFetched: true,
+          mongoId: mongoPost._id,
+        };
+        return {
+          post: postContent,
+          username: user.name,
+          userId: user.uId,
+        };
+      });
+      setProfile({ user, loading: false });
+      setPosts(posts);
     } else if (res.status === 404) {
       alert("Profile not found - redirecting to home page");
       navigate("/");
@@ -35,14 +54,35 @@ const loadMyPosts = async ({
   setPosts,
   dispatch,
   setMyPosts,
+  username,
+  userId,
 }: {
   setPosts: Function;
   dispatch: Function;
   setMyPosts: Function;
+  username: string;
+  userId: string;
 }) => {
   try {
     const res = await fetch("/api/my-posts");
-    const posts = await res.json();
+    const mongoPosts: MongoPost[] = await res.json();
+    const posts: Post[] = mongoPosts.map((mongoPost) => {
+      const postContent: PostContent = {
+        mainPostContent: mongoPost.main_post_content,
+        mainPostLinksLinks: mongoPost.main_post_links_links,
+        mainPostLinksText: mongoPost.main_post_links_text,
+        secondaryContent: mongoPost.secondary_content,
+        isSecondaryContent:
+          mongoPost.secondary_content.length !== 0 ? true : false,
+        secondaryContentFetched: true,
+        mongoId: mongoPost._id,
+      };
+      return {
+        post: postContent,
+        username,
+        userId,
+      };
+    });
     setPosts(posts);
     dispatch(setMyPosts(posts));
   } catch (error) {
