@@ -107,7 +107,7 @@ function ProfilePage() {
           userId={user.uId}
           username={user.name}
           post={post.post}
-          key={post.post.uId}
+          key={post.post.mongoId}
         />
       );
     } else {
