@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { useAppSelector } from "../../reduxHooks";
+import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import PostCard from "../../components/PostCard/PostCard";
 
-import { Post } from "../../pages/Feed/Feed";
+import { Post } from "../../types/post";
 import { Profile } from "./TypesProfilePage";
 
 import styles from "./ProfilePage.module.css";
@@ -21,8 +21,14 @@ import {
   loadMyPosts,
 } from "./UtilsProfilePage";
 
+import { setMyPosts } from "../../state/myPosts";
+
 function ProfilePage() {
   const user = useAppSelector((state) => state.user.value);
+  const myPostsState = useAppSelector((state) => state.myPosts.value);
+  const myPosts = myPostsState.myPosts;
+
+  const dispatch = useAppDispatch();
 
   const [profile, setProfile] = useState<Profile>({
     uId: "",
@@ -44,7 +50,11 @@ function ProfilePage() {
 
   useEffect(() => {
     if (id && id === user.uId) {
-      loadMyPosts({ userId: user.uId, setPosts });
+      if (myPostsState.isFetched) {
+        setPosts(myPosts);
+      } else {
+        loadMyPosts({ setPosts, dispatch, setMyPosts });
+      }
     } else if (id) {
       loadProfile({ navigate, id, setProfile, setPosts });
     }
@@ -91,7 +101,7 @@ function ProfilePage() {
           userId={user.uId}
           username={user.name}
           post={post.post}
-          key={post.uId}
+          key={post.post.uId}
         />
       );
     } else {
@@ -100,8 +110,8 @@ function ProfilePage() {
           editable={false}
           userId={profile.uId}
           username={profile.name}
-          post={post}
-          key={post.uId}
+          post={post.post}
+          key={post.post.uId}
         />
       );
     }

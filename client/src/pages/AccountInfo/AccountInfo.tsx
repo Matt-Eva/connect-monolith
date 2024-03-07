@@ -10,6 +10,7 @@ import { destroyUser } from "../../state/user";
 import { setStartingPath } from "../../state/startingPath";
 import { clearChats } from "../../state/chats";
 import { clearConnections } from "../../state/connections";
+import { clearPosts } from "../../state/posts";
 
 import { fetchBlockedUsers, logout } from "./UtilsAccountInfo";
 
@@ -43,6 +44,7 @@ function AccountInfo() {
       navigate,
       clearChats,
       clearConnections,
+      clearPosts,
     });
   };
 

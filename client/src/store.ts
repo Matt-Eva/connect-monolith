@@ -4,6 +4,7 @@ import startingPathReducer from "./state/startingPath";
 import chatsReducer from "./state/chats";
 import connectionsReducer from "./state/connections";
 import postsReducer from "./state/posts";
+import myPostsReducer from "./state/myPosts";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     chats: chatsReducer,
     connections: connectionsReducer,
     posts: postsReducer,
+    myPosts: myPostsReducer,
   },
 });
 

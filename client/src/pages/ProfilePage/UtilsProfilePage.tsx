@@ -32,16 +32,19 @@ const loadProfile = async ({
 };
 
 const loadMyPosts = async ({
-  userId,
   setPosts,
+  dispatch,
+  setMyPosts,
 }: {
-  userId: string;
   setPosts: Function;
+  dispatch: Function;
+  setMyPosts: Function;
 }) => {
   try {
     const res = await fetch("/api/my-posts");
     const posts = await res.json();
     setPosts(posts);
+    dispatch(setMyPosts(posts));
   } catch (error) {
     console.error(error);
   }

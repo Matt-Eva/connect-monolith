@@ -32,9 +32,14 @@ export const postsSlice = createSlice({
         }
       });
     },
+    clearPosts: (postsState) => {
+      postsState.value.posts = initialPostState;
+      postsState.value.isFetched = false;
+    },
   },
 });
 
-export const { setPosts, updatePostSecondaryContent } = postsSlice.actions;
+export const { setPosts, updatePostSecondaryContent, clearPosts } =
+  postsSlice.actions;
 
 export default postsSlice.reducer;
