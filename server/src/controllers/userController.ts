@@ -1,11 +1,13 @@
 import argon2 from "argon2";
 import neoDriver from "../config/neo4jConfig.js";
+import mongoClient from "../config/mongoConfig.js";
 import { Request, Response } from "express";
 import { v4 } from "uuid";
 import { ResponsePost } from "./postController.js";
 const uuid = v4;
 
 // loads user for profile page
+// loads posts from mongodb
 exports.getUser = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
@@ -16,15 +18,12 @@ exports.getUser = async (req: Request, res: Response) => {
     const query = `
               MATCH (s:User {uId: $selfId}), (u:User {uId: $userId}) 
               WHERE NOT (s) <- [:BLOCKED] - (u)
-              WITH u, s
-              OPTIONAL MATCH (u) - [:POSTED] -> (p:Post)
-              RETURN u.profileImg AS profileImg, u.name AS name, exists((s) - [:CONNECTED] - (u)) AS connected, exists((s) - [:INVITED] -> (u)) AS pending, exists((s) <- [:INVITED] - (u)) AS invited, exists((s) - [:BLOCKED] -> (u)) AS blocked, exists((s) - [:IGNORED] -> (u)) AS ignored, p AS post`;
+              
+              RETURN u.profileImg AS profileImg, u.name AS name, exists((s) - [:CONNECTED] - (u)) AS connected, exists((s) - [:INVITED] -> (u)) AS pending, exists((s) <- [:INVITED] - (u)) AS invited, exists((s) - [:BLOCKED] -> (u)) AS blocked, exists((s) - [:IGNORED] -> (u)) AS ignored`;
 
     const result = await session.executeRead((tx) =>
       tx.run(query, { userId: userId, selfId: selfId }),
     );
-
-    console.log(result.records);
 
     if (result.records.length !== 0) {
       const user = {
@@ -38,22 +37,9 @@ exports.getUser = async (req: Request, res: Response) => {
         uId: userId,
       };
 
-      let posts: ResponsePost[] = [];
+      const postsCollection = mongoClient.db("connect").collection("posts");
 
-      // check if user has any posts
-      if (result.records[0].get("post")) {
-        posts = result.records.map((record) => {
-          return {
-            post: {
-              ...record.get("post").properties,
-              secondaryContentFetched: false,
-              secondaryContent: [],
-            },
-            username: user.name,
-            userId: user.uId,
-          };
-        });
-      }
+      const posts = await postsCollection.find({ user_id: userId }).toArray();
 
       res.status(200).send({ user, posts });
     } else {
