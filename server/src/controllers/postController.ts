@@ -137,37 +137,13 @@ exports.getSecondaryPostContent = async (req: Request, res: Response) => {
 exports.getMyPosts = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
   const userId = req.session.user.uId;
-  const session = neoDriver.session();
+
   try {
-    if (userId) {
-      const query = `
-      MATCH (u:User {uId: $userId}) - [:POSTED] -> (p:Post)
-      Return p AS post
-      `;
-      const result = await session.executeRead((tx) =>
-        tx.run(query, { userId }),
-      );
-
-      const posts: ResponsePost[] = result.records.map((record) => {
-        return {
-          post: {
-            ...record.get("post").properties,
-            secondaryContentFetched: false,
-            secondaryContent: [],
-          },
-          username: req.session.user!.name,
-          userId: req.session.user!.uId,
-        };
-      });
-
-      res.status(200).send(posts);
-    } else {
-      res.status(401).end();
-    }
+    const postsCollection = mongoClient.db("connect").collection("posts");
+    const myPosts = postsCollection.find({ user_id: userId }).toArray();
+    res.status(200).send(myPosts);
   } catch (error) {
     console.error(error);
-  } finally {
-    await session.close();
   }
 };
 
