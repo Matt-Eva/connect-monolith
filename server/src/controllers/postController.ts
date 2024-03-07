@@ -14,8 +14,27 @@ export interface Neo4jPost {
   isSecondaryContent: boolean;
 }
 
-export interface ResponsePost {
+export interface NeoResponsePost {
   post: Neo4jPost;
+  username: string;
+  userId: string;
+}
+
+interface SecondaryContentObject {
+  nodeName: string;
+  nodeText: string | null;
+  children: SecondaryContentObject[];
+  href?: string | null;
+  className?: string | null;
+}
+
+interface PublishedPost extends Neo4jPost {
+  secondaryContent: SecondaryContentObject[];
+  secondaryContentFetched: boolean;
+}
+
+interface PublishedResponsePost {
+  post: PublishedPost;
   username: string;
   userId: string;
 }
@@ -24,8 +43,8 @@ exports.savePostDraft = async (req: Request, res: Response) => {
   try {
     const collection = mongoClient.db("connect").collection("posts");
     const result = await collection.insertOne(req.body);
-    console.log(result.insertedId.toString());
-    res.status(200).send(req.body);
+    const mongoId = result.insertedId.toString();
+    res.status(200).send({ mongoId });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: error });
@@ -35,45 +54,53 @@ exports.savePostDraft = async (req: Request, res: Response) => {
 exports.publishPost = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
 
+  const mongoId = new ObjectId(req.params.mongoId);
+
   try {
-    const collection = mongoClient.db("connect").collection("posts");
-    const mongoResult = await collection.insertOne(req.body);
-    if (mongoResult.acknowledged) {
-      const session = neoDriver.session();
-      try {
-        const userId = req.session.user.uId;
+    const postsCollection = mongoClient.db("connect").collection("posts");
+    const mongoPost = await postsCollection.findOne({ _id: mongoId });
+    if (!mongoPost) throw new Error("could not find mongoDb post");
 
-        const isSecondaryContent =
-          req.body.secondary_content.length !== 0 ? true : false;
+    const session = neoDriver.session();
+    try {
+      const userId = req.session.user.uId;
 
-        const neoPost: Neo4jPost = {
-          uId: uuid(),
-          mongoId: mongoResult.insertedId.toString(),
-          mainPostContent: req.body.main_post_content,
-          mainPostLinksText: req.body.main_post_links_text,
-          mainPostLinksLinks: req.body.main_post_links_links,
-          isSecondaryContent,
-        };
-        const query = `
+      const isSecondaryContent =
+        mongoPost.secondary_content.length !== 0 ? true : false;
+      const neoId = uuid();
+      const neoPost: Neo4jPost = {
+        uId: neoId,
+        mongoId: req.params.mongoId,
+        mainPostContent: mongoPost.main_post_content,
+        mainPostLinksText: mongoPost.main_post_links_text,
+        mainPostLinksLinks: mongoPost.main_post_links_links,
+        isSecondaryContent,
+      };
+      const query = `
             MATCH (u:User {uId: $userId})
             CREATE (u) - [:POSTED] -> (p:Post $props)
             RETURN p AS post, u.name AS username
         `;
-        const neoResult = await session.executeWrite((tx) =>
-          tx.run(query, { userId, props: neoPost }),
-        );
-        console.log(
-          neoResult.records[0].get("username"),
-          neoResult.records[0].get("post"),
-        );
+      await session.executeWrite((tx) =>
+        tx.run(query, { userId, props: neoPost }),
+      );
 
-        res.status(200).send(req.body);
-      } catch (error) {
-        console.error(error);
-        throw new Error("could not insert post node to neo4j");
-      }
-    } else {
-      throw new Error("could not insert post document to mongodb");
+      const responsePost: PublishedResponsePost = {
+        post: {
+          ...neoPost,
+          secondaryContent: mongoPost.secondary_content,
+          secondaryContentFetched: true,
+        },
+        username: req.session.user.name,
+        userId: userId,
+      };
+
+      res.status(200).send(responsePost);
+    } catch (error) {
+      console.error(error);
+      throw new Error("could not insert post node to neo4j");
+    } finally {
+      await session.close();
     }
   } catch (error) {
     console.error(error);
@@ -95,9 +122,8 @@ exports.getPosts = async (req: Request, res: Response) => {
 
     const result = await session.executeRead((tx) => tx.run(query, { userId }));
 
-    const posts: ResponsePost[] = [];
-    for (const record of result.records) {
-      posts.push({
+    const posts: NeoResponsePost[] = result.records.map((record) => {
+      return {
         post: {
           ...record.get("post").properties,
           secondaryContentFetched: false,
@@ -105,8 +131,8 @@ exports.getPosts = async (req: Request, res: Response) => {
         },
         username: record.get("username"),
         userId: record.get("userId"),
-      });
-    }
+      };
+    });
 
     res.status(200).send(posts);
   } catch (error) {

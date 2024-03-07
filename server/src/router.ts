@@ -58,7 +58,7 @@ router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
 
 router.post("/post-draft", postController.savePostDraft);
 
-router.post("/publish-post", postController.publishPost);
+router.post("/publish-post/:mongoId", postController.publishPost);
 
 router.get("/posts", postController.getPosts);
 
