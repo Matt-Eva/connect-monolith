@@ -1,4 +1,4 @@
-import { useState, createElement, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppSelector } from "../../reduxHooks";
 
 import PostPreview from "../../components/PostPreview/PostPreview";

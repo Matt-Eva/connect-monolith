@@ -1,21 +1,26 @@
 import { createElement } from "react";
+import { v4 as uuid } from "uuid";
 
 import { SecondaryContentObject } from "../types/post";
 
 export const recursivelyRenderSecondaryPostContent = (
   children: SecondaryContentObject[]
 ): Array<React.ReactNode> => {
-  return children.map((child) => {
+  const renderedChildren = children.map((child) => {
     if (child.nodeName === "#text") {
       return child.nodeText;
     } else if (child.nodeName === "br") {
-      return createElement("br", {});
+      const key = uuid();
+      console.log(key);
+      return createElement("br", { key: key });
     } else if (child.nodeName === "a") {
       const children = child.children;
       const displayChildren = recursivelyRenderSecondaryPostContent(children);
+      const key = uuid();
       return createElement(
         "a",
         {
+          key: key,
           href: child.href,
           className: child.className,
         },
@@ -24,11 +29,15 @@ export const recursivelyRenderSecondaryPostContent = (
     } else {
       const children = child.children;
       const displayChildren = recursivelyRenderSecondaryPostContent(children);
+      const key = uuid();
+      console.log(key);
       return createElement(
         child.nodeName,
-        { className: child.className },
+        { key: key, className: child.className },
         displayChildren
       );
     }
   });
+  console.log(renderedChildren);
+  return renderedChildren;
 };
