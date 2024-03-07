@@ -21,8 +21,11 @@ const loadProfile = async ({
     if (res.ok) {
       const data = await res.json();
       const user = { ...data.user };
+      console.log(user);
       const mongoPosts: MongoPost[] = [...data.posts];
+
       const posts: Post[] = mongoPosts.map((mongoPost) => {
+        console.log(mongoPost);
         const postContent: PostContent = {
           mainPostContent: mongoPost.main_post_content,
           mainPostLinksLinks: mongoPost.main_post_links_links,
@@ -39,7 +42,7 @@ const loadProfile = async ({
           userId: user.uId,
         };
       });
-      setProfile({ user, loading: false });
+      setProfile({ ...user, loading: false });
       setPosts(posts);
     } else if (res.status === 404) {
       alert("Profile not found - redirecting to home page");

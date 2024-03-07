@@ -30,8 +30,6 @@ function PostCard({
 
   const navigate = useNavigate();
 
-  console.log(post);
-
   const linkArray = post.mainPostLinksText.map((text, index) => {
     return (
       <a key={text} href={post.mainPostLinksLinks[index]}>
@@ -77,8 +75,8 @@ function PostCard({
     }
   };
 
-  // const displaySecondaryContent =
-  //   recursivelyRenderSecondaryPostContent(secondaryContent);
+  const displaySecondaryContent =
+    recursivelyRenderSecondaryPostContent(secondaryContent);
 
   return (
     <article>
@@ -87,11 +85,10 @@ function PostCard({
       {editable ? <button onClick={deletePost}>delete</button> : null}
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
-      {post.secondaryContent ? (
+      {post.isSecondaryContent ? (
         <button onClick={handleSecondaryContent}>read more</button>
       ) : null}
-      {/* <button >read more</button> */}
-      {/* {showSecondaryContent ? displaySecondaryContent : null} */}
+      {showSecondaryContent ? displaySecondaryContent : null}
     </article>
   );
 }
