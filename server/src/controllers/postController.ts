@@ -26,11 +26,11 @@ exports.publishPost = async (req: Request, res: Response) => {
     if (mongoResult.acknowledged) {
       const session = neoDriver.session();
       try {
-        const userId = req.session.user!.uId;
-        let secondaryContent = false;
-        if (req.body.secondaryContent.length !== 0) {
-          secondaryContent = true;
-        }
+        const userId = req.session.user.uId;
+
+        const secondaryContent =
+          req.body.secondary_content.length !== 0 ? true : false;
+
         const neoPost = {
           uId: uuid(),
           mongoId: mongoResult.insertedId.toString(),
@@ -86,7 +86,11 @@ exports.getPosts = async (req: Request, res: Response) => {
       const posts = [];
       for (const record of result.records) {
         posts.push({
-          post: record.get("post").properties,
+          post: {
+            ...record.get("post").properties,
+            secondaryContentFetched: false,
+            secondaryContent: [],
+          },
           username: record.get("username"),
           userId: record.get("userId"),
         });
