@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import styles from "./PostCard.module.css";
 
-import { Neo4jPost } from "../../types/post";
+import { Neo4jPost, SecondaryContentObject } from "../../types/post";
 import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
-
-type SecondaryContent = Array<ReactNode>;
 
 function PostCard({
   userId,
@@ -19,9 +17,9 @@ function PostCard({
   username: string;
   editable: boolean;
 }) {
-  const [secondaryContent, setSecondaryContent] = useState<SecondaryContent>(
-    []
-  );
+  const [secondaryContent, setSecondaryContent] = useState<
+    SecondaryContentObject[]
+  >([]);
   const [showSecondaryContent, setShowSecondaryContent] = useState(false);
 
   const navigate = useNavigate();
@@ -34,13 +32,12 @@ function PostCard({
     );
   });
 
-  const displaySecondaryContent = async () => {
+  const handleSecondaryContent = async () => {
     if (secondaryContent.length === 0) {
       try {
         const res = await fetch(`/api/secondary-post/${post.mongoId}`);
         const data = await res.json();
-        const secondaryContent = recursivelyRenderSecondaryPostContent(data);
-        setSecondaryContent(secondaryContent);
+        setSecondaryContent(data);
         setShowSecondaryContent(true);
       } catch (error) {
         console.error(error);
@@ -66,6 +63,9 @@ function PostCard({
     }
   };
 
+  const displaySecondaryContent =
+    recursivelyRenderSecondaryPostContent(secondaryContent);
+
   return (
     <article>
       <h3>{username}</h3>
@@ -74,8 +74,8 @@ function PostCard({
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
       {post.secondaryContent ? <button>read more</button> : null}
-      <button onClick={displaySecondaryContent}>read more</button>
-      {showSecondaryContent ? secondaryContent : null}
+      <button onClick={handleSecondaryContent}>read more</button>
+      {showSecondaryContent ? displaySecondaryContent : null}
     </article>
   );
 }
