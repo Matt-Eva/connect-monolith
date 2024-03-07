@@ -3,7 +3,6 @@ import neoDriver from "../config/neo4jConfig.js";
 import mongoClient from "../config/mongoConfig.js";
 import { Request, Response } from "express";
 import { v4 } from "uuid";
-import { ResponsePost } from "./postController.js";
 const uuid = v4;
 
 // loads user for profile page
@@ -18,7 +17,6 @@ exports.getUser = async (req: Request, res: Response) => {
     const query = `
               MATCH (s:User {uId: $selfId}), (u:User {uId: $userId}) 
               WHERE NOT (s) <- [:BLOCKED] - (u)
-              
               RETURN u.profileImg AS profileImg, u.name AS name, exists((s) - [:CONNECTED] - (u)) AS connected, exists((s) - [:INVITED] -> (u)) AS pending, exists((s) <- [:INVITED] - (u)) AS invited, exists((s) - [:BLOCKED] -> (u)) AS blocked, exists((s) - [:IGNORED] -> (u)) AS ignored`;
 
     const result = await session.executeRead((tx) =>

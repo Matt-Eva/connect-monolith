@@ -139,8 +139,9 @@ exports.getMyPosts = async (req: Request, res: Response) => {
   const userId = req.session.user.uId;
 
   try {
+    console.log(userId);
     const postsCollection = mongoClient.db("connect").collection("posts");
-    const myPosts = postsCollection.find({ user_id: userId }).toArray();
+    const myPosts = await postsCollection.find({ user_id: userId }).toArray();
     res.status(200).send(myPosts);
   } catch (error) {
     console.error(error);
@@ -164,7 +165,7 @@ exports.deletePost = async (req: Request, res: Response) => {
     const collection = mongoClient.db("connect").collection("posts");
     const postId = new ObjectId(mongoId);
 
-    const mongoResult = await collection.deleteOne({ _id: postId });
+    const mongoResult = collection.deleteOne({ _id: postId });
 
     await Promise.all([neoResult, mongoResult]);
 
