@@ -5,6 +5,21 @@ import neoDriver from "../config/neo4jConfig";
 import { v4 } from "uuid";
 const uuid = v4;
 
+export interface Neo4jPost {
+  uId: string;
+  mongoId: string;
+  mainPostContent: string;
+  mainPostLinksText: string[];
+  mainPostLinksLinks: string[];
+  isSecondaryContent: boolean;
+}
+
+export interface ResponsePost {
+  post: Neo4jPost;
+  username: string;
+  userId: string;
+}
+
 exports.savePostDraft = async (req: Request, res: Response) => {
   try {
     const collection = mongoClient.db("connect").collection("posts");
@@ -28,16 +43,16 @@ exports.publishPost = async (req: Request, res: Response) => {
       try {
         const userId = req.session.user.uId;
 
-        const secondaryContent =
+        const isSecondaryContent =
           req.body.secondary_content.length !== 0 ? true : false;
 
-        const neoPost = {
+        const neoPost: Neo4jPost = {
           uId: uuid(),
           mongoId: mongoResult.insertedId.toString(),
           mainPostContent: req.body.main_post_content,
           mainPostLinksText: req.body.main_post_links_text,
           mainPostLinksLinks: req.body.main_post_links_links,
-          secondaryContent,
+          isSecondaryContent,
         };
         const query = `
             MATCH (u:User {uId: $userId})
@@ -72,34 +87,28 @@ exports.getPosts = async (req: Request, res: Response) => {
   const userId = req.session.user.uId;
   const session = neoDriver.session();
   try {
-    if (userId) {
-      const query = `
+    const query = `
       MATCH (u:User {uId: $userId}) - [:CONNECTED] - (c:User) - [:POSTED] -> (p:Post)
       RETURN p AS post, c.name AS username, c.uId AS userId
       LIMIT 100 
     `;
 
-      const result = await session.executeRead((tx) =>
-        tx.run(query, { userId }),
-      );
+    const result = await session.executeRead((tx) => tx.run(query, { userId }));
 
-      const posts = [];
-      for (const record of result.records) {
-        posts.push({
-          post: {
-            ...record.get("post").properties,
-            secondaryContentFetched: false,
-            secondaryContent: [],
-          },
-          username: record.get("username"),
-          userId: record.get("userId"),
-        });
-      }
-
-      res.status(200).send(posts);
-    } else {
-      throw new Error("userId is undefined");
+    const posts: ResponsePost[] = [];
+    for (const record of result.records) {
+      posts.push({
+        post: {
+          ...record.get("post").properties,
+          secondaryContentFetched: false,
+          secondaryContent: [],
+        },
+        username: record.get("username"),
+        userId: record.get("userId"),
+      });
     }
+
+    res.status(200).send(posts);
   } catch (error) {
     console.error(error);
   } finally {
@@ -139,9 +148,17 @@ exports.getMyPosts = async (req: Request, res: Response) => {
         tx.run(query, { userId }),
       );
 
-      const posts = result.records.map(
-        (record) => record.get("post").properties,
-      );
+      const posts: ResponsePost[] = result.records.map((record) => {
+        return {
+          post: {
+            ...record.get("post").properties,
+            secondaryContentFetched: false,
+            secondaryContent: [],
+          },
+          username: req.session.user!.name,
+          userId: req.session.user!.uId,
+        };
+      });
 
       res.status(200).send(posts);
     } else {

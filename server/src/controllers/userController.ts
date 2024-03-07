@@ -2,6 +2,7 @@ import argon2 from "argon2";
 import neoDriver from "../config/neo4jConfig.js";
 import { Request, Response } from "express";
 import { v4 } from "uuid";
+import { ResponsePost } from "./postController.js";
 const uuid = v4;
 
 // loads user for profile page
@@ -37,8 +38,16 @@ exports.getUser = async (req: Request, res: Response) => {
         uId: userId,
       };
 
-      const posts = result.records.map((record) => {
-        return record.get("post").properties;
+      const posts: ResponsePost[] = result.records.map((record) => {
+        return {
+          post: {
+            ...record.get("post").properties,
+            secondaryContentFetched: false,
+            secondaryContent: [],
+          },
+          username: user.name,
+          userId: user.uId,
+        };
       });
 
       res.status(200).send({ user, posts });

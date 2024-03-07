@@ -160,14 +160,6 @@ function CreatePost() {
     }
   };
 
-  const handleMouseUp = () => {
-    const selection = window.getSelection();
-    if (selection?.rangeCount && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const text = range.toString();
-    }
-  };
-
   const makeHeader = () => {
     console.log(focusedElement);
     let elementToChange = recursivelyTraverseUpNodeHierarchy(focusedElement);
@@ -355,7 +347,7 @@ function CreatePost() {
   };
 
   return (
-    <div className={styles.container} onMouseUp={handleMouseUp}>
+    <div className={styles.container}>
       <section>
         <h2>Main Post</h2>
         <textarea value={mainContent} onChange={updateMainContent}></textarea>

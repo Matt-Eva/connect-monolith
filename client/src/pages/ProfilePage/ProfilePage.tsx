@@ -90,7 +90,7 @@ function ProfilePage() {
           editable={true}
           userId={user.uId}
           username={user.name}
-          post={post}
+          post={post.post}
           key={post.uId}
         />
       );
