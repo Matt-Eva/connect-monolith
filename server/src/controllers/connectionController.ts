@@ -52,7 +52,7 @@ exports.search = async (req: Request, res: Response) => {
               AND NOT (c) - [:CONNECTED] - (u)
               AND NOT (c) - [:BLOCKED] - (u)
               AND u <> c
-              RETURN c.uId AS uId, c.name AS name, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
+              RETURN c.uId AS uId, c.name AS name, c.firstName AS firstName, c.profileImg AS profileImg, exists((u) - [:INVITED] -> (c)) AS pending, exists((u) <- [:INVITED] -(c)) AS invited
               UNION
               MATCH (c:User), (u:User {uId: $userId})
               WHERE c.name =~ "(?i)" + $name + ".*"
