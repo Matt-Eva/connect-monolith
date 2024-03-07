@@ -87,8 +87,10 @@ function PostCard({
       {editable ? <button onClick={deletePost}>delete</button> : null}
       <p>{post.mainPostContent}</p>
       <div>{linkArray}</div>
-      {post.secondaryContent ? <button>read more</button> : null}
-      <button onClick={handleSecondaryContent}>read more</button>
+      {post.secondaryContent ? (
+        <button onClick={handleSecondaryContent}>read more</button>
+      ) : null}
+      {/* <button >read more</button> */}
       {/* {showSecondaryContent ? displaySecondaryContent : null} */}
     </article>
   );
