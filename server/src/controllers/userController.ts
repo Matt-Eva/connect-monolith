@@ -38,17 +38,22 @@ exports.getUser = async (req: Request, res: Response) => {
         uId: userId,
       };
 
-      const posts: ResponsePost[] = result.records.map((record) => {
-        return {
-          post: {
-            ...record.get("post").properties,
-            secondaryContentFetched: false,
-            secondaryContent: [],
-          },
-          username: user.name,
-          userId: user.uId,
-        };
-      });
+      let posts: ResponsePost[] = [];
+
+      // check if user has any posts
+      if (result.records[0].get("post")) {
+        posts = result.records.map((record) => {
+          return {
+            post: {
+              ...record.get("post").properties,
+              secondaryContentFetched: false,
+              secondaryContent: [],
+            },
+            username: user.name,
+            userId: user.uId,
+          };
+        });
+      }
 
       res.status(200).send({ user, posts });
     } else {
