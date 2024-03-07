@@ -1,9 +1,13 @@
 import { useState, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../reduxHooks";
 
 import styles from "./PostCard.module.css";
 
 import { Neo4jPost, SecondaryContentObject } from "../../types/post";
+
+import { updatePostSecondaryContent } from "../../state/posts";
+
 import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
 
 function PostCard({
@@ -19,10 +23,14 @@ function PostCard({
 }) {
   const [secondaryContent, setSecondaryContent] = useState<
     SecondaryContentObject[]
-  >([]);
+  >(post.secondaryContent);
   const [showSecondaryContent, setShowSecondaryContent] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
+
+  console.log(post);
 
   const linkArray = post.mainPostLinksText.map((text, index) => {
     return (
@@ -36,9 +44,15 @@ function PostCard({
     if (secondaryContent.length === 0) {
       try {
         const res = await fetch(`/api/secondary-post/${post.mongoId}`);
-        const data = await res.json();
+        const data: SecondaryContentObject[] = await res.json();
         setSecondaryContent(data);
         setShowSecondaryContent(true);
+        dispatch(
+          updatePostSecondaryContent({
+            secondaryContent: data,
+            mongoId: post.mongoId,
+          })
+        );
       } catch (error) {
         console.error(error);
       }
@@ -63,8 +77,8 @@ function PostCard({
     }
   };
 
-  const displaySecondaryContent =
-    recursivelyRenderSecondaryPostContent(secondaryContent);
+  // const displaySecondaryContent =
+  //   recursivelyRenderSecondaryPostContent(secondaryContent);
 
   return (
     <article>
@@ -75,7 +89,7 @@ function PostCard({
       <div>{linkArray}</div>
       {post.secondaryContent ? <button>read more</button> : null}
       <button onClick={handleSecondaryContent}>read more</button>
-      {showSecondaryContent ? displaySecondaryContent : null}
+      {/* {showSecondaryContent ? displaySecondaryContent : null} */}
     </article>
   );
 }

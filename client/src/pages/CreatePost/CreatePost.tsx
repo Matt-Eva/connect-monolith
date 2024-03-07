@@ -39,7 +39,7 @@ function CreatePost() {
   useEffect(() => {
     const editor = document.getElementById("editorjs");
     setEditor(editor);
-  }, []);
+  }, [addSecondaryContent]);
 
   const recursivelyHandleChildNodes = (
     node: ChildNode
@@ -93,7 +93,34 @@ function CreatePost() {
     }
   };
 
+  const recursivelyTraverseUpNodeHierarchy = (
+    element: HTMLElement | null
+  ): HTMLElement | null => {
+    if (element !== null) {
+      if (
+        element.nodeName === "U" ||
+        element.nodeName === "B" ||
+        element.nodeName === "I" ||
+        element.nodeName === "#text"
+      ) {
+        return recursivelyTraverseUpNodeHierarchy(element.parentElement);
+      } else {
+        return element;
+      }
+    }
+    return null;
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    const selection = window.getSelection();
+    if (selection!.rangeCount === 0) return null;
+
+    const range = selection!.getRangeAt(0);
+    const node = range.startContainer as HTMLElement;
+    const focusedElement = recursivelyTraverseUpNodeHierarchy(node);
+    console.log("focusedElement", focusedElement);
+    setFocusedElement(focusedElement);
+
     const editor = e.target as HTMLElement;
 
     if (editor.children.length === 0 && e.key.length === 1) {
@@ -122,22 +149,6 @@ function CreatePost() {
 
     if (e.key === "Tab") {
       e.preventDefault();
-    }
-  };
-
-  const recursivelyTraverseUpNodeHierarchy = (
-    element: HTMLElement | null
-  ): HTMLElement | undefined => {
-    if (element !== null) {
-      if (
-        element.nodeName === "U" ||
-        element.nodeName === "B" ||
-        element.nodeName === "I"
-      ) {
-        return recursivelyTraverseUpNodeHierarchy(element.parentElement);
-      } else {
-        return element;
-      }
     }
   };
 
