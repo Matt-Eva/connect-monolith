@@ -64,7 +64,7 @@ function ProfilePage() {
     } else if (id) {
       loadProfile({ navigate, id, setProfile, setPosts });
     }
-  }, []);
+  }, [myPosts]);
 
   const handleStartChat = () => {
     startChat({ profile, navigate });

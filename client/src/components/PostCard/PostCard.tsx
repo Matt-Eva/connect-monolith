@@ -7,6 +7,7 @@ import styles from "./PostCard.module.css";
 import { PostContent, SecondaryContentObject } from "../../types/post";
 
 import { updatePostSecondaryContent } from "../../state/posts";
+import { removePost } from "../../state/myPosts";
 
 import { recursivelyRenderSecondaryPostContent } from "../../utils/recursivelyRenderSecondaryPostContent";
 
@@ -59,16 +60,14 @@ function PostCard({
     }
   };
 
-  const edit = () => {
-    navigate("/posts/new");
-  };
-
   const deletePost = async () => {
     try {
       const res = await fetch(`/api/posts/${post.mongoId}`, {
         method: "DELETE",
       });
       if (res.ok) {
+        console.log("post deleted");
+        dispatch(removePost(post.mongoId));
       }
     } catch (error) {
       console.error(error);

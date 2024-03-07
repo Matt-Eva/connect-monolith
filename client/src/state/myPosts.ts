@@ -39,6 +39,14 @@ export const myPostsSlice = createSlice({
     addPost: (postsState, action) => {
       postsState.value.myPosts = [action.payload, ...postsState.value.myPosts];
     },
+    removePost: (postsState, action) => {
+      console.log(action.payload);
+      postsState.value.myPosts = postsState.value.myPosts.filter((myPost) => {
+        console.log(myPost.post.mongoId === action.payload);
+        return myPost.post.mongoId !== action.payload;
+      });
+      console.log(postsState.value.myPosts);
+    },
   },
 });
 
@@ -47,6 +55,7 @@ export const {
   updateMyPostSecondaryContent,
   clearMyPosts,
   addPost,
+  removePost,
 } = myPostsSlice.actions;
 
 export default myPostsSlice.reducer;
