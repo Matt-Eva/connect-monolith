@@ -1,17 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../reduxHooks";
+
 import CardImageIcon from "../CardImageIcon/CardImageIcon";
+
 import styles from "./ConnectionCard.module.css";
+
+import { addChat } from "../../state/chats";
 
 function ConnectionCard({
   name,
   uId,
   profileImg,
+  firstName,
 }: {
   name: string;
   uId: string;
   profileImg: string;
+  firstName: string;
 }) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  console.log(firstName);
 
   const startChat = async () => {
     const body = {
@@ -29,7 +39,8 @@ function ConnectionCard({
 
     if (res.ok) {
       const newChat = await res.json();
-      console.log(newChat);
+      const participants = [{ name, uId, profileImg, firstName }];
+      dispatch(addChat({ chatId: newChat.uId, participants }));
       navigate(`/chat/${newChat.uId}`);
     }
   };

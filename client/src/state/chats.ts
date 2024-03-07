@@ -5,7 +5,7 @@ import { ConnectionArray } from "../types/connection";
 interface Chats {
   [key: string]: {
     unread: boolean;
-    users: ConnectionArray;
+    participants: ConnectionArray;
   };
 }
 
@@ -27,7 +27,10 @@ export const chatsSlice = createSlice({
     addChat: (chatsState, action) => {
       const oneMoreChat = {
         ...chatsState.value.chats,
-        [action.payload.chatId]: action.payload.participants,
+        [action.payload.chatId]: {
+          participants: action.payload.participants,
+          unread: false,
+        },
       };
       chatsState.value.chats = oneMoreChat;
     },

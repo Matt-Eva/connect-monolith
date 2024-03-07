@@ -9,25 +9,25 @@ import styles from "./ChatCard.module.css";
 
 function ChatCard({
   chatId,
-  users,
+  participants,
   unread,
 }: {
   chatId: string;
-  users: ConnectionArray;
+  participants: ConnectionArray;
   unread: boolean;
 }) {
   const [isTruncated, setIsTruncated] = useState(true);
 
-  const userNameArray = users.map((user) => user.firstName);
+  const userNameArray = participants.map((user) => user.firstName);
 
   const userImages = [];
 
-  for (let i = 0; i < users.length && i < 4; i++) {
+  for (let i = 0; i < participants.length && i < 4; i++) {
     userImages.push({
-      name: users[i].name,
-      profileImg: users[i].profileImg,
-      uId: users[i].uId,
-      firstName: users[i].firstName,
+      name: participants[i].name,
+      profileImg: participants[i].profileImg,
+      uId: participants[i].uId,
+      firstName: participants[i].firstName,
     });
   }
 

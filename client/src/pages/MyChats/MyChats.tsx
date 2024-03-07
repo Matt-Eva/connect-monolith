@@ -18,6 +18,8 @@ function MyChats() {
 
   const [loading, setLoading] = useState(true);
 
+  console.log(chats);
+
   useEffect(() => {
     if (!isFetched) {
       fetchChats({ setChats, dispatch, setLoading });
@@ -31,7 +33,7 @@ function MyChats() {
   for (const key in chats) {
     const chat = {
       chatId: key,
-      users: chats[key].users,
+      participants: chats[key].participants,
       unread: chats[key].unread,
     };
     displayChats.push(<ChatCard key={key} {...chat} />);
