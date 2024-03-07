@@ -29,6 +29,7 @@ const logout = async ({
   clearChats,
   clearConnections,
   clearPosts,
+  clearMyPosts,
 }: {
   setStartingPath: Function;
   dispatch: Function;
@@ -37,6 +38,7 @@ const logout = async ({
   clearChats: Function;
   clearConnections: Function;
   clearPosts: Function;
+  clearMyPosts: Function;
 }) => {
   await fetch("/api" + "/logout", {
     method: "DELETE",
@@ -47,6 +49,7 @@ const logout = async ({
   dispatch(clearChats());
   dispatch(clearConnections());
   dispatch(clearPosts());
+  dispatch(clearMyPosts());
   navigate("/login");
 };
 

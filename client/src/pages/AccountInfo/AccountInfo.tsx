@@ -11,6 +11,7 @@ import { setStartingPath } from "../../state/startingPath";
 import { clearChats } from "../../state/chats";
 import { clearConnections } from "../../state/connections";
 import { clearPosts } from "../../state/posts";
+import { clearMyPosts } from "../../state/myPosts";
 
 import { fetchBlockedUsers, logout } from "./UtilsAccountInfo";
 
@@ -45,6 +46,7 @@ function AccountInfo() {
       clearChats,
       clearConnections,
       clearPosts,
+      clearMyPosts,
     });
   };
 
