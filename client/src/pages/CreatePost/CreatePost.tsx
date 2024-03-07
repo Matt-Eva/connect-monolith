@@ -33,6 +33,7 @@ function CreatePost() {
   const [linkInput, setLinkInput] = useState("");
   const [linkErrorMessage, setLinkErrorMessage] = useState(false);
   const [editor, setEditor] = useState<HTMLElement | null>(null);
+  const [mongoId, setMongoId] = useState("");
 
   console.log(secondaryContent);
 
@@ -299,6 +300,7 @@ function CreatePost() {
   });
 
   const saveDraft = async () => {
+    console.log("saving draft");
     const uploadContent = {
       user_id: user.uId,
       src: "editorjs",
@@ -307,8 +309,27 @@ function CreatePost() {
       main_post_links_links: mainContentLinksLinks,
       secondary_content: secondaryContent,
     };
-    try {
-      const res = await fetch("/api/post-draft", {
+    if (mongoId === "") {
+      try {
+        const res = await fetch("/api/save-new-post-draft", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(uploadContent),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setMongoId(data.mongoId);
+        } else {
+          const error = await res.json();
+          console.error(error);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      const res = await fetch(`/api/save-existing-post-draft/${mongoId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -317,8 +338,6 @@ function CreatePost() {
       });
       const data = await res.json();
       console.log(data);
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -418,14 +437,22 @@ function CreatePost() {
           ></div>
         </section>
       ) : null}
-      <button onClick={saveDraft}>Save</button>
+      {mainContent === "" ? (
+        <button disabled={true}>Save</button>
+      ) : (
+        <button onClick={saveDraft}>Save</button>
+      )}
       <PostPreview
         linkTextArray={mainContentLinksText}
         linkLinkArray={mainContentLinksLinks}
         mainContent={mainContent}
         secondaryContent={secondaryContent}
       />
-      <button onClick={publishPost}>Post</button>
+      {mongoId === "" ? (
+        <button disabled={true}>Post</button>
+      ) : (
+        <button onClick={publishPost}>Post</button>
+      )}
     </div>
   );
 }

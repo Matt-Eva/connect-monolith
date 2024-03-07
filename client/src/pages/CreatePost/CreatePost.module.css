@@ -22,6 +22,11 @@
   margin: 5px 2px 5px 0px;
 }
 
+.container button:disabled {
+  color: gray;
+  background-color: lightgray;
+}
+
 .secondaryContent {
   height: 80%;
 }
