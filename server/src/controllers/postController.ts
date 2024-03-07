@@ -12,6 +12,7 @@ export interface Neo4jPost {
   mainPostLinksText: string[];
   mainPostLinksLinks: string[];
   isSecondaryContent: boolean;
+  createdAt: number;
 }
 
 export interface NeoResponsePost {
@@ -98,12 +99,14 @@ exports.publishPost = async (req: Request, res: Response) => {
         mainPostContent: mongoPost.main_post_content,
         mainPostLinksText: mongoPost.main_post_links_text,
         mainPostLinksLinks: mongoPost.main_post_links_links,
+        createdAt: mongoPost.created_at,
         isSecondaryContent,
       };
       const query = `
             MATCH (u:User {uId: $userId})
             CREATE (u) - [:POSTED] -> (p:Post $props)
             RETURN p AS post, u.name AS username
+            
         `;
       await session.executeWrite((tx) =>
         tx.run(query, { userId, props: neoPost }),
@@ -191,7 +194,12 @@ exports.getMyPosts = async (req: Request, res: Response) => {
   try {
     console.log(userId);
     const postsCollection = mongoClient.db("connect").collection("posts");
-    const myPosts = await postsCollection.find({ user_id: userId }).toArray();
+    const myPosts = await postsCollection
+      .find({ user_id: userId })
+      .sort({ created_at: -1 })
+      .toArray();
+
+    console.log(myPosts);
     res.status(200).send(myPosts);
   } catch (error) {
     console.error(error);
