@@ -26,7 +26,7 @@ exports.getChats = async (req: Request, res: Response) => {
     interface ChatHash {
       [key: string]: {
         unread: boolean;
-        users: User[];
+        participants: User[];
       };
     }
     const chatHash: ChatHash = {};
@@ -39,8 +39,8 @@ exports.getChats = async (req: Request, res: Response) => {
         profileImg: record.get("profileImg"),
         uId: record.get("uId"),
       };
-      if (!chatHash[chatId]) chatHash[chatId] = { unread, users: [] };
-      chatHash[chatId].users.push(user);
+      if (!chatHash[chatId]) chatHash[chatId] = { unread, participants: [] };
+      chatHash[chatId].participants.push(user);
     }
 
     res.status(200).send(chatHash);
@@ -67,10 +67,10 @@ exports.createChat = async (req: Request, res: Response) => {
                   WHERE all(uId IN $uIds WHERE (:User {uId: $userId}) - [:PARTICIPATING] -> (chat) <- [:PARTICIPATING] - (:User {uId: uId}))
                   WITH chat
                   MATCH (chat) <- [p:PARTICIPATING] - ()
-                  WITH chat, count(p) as count
+                  WITH chat, count(p) - 1 AS count
                   WHERE count = size($uIds)
                   RETURN chat
-              `,
+                  `,
         { uIds, userId },
       );
 
