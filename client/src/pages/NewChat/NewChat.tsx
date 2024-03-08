@@ -30,6 +30,8 @@ function NewChat() {
 
   const navigate = useNavigate();
 
+  console.log(participants);
+
   useEffect(() => {
     if (!isFetched) {
       fetchConnections({ setConnections, setLoading, dispatch });
@@ -39,6 +41,7 @@ function NewChat() {
   }, []);
 
   const addParticipant = (user: Connection) => {
+    console.log("adding participant");
     if (participants.find((participant) => participant.uId === user.uId))
       return;
     setParticipants([...participants, user]);
