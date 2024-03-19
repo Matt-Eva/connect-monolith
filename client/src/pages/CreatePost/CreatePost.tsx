@@ -305,15 +305,6 @@ function CreatePost() {
     }
   };
 
-  const displayLinks = mainContentLinksText.map((text, index) => {
-    const href = mainContentLinksLinks[index];
-    return (
-      <a href={href} key={href}>
-        {text}
-      </a>
-    );
-  });
-
   const saveDraft = async () => {
     console.log("saving draft");
     if (mongoId === "") {
@@ -399,7 +390,7 @@ function CreatePost() {
 
   return (
     <div className={styles.container}>
-      <CreateMainPost />
+      <CreateMainPost updateMainContentLinks={updateMainContentLinks} />
       {addSecondaryContent ? (
         <section className={styles.secondaryContent}>
           <h2 className={styles.h2}>Secondary Content</h2>

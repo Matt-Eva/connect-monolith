@@ -11,12 +11,22 @@ function CreateMainPost({
   updateMainContentLinks,
   linkQuantityError,
   linkRepeatError,
+}: {
+  mainContent: string;
+  updateMainContent: React.ChangeEventHandler<HTMLTextAreaElement>;
+  mainContentLengthError: boolean;
+  mainContentLinksText: string[];
+  mainContentLinksLinks: string[];
+  updateMainContentLinks: Function;
+  linkQuantityError: boolean;
+  linkRepeatError: boolean;
 }) {
   const [linkText, setLinkText] = useState("");
   const [linkLink, setLinkLink] = useState("");
 
   const addLink = (e: React.FormEvent) => {
     e.preventDefault();
+    updateMainContentLinks({ linkText, linkLink });
   };
 
   const displayLinks = mainContentLinksText.map((text, index) => {
@@ -68,12 +78,6 @@ function CreateMainPost({
         {linkQuantityError ? <p>Cannot add more than 5 links</p> : null}
         {linkRepeatError ? <p>Each link must be unique</p> : null}
       </section>
-      <button
-        onClick={() => setAddSecondaryContent(!addSecondaryContent)}
-        className={styles.addSecondaryButton}
-      >
-        {addSecondaryContent ? "Cancel" : "Add Secondary Content"}
-      </button>
     </section>
   );
 }
