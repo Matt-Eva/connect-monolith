@@ -2,7 +2,32 @@ import { useState } from "react";
 
 import styles from "./CreateMainPost.module.css";
 
-function CreateMainPost() {
+function CreateMainPost({
+  mainContent,
+  updateMainContent,
+  mainContentLengthError,
+  mainContentLinksText,
+  mainContentLinksLinks,
+  updateMainContentLinks,
+  linkQuantityError,
+  linkRepeatError,
+}) {
+  const [linkText, setLinkText] = useState("");
+  const [linkLink, setLinkLink] = useState("");
+
+  const addLink = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
+  const displayLinks = mainContentLinksText.map((text, index) => {
+    const href = mainContentLinksLinks[index];
+    return (
+      <a href={href} key={href}>
+        {text}
+      </a>
+    );
+  });
+
   return (
     <section className={styles.mainPost}>
       <h2 className={styles.h2}>Main Post</h2>
@@ -17,7 +42,7 @@ function CreateMainPost() {
       <section className={styles.linkDisplay}>{displayLinks}</section>
       <section className={styles.addLinks}>
         <h3 className={styles.h3}>Add Link</h3>
-        <form onSubmit={updateMainContentLinks} className={styles.addLinksForm}>
+        <form onSubmit={addLink} className={styles.addLinksForm}>
           <label htmlFor="linkText">Link Text</label>
           <input
             type="text"
