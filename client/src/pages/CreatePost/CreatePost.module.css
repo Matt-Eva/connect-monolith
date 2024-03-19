@@ -1,38 +1,69 @@
 .container {
+  display: grid;
+  grid-template-rows: 50% 33% 33%;
   overflow: auto;
   padding: 5px;
   height: 100%;
-}
-
-.container textarea {
-  font-family: Lato;
   width: 100%;
-  min-height: 120px;
 }
 
-.container a {
-  text-decoration: underline;
-  color: hsl(200, 100%, 80%);
+.h2 {
+  font-size: 1.2rem;
+  text-align: center;
 }
 
-.container button {
-  background-color: white;
-  color: black;
-  border-radius: 1px;
-  margin: 5px 2px 5px 0px;
+.h3 {
+  font-size: 1.1rem;
+  text-align: center;
 }
 
-.container button:disabled {
-  color: gray;
-  background-color: lightgray;
+.mainPost {
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: 1.5rem 5rem 1rem 1.5rem 10rem 2rem;
+  grid-template-columns: 100%;
+  width: 100%;
+  max-width: calc(100vw - 10px);
+  min-height: 2rem;
+  height: 100%;
 }
 
-.secondaryContent {
-  height: 80%;
+.mainPostText {
+  width: 100%;
+  background-color: var(--input-color);
+  border: none;
+  resize: none;
+  border-radius: 5px;
+  overflow: scroll;
+  color: white;
+  margin: 5px 0px 0px 0px;
 }
 
-.editor {
-  height: 90%;
-  width: 100vw;
-  background-color: hsl(0, 0%, 30%);
+.textLimitError {
+  grid-row: 3;
+}
+
+.linkDisplay {
+  grid-row: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.addLinks {
+  grid-row: 5;
+}
+
+.addLinksForm {
+  display: grid;
+  grid-template-rows: 1.5rem 1.5rem 1.5rem 1.5rem 2rem;
+}
+
+.addLinkButton {
+  margin: 5px 0px 0px 0px;
+  width: 5rem;
+  justify-self: center;
+}
+
+.addSecondaryButton {
 }

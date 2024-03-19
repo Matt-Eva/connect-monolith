@@ -289,6 +289,8 @@ function CreatePost() {
 
         const newHyperlink = [...mainContentLinksLinks, linkLink];
         setMainContentLinksLinks(newHyperlink);
+        setLinkLink("");
+        setLinkText("");
       } else {
         setLinkRepeatError(true);
       }
@@ -391,15 +393,24 @@ function CreatePost() {
 
   return (
     <div className={styles.container}>
-      <section>
-        <h2>Main Post</h2>
-        <textarea value={mainContent} onChange={updateMainContent}></textarea>
-        {mainContentLengthError ? <p>Character limit 300</p> : null}
-        <section>
-          {displayLinks}
-          <h3>Add Link</h3>
-          <form onSubmit={updateMainContentLinks}>
-            <label htmlFor="linkText">Add Link Text</label>
+      <section className={styles.mainPost}>
+        <h2 className={styles.h2}>Main Post</h2>
+        <textarea
+          className={styles.mainPostText}
+          value={mainContent}
+          onChange={updateMainContent}
+        ></textarea>
+        {mainContentLengthError ? (
+          <p className={styles.textLimitError}>Character limit 300</p>
+        ) : null}
+        <section className={styles.linkDisplay}>{displayLinks}</section>
+        <section className={styles.addLinks}>
+          <h3 className={styles.h3}>Add Link</h3>
+          <form
+            onSubmit={updateMainContentLinks}
+            className={styles.addLinksForm}
+          >
+            <label htmlFor="linkText">Link Text</label>
             <input
               type="text"
               placeholder="add link text"
@@ -407,7 +418,7 @@ function CreatePost() {
               value={linkText}
               onChange={(e) => setLinkText(e.target.value)}
             />
-            <label htmlFor="hyperlink">Add Hyperlink</label>
+            <label htmlFor="hyperlink">Hyperlink</label>
             <input
               type="text"
               placeholder="add hyerplink"
@@ -415,18 +426,25 @@ function CreatePost() {
               value={linkLink}
               onChange={(e) => setLinkLink(e.target.value)}
             />
-            <input type="submit" value="Add Link" />
+            <input
+              type="submit"
+              value="Add Link"
+              className={styles.addLinkButton}
+            />
           </form>
           {linkQuantityError ? <p>Cannot add more than 5 links</p> : null}
           {linkRepeatError ? <p>Each link must be unique</p> : null}
         </section>
+        <button
+          onClick={() => setAddSecondaryContent(!addSecondaryContent)}
+          className={styles.addSecondaryButton}
+        >
+          {addSecondaryContent ? "Cancel" : "Add Secondary Content"}
+        </button>
       </section>
-      <button onClick={() => setAddSecondaryContent(!addSecondaryContent)}>
-        {addSecondaryContent ? "Cancel" : "Add More"}
-      </button>
       {addSecondaryContent ? (
         <section className={styles.secondaryContent}>
-          <h2>Secondary Content</h2>
+          <h2 className={styles.h2}>Secondary Content</h2>
           <div>
             <button onClick={makeHeader}>H</button>
             <button onClick={showLink}>Link</button>
@@ -461,22 +479,26 @@ function CreatePost() {
           ></div>
         </section>
       ) : null}
-      {mainContent === "" ? (
-        <button disabled={true}>Save</button>
-      ) : (
-        <button onClick={saveDraft}>Save</button>
-      )}
-      <PostPreview
-        linkTextArray={mainContentLinksText}
-        linkLinkArray={mainContentLinksLinks}
-        mainContent={mainContent}
-        secondaryContent={secondaryContent}
-      />
-      {mongoId === "" ? (
-        <button disabled={true}>Post</button>
-      ) : (
-        <button onClick={publishPost}>Publish</button>
-      )}
+      <section>
+        {mongoId !== "" ? (
+          <PostPreview
+            linkTextArray={mainContentLinksText}
+            linkLinkArray={mainContentLinksLinks}
+            mainContent={mainContent}
+            secondaryContent={secondaryContent}
+          />
+        ) : null}
+        {mainContent === "" ? (
+          <button disabled={true}>Save</button>
+        ) : (
+          <button onClick={saveDraft}>Save</button>
+        )}
+        {mongoId === "" ? (
+          <button disabled={true}>Publish</button>
+        ) : (
+          <button onClick={publishPost}>Publish</button>
+        )}
+      </section>
     </div>
   );
 }
