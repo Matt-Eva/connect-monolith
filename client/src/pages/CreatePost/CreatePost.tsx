@@ -390,7 +390,16 @@ function CreatePost() {
 
   return (
     <div className={styles.container}>
-      <CreateMainPost updateMainContentLinks={updateMainContentLinks} />
+      <CreateMainPost
+        updateMainContentLinks={updateMainContentLinks}
+        mainContent={mainContent}
+        mainContentLengthError={mainContentLengthError}
+        mainContentLinksText={mainContentLinksText}
+        mainContentLinksLinks={mainContentLinksLinks}
+        linkQuantityError={linkQuantityError}
+        linkRepeatError={linkRepeatError}
+        updateMainContent={updateMainContent}
+      />
       {addSecondaryContent ? (
         <section className={styles.secondaryContent}>
           <h2 className={styles.h2}>Secondary Content</h2>

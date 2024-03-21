@@ -26,6 +26,8 @@ function CreateMainPost({
 
   const addLink = (e: React.FormEvent) => {
     e.preventDefault();
+    setLinkText("");
+    setLinkLink("");
     updateMainContentLinks({ linkText, linkLink });
   };
 
