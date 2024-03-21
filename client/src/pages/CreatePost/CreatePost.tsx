@@ -164,7 +164,7 @@ function CreatePost() {
 
   return (
     <div className={styles.container}>
-      <h2>New Post</h2>
+      <h2 className={styles.title}>New Post</h2>
       <CreateMainPost
         updateMainContentLinks={updateMainContentLinks}
         mainContent={mainContent}

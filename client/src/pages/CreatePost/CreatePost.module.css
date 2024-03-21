@@ -1,0 +1,10 @@
+.container {
+  display: grid;
+  grid-template-rows: 2rem 45% 45%;
+  padding: 5px;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.3rem;
+}

@@ -1,0 +1,30 @@
+.mainPost {
+  display: grid;
+  grid-template-rows: 1.5rem 6rem 2rem;
+}
+
+.contentSection {
+  display: grid;
+  grid-template-rows: 5rem 1rem;
+}
+
+.textarea {
+  background-color: var(--input-color);
+  border: none;
+  resize: none;
+  border-radius: 5px;
+  color: white;
+  font-family: Lato;
+  font-size: 1rem;
+}
+
+.linkDisplay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.linkDisplay a {
+  color: hsl(200, 100%, 80%);
+  text-decoration: underline;
+}

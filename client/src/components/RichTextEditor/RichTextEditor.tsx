@@ -236,7 +236,7 @@ function RichTextEditor({
 
   return (
     <section className={styles.secondaryContent}>
-      <h2 className={styles.h2}>Secondary Content</h2>
+      <h3 className={styles.h2}>Secondary Content</h3>
       <div>
         <button onClick={makeHeader}>H</button>
         <button onClick={showLink}>Link</button>

@@ -33,26 +33,42 @@ function CreateMainPost({
 
   const displayLinks = mainContentLinksText.map((text, index) => {
     const href = mainContentLinksLinks[index];
-    return (
-      <a href={href} key={href}>
-        {text}
-      </a>
-    );
+    if (
+      mainContentLinksText.length === 1 ||
+      index === mainContentLinksText.length - 1
+    ) {
+      return (
+        <a href={href} key={href}>
+          {text}
+        </a>
+      );
+    } else {
+      return (
+        <>
+          <a href={href} key={href}>
+            {text}
+          </a>
+          <span>|</span>
+        </>
+      );
+    }
   });
 
   return (
     <section className={styles.mainPost}>
-      <h2 className={styles.h2}>Main Post</h2>
-      <textarea
-        className={styles.mainPostText}
-        value={mainContent}
-        onChange={updateMainContent}
-      ></textarea>
-      {mainContentLengthError ? (
-        <p className={styles.textLimitError}>Character limit 300</p>
-      ) : null}
+      <h3 className={styles.h2}>Main Post</h3>
+      <section className={styles.contentSection}>
+        <textarea
+          className={styles.textarea}
+          value={mainContent}
+          onChange={updateMainContent}
+        ></textarea>
+        {mainContentLengthError ? (
+          <p className={styles.textLimitError}>Character limit 300</p>
+        ) : null}
+      </section>
       <section className={styles.linkDisplay}>{displayLinks}</section>
-      <section className={styles.addLinks}>
+      <section className={styles.linkSection}>
         <h3 className={styles.h3}>Add Link</h3>
         <form onSubmit={addLink} className={styles.addLinksForm}>
           <label htmlFor="linkText">Link Text</label>
