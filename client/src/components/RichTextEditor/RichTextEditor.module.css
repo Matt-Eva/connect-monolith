@@ -1,0 +1,29 @@
+.container {
+  display: grid;
+  grid-template-rows: 2rem 2rem 2rem 10rem;
+}
+
+.buttonContainer button {
+  margin: 0px 2px;
+}
+
+.linkForm {
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: 4rem 8rem 4rem;
+  align-items: center;
+}
+
+.linkForm input[type="submit"] {
+  justify-self: end;
+}
+
+.editor {
+  background-color: var(--input-color);
+  grid-row: 4;
+}
+
+.editor a {
+  color: var(--link-color);
+  text-decoration: underline;
+}

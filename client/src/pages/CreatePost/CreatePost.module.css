@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-rows: 2rem 21rem 45%;
+  grid-template-rows: 2rem 21rem 16rem 3rem;
   padding: 5px;
   overflow: auto;
 }
@@ -8,4 +8,9 @@
 .title {
   text-align: center;
   font-size: 1.3rem;
+}
+
+.publishButton {
+  align-self: center;
+  justify-self: center;
 }

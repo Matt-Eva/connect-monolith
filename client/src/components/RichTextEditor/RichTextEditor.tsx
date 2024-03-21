@@ -235,9 +235,9 @@ function RichTextEditor({
   };
 
   return (
-    <section className={styles.secondaryContent}>
-      <h3 className={styles.h2}>Secondary Content</h3>
-      <div>
+    <section className={styles.container}>
+      <h3 className={styles.title}>Secondary Content</h3>
+      <div className={styles.buttonContainer}>
         <button onClick={makeHeader}>H</button>
         <button onClick={showLink}>Link</button>
         <button onClick={removeLink}>
@@ -247,7 +247,7 @@ function RichTextEditor({
         <button onClick={center}>Center</button>
       </div>
       {showLinkInput ? (
-        <form onSubmit={handleLinkSubmit}>
+        <form onSubmit={handleLinkSubmit} className={styles.linkForm}>
           <label htmlFor="linkInput">Add Link</label>
           <input
             name="linkInput"

@@ -181,7 +181,7 @@ function CreatePost() {
         clearLinkRepeatError={clearLinkRepeatError}
       />
       <RichTextEditor updateSecondaryContent={updateSecondaryContent} />
-      <section>
+      <section className={styles.publishButton}>
         {mainContent === "" ? (
           <button disabled={true}>Publish</button>
         ) : (
