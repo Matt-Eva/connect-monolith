@@ -189,13 +189,12 @@ function CreatePost() {
             secondaryContent={secondaryContent}
           />
         ) : null}
-        {mainContent === "" ? (
-          <button disabled={true}>Save</button>
-        ) : (
-          <button onClick={saveDraft}>Save</button>
-        )}
         {mongoId === "" ? (
-          <button disabled={true}>Publish</button>
+          mainContent === "" ? (
+            <button disabled={true}>Save</button>
+          ) : (
+            <button onClick={saveDraft}>Save</button>
+          )
         ) : (
           <button onClick={publishPost}>Publish</button>
         )}
