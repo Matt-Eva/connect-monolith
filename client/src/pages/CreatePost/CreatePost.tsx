@@ -134,37 +134,37 @@ function CreatePost() {
   };
 
   const publishPost = async () => {
-    if (mongoId !== "") {
-      const uploadContent = {
-        user_id: user.uId,
-        src: "editorjs",
-        main_post_content: mainContent,
-        main_post_links_text: mainContentLinksText,
-        main_post_links_links: mainContentLinksLinks,
-        secondary_content: secondaryContent,
-      };
-      try {
-        const res = await fetch(`/api/publish-post/${mongoId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(uploadContent),
-        });
-        if (res.ok) {
-          alert("Post Successfully Published!");
-          const data = await res.json();
-          dispatch(addPost(data));
-          navigate(`/profile/${user.uId}`);
-        }
-      } catch (error) {
-        console.error(error);
+    const uploadContent = {
+      user_id: user.uId,
+      src: "editorjs",
+      main_post_content: mainContent,
+      main_post_links_text: mainContentLinksText,
+      main_post_links_links: mainContentLinksLinks,
+      secondary_content: secondaryContent,
+      created_at: Date.now(),
+    };
+    try {
+      const res = await fetch(`/api/publish-post`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(uploadContent),
+      });
+      if (res.ok) {
+        alert("Post Successfully Published!");
+        const data = await res.json();
+        dispatch(addPost(data));
+        navigate(`/profile/${user.uId}`);
       }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
     <div className={styles.container}>
+      <h2>New Post</h2>
       <CreateMainPost
         updateMainContentLinks={updateMainContentLinks}
         mainContent={mainContent}
@@ -177,20 +177,8 @@ function CreatePost() {
       />
       <RichTextEditor updateSecondaryContent={updateSecondaryContent} />
       <section>
-        {mongoId !== "" ? (
-          <PostPreview
-            linkTextArray={mainContentLinksText}
-            linkLinkArray={mainContentLinksLinks}
-            mainContent={mainContent}
-            secondaryContent={secondaryContent}
-          />
-        ) : null}
-        {mongoId === "" ? (
-          mainContent === "" ? (
-            <button disabled={true}>Save</button>
-          ) : (
-            <button onClick={saveDraft}>Save</button>
-          )
+        {mainContent === "" ? (
+          <button disabled={true}>Publish</button>
         ) : (
           <button onClick={publishPost}>Publish</button>
         )}
