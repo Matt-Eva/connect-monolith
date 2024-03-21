@@ -4,10 +4,11 @@ import styles from "./RichTextEditor.module.css";
 
 import { SecondaryContentObject } from "../../types/post";
 
-function RichTextEditor() {
-  const [secondaryContent, setSecondaryContent] = useState<
-    SecondaryContentObject[]
-  >([]);
+function RichTextEditor({
+  updateSecondaryContent,
+}: {
+  updateSecondaryContent: Function;
+}) {
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkInput, setLinkInput] = useState("");
   const [linkErrorMessage, setLinkErrorMessage] = useState(false);
@@ -86,7 +87,7 @@ function RichTextEditor() {
     if (editor) {
       setTimeout(() => {
         const content = recursivelyHandleChildNodes(editor);
-        setSecondaryContent(content);
+        updateSecondaryContent(content);
       }, 1);
     }
   };
