@@ -85,7 +85,6 @@ exports.publishPost = async (req: Request, res: Response) => {
     const result = await collection.insertOne(post);
     if (result.acknowledged) {
       const mongoId = result.insertedId.toString();
-      res.status(200).send({ mongoId });
       const session = neoDriver.session();
       try {
         const userId = req.session.user.uId;
