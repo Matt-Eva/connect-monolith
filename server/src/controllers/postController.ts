@@ -40,41 +40,41 @@ interface PublishedResponsePost {
   userId: string;
 }
 
-exports.saveNewPostDraft = async (req: Request, res: Response) => {
-  try {
-    const collection = mongoClient.db("connect").collection("posts");
-    const result = await collection.insertOne(req.body);
-    if (result.acknowledged) {
-      const mongoId = result.insertedId.toString();
-      res.status(200).send({ mongoId });
-    } else {
-      throw new Error("could not save draft");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: error });
-  }
-};
+// exports.saveNewPostDraft = async (req: Request, res: Response) => {
+//   try {
+//     const collection = mongoClient.db("connect").collection("posts");
+//     const result = await collection.insertOne(req.body);
+//     if (result.acknowledged) {
+//       const mongoId = result.insertedId.toString();
+//       res.status(200).send({ mongoId });
+//     } else {
+//       throw new Error("could not save draft");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ error: error });
+//   }
+// };
 
-exports.saveExistingPostDraft = async (req: Request, res: Response) => {
-  try {
-    const postCollection = mongoClient.db("connect").collection("posts");
-    const mongoId = new ObjectId(req.params.mongoId);
-    const updateDoc = {
-      $set: req.body,
-    };
-    const result = await postCollection.updateOne({ _id: mongoId }, updateDoc);
+// exports.saveExistingPostDraft = async (req: Request, res: Response) => {
+//   try {
+//     const postCollection = mongoClient.db("connect").collection("posts");
+//     const mongoId = new ObjectId(req.params.mongoId);
+//     const updateDoc = {
+//       $set: req.body,
+//     };
+//     const result = await postCollection.updateOne({ _id: mongoId }, updateDoc);
 
-    if (result.acknowledged) {
-      res.status(201).send({ updated: true });
-    } else {
-      throw new Error("could not save document");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: error });
-  }
-};
+//     if (result.acknowledged) {
+//       res.status(201).send({ updated: true });
+//     } else {
+//       throw new Error("could not save document");
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send({ error: error });
+//   }
+// };
 
 exports.publishPost = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });

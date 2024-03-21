@@ -56,12 +56,12 @@ router.get("/blocked-users", blockedUserController.loadBlockedUsers);
 
 router.delete("/unblock-user/:userId", blockedUserController.unblockUser);
 
-router.post("/save-new-post-draft", postController.saveNewPostDraft);
+// router.post("/save-new-post-draft", postController.saveNewPostDraft);
 
-router.post(
-  "/save-existing-post-draft/:mongoId",
-  postController.saveExistingPostDraft,
-);
+// router.post(
+//   "/save-existing-post-draft/:mongoId",
+//   postController.saveExistingPostDraft,
+// );
 
 router.post("/publish-post", postController.publishPost);
 
