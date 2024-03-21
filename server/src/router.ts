@@ -63,7 +63,7 @@ router.post(
   postController.saveExistingPostDraft,
 );
 
-router.post("/publish-post/:mongoId", postController.publishPost);
+router.post("/publish-post", postController.publishPost);
 
 router.get("/posts", postController.getPosts);
 

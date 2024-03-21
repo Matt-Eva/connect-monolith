@@ -78,56 +78,59 @@ exports.saveExistingPostDraft = async (req: Request, res: Response) => {
 
 exports.publishPost = async (req: Request, res: Response) => {
   if (!req.session.user) return res.status(401).send({ error: "unauthorized" });
-
-  const mongoId = new ObjectId(req.params.mongoId);
+  const post = req.body;
 
   try {
-    const postsCollection = mongoClient.db("connect").collection("posts");
-    const mongoPost = await postsCollection.findOne({ _id: mongoId });
-    if (!mongoPost) throw new Error("could not find mongoDb post");
+    const collection = mongoClient.db("connect").collection("posts");
+    const result = await collection.insertOne(post);
+    if (result.acknowledged) {
+      const mongoId = result.insertedId.toString();
+      res.status(200).send({ mongoId });
+      const session = neoDriver.session();
+      try {
+        const userId = req.session.user.uId;
 
-    const session = neoDriver.session();
-    try {
-      const userId = req.session.user.uId;
-
-      const isSecondaryContent =
-        mongoPost.secondary_content.length !== 0 ? true : false;
-      const neoId = uuid();
-      const neoPost: Neo4jPost = {
-        uId: neoId,
-        mongoId: req.params.mongoId,
-        mainPostContent: mongoPost.main_post_content,
-        mainPostLinksText: mongoPost.main_post_links_text,
-        mainPostLinksLinks: mongoPost.main_post_links_links,
-        createdAt: mongoPost.created_at,
-        isSecondaryContent,
-      };
-      const query = `
+        const isSecondaryContent =
+          post.secondary_content.length !== 0 ? true : false;
+        const neoId = uuid();
+        const neoPost: Neo4jPost = {
+          uId: neoId,
+          mongoId: mongoId,
+          mainPostContent: post.main_post_content,
+          mainPostLinksText: post.main_post_links_text,
+          mainPostLinksLinks: post.main_post_links_links,
+          createdAt: post.created_at,
+          isSecondaryContent,
+        };
+        const query = `
             MATCH (u:User {uId: $userId})
             CREATE (u) - [:POSTED] -> (p:Post $props)
             RETURN p AS post, u.name AS username
             
         `;
-      await session.executeWrite((tx) =>
-        tx.run(query, { userId, props: neoPost }),
-      );
+        await session.executeWrite((tx) =>
+          tx.run(query, { userId, props: neoPost }),
+        );
 
-      const responsePost: PublishedResponsePost = {
-        post: {
-          ...neoPost,
-          secondaryContent: mongoPost.secondary_content,
-          secondaryContentFetched: true,
-        },
-        username: req.session.user.name,
-        userId: userId,
-      };
+        const responsePost: PublishedResponsePost = {
+          post: {
+            ...neoPost,
+            secondaryContent: post.secondary_content,
+            secondaryContentFetched: true,
+          },
+          username: req.session.user.name,
+          userId: userId,
+        };
 
-      res.status(200).send(responsePost);
-    } catch (error) {
-      console.error(error);
-      throw new Error("could not insert post node to neo4j");
-    } finally {
-      await session.close();
+        res.status(200).send(responsePost);
+      } catch (error) {
+        console.error(error);
+        throw new Error("could not insert post node to neo4j");
+      } finally {
+        await session.close();
+      }
+    } else {
+      throw new Error("could not save draft");
     }
   } catch (error) {
     console.error(error);
