@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../reduxHooks";
 
 import CreateMainPost from "../../components/CreateMainPost/CreateMainPost";
+import RichTextEditor from "../../components/RichTextEditor/RichTextEditor";
 import PostPreview from "../../components/PostPreview/PostPreview";
 
 import styles from "./CreatePost.module.css";
@@ -29,7 +30,6 @@ function CreatePost() {
   );
   const [linkQuantityError, setLinkQuantityError] = useState(false);
   const [linkRepeatError, setLinkRepeatError] = useState(false);
-  const [addSecondaryContent, setAddSecondaryContent] = useState(false);
   const [secondaryContent, setSecondaryContent] = useState<
     SecondaryContentObject[]
   >([]);
@@ -43,12 +43,10 @@ function CreatePost() {
   const [editor, setEditor] = useState<HTMLElement | null>(null);
   const [mongoId, setMongoId] = useState("");
 
-  console.log(secondaryContent);
-
   useEffect(() => {
     const editor = document.getElementById("editorjs");
     setEditor(editor);
-  }, [addSecondaryContent]);
+  }, []);
 
   const recursivelyHandleChildNodes = (
     node: ChildNode
@@ -226,7 +224,6 @@ function CreatePost() {
       focusedElement.textContent &&
       focusedElement.nodeName === "A"
     ) {
-      console.log(focusedElement?.nodeName);
       const textNode = document.createTextNode(focusedElement.textContent);
       focusedElement.parentNode?.insertBefore(textNode, focusedElement);
       focusedElement.parentNode?.removeChild(focusedElement);
@@ -400,43 +397,7 @@ function CreatePost() {
         linkRepeatError={linkRepeatError}
         updateMainContent={updateMainContent}
       />
-      {addSecondaryContent ? (
-        <section className={styles.secondaryContent}>
-          <h2 className={styles.h2}>Secondary Content</h2>
-          <div>
-            <button onClick={makeHeader}>H</button>
-            <button onClick={showLink}>Link</button>
-            <button onClick={removeLink}>
-              <s>Link</s>
-            </button>
-            <button onClick={indent}>Indent</button>
-            <button onClick={center}>Center</button>
-          </div>
-          {showLinkInput ? (
-            <form onSubmit={handleLinkSubmit}>
-              <label htmlFor="linkInput">Add Link</label>
-              <input
-                name="linkInput"
-                type="text"
-                value={linkInput}
-                onChange={(e) => setLinkInput(e.target.value)}
-              />
-              <input type="submit" />
-            </form>
-          ) : null}
-          {linkErrorMessage ? (
-            <p>cannot link across text with different formatting</p>
-          ) : null}
-
-          <div
-            id="editorjs"
-            className={styles.editor}
-            contentEditable={true}
-            onKeyDown={handleKeyDown}
-            onMouseDown={handleMouseDown}
-          ></div>
-        </section>
-      ) : null}
+      <RichTextEditor />
       <section>
         {mongoId !== "" ? (
           <PostPreview
