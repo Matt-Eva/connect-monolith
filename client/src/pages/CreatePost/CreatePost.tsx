@@ -20,8 +20,6 @@ function CreatePost() {
 
   const [mainContent, setMainContent] = useState("");
   const [mainContentLengthError, setMainContentLengthError] = useState(false);
-  const [linkText, setLinkText] = useState("");
-  const [linkLink, setLinkLink] = useState("");
   const [mainContentLinksText, setMainContentLinksText] = useState<string[]>(
     []
   );
@@ -68,8 +66,6 @@ function CreatePost() {
 
         const newHyperlink = [...mainContentLinksLinks, linkLink];
         setMainContentLinksLinks(newHyperlink);
-        setLinkLink("");
-        setLinkText("");
       } else {
         setLinkRepeatError(true);
       }
