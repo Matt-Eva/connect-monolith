@@ -80,58 +80,62 @@ function CreatePost() {
     setSecondaryContent(secondaryContent);
   };
 
-  const saveDraft = async () => {
-    console.log("saving draft");
-    if (mongoId === "") {
-      const uploadContent = {
-        user_id: user.uId,
-        src: "editorjs",
-        main_post_content: mainContent,
-        main_post_links_text: mainContentLinksText,
-        main_post_links_links: mainContentLinksLinks,
-        secondary_content: secondaryContent,
-        created_at: Date.now(),
-      };
-      try {
-        const res = await fetch("/api/save-new-post-draft", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(uploadContent),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setMongoId(data.mongoId);
-          alert("Post Successfully Saved!");
-        } else {
-          const error = await res.json();
-          console.error(error);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      const uploadContent = {
-        user_id: user.uId,
-        src: "editorjs",
-        main_post_content: mainContent,
-        main_post_links_text: mainContentLinksText,
-        main_post_links_links: mainContentLinksLinks,
-        secondary_content: secondaryContent,
-      };
-      const res = await fetch(`/api/save-existing-post-draft/${mongoId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(uploadContent),
-      });
-      if (res.ok) {
-        alert("Post Successfully Updated!");
-      }
-    }
+  const clearLinkRepeatError = () => {
+    setLinkRepeatError(false);
   };
+
+  // const saveDraft = async () => {
+  //   console.log("saving draft");
+  //   if (mongoId === "") {
+  //     const uploadContent = {
+  //       user_id: user.uId,
+  //       src: "editorjs",
+  //       main_post_content: mainContent,
+  //       main_post_links_text: mainContentLinksText,
+  //       main_post_links_links: mainContentLinksLinks,
+  //       secondary_content: secondaryContent,
+  //       created_at: Date.now(),
+  //     };
+  //     try {
+  //       const res = await fetch("/api/save-new-post-draft", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(uploadContent),
+  //       });
+  //       if (res.ok) {
+  //         const data = await res.json();
+  //         setMongoId(data.mongoId);
+  //         alert("Post Successfully Saved!");
+  //       } else {
+  //         const error = await res.json();
+  //         console.error(error);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   } else {
+  //     const uploadContent = {
+  //       user_id: user.uId,
+  //       src: "editorjs",
+  //       main_post_content: mainContent,
+  //       main_post_links_text: mainContentLinksText,
+  //       main_post_links_links: mainContentLinksLinks,
+  //       secondary_content: secondaryContent,
+  //     };
+  //     const res = await fetch(`/api/save-existing-post-draft/${mongoId}`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(uploadContent),
+  //     });
+  //     if (res.ok) {
+  //       alert("Post Successfully Updated!");
+  //     }
+  //   }
+  // };
 
   const publishPost = async () => {
     const uploadContent = {
@@ -174,6 +178,7 @@ function CreatePost() {
         linkQuantityError={linkQuantityError}
         linkRepeatError={linkRepeatError}
         updateMainContent={updateMainContent}
+        clearLinkRepeatError={clearLinkRepeatError}
       />
       <RichTextEditor updateSecondaryContent={updateSecondaryContent} />
       <section>

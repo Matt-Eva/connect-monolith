@@ -1,7 +1,8 @@
 .container {
   display: grid;
-  grid-template-rows: 2rem 45% 45%;
+  grid-template-rows: 2rem 21rem 45%;
   padding: 5px;
+  overflow: auto;
 }
 
 .title {

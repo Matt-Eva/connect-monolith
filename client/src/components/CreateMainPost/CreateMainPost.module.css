@@ -1,6 +1,6 @@
 .mainPost {
   display: grid;
-  grid-template-rows: 1.5rem 6rem 2rem;
+  grid-template-rows: 1.5rem 6rem 2rem 9.2rem;
 }
 
 .contentSection {
@@ -27,4 +27,32 @@
 .linkDisplay a {
   color: hsl(200, 100%, 80%);
   text-decoration: underline;
+}
+
+.linkSection {
+  display: grid;
+  grid-template-rows: 2rem 9.2rem;
+}
+
+.addLinksForm {
+  display: grid;
+  grid-template-rows: 1.8rem 1.8rem 1.8rem 1.8rem 2rem;
+  grid-template-columns: 50% 50%;
+}
+
+.addLinksForm label,
+.addLinksForm input[type="text"] {
+  grid-column: 1 / span 2;
+}
+
+.addLinksForm input[type="submit"] {
+  grid-column: 2;
+  height: 1.5rem;
+  width: 5rem;
+  justify-self: end;
+}
+
+.linkError {
+  grid-row: 5;
+  grid-column: 1;
 }

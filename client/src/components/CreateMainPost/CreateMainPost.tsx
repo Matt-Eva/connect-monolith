@@ -11,6 +11,7 @@ function CreateMainPost({
   updateMainContentLinks,
   linkQuantityError,
   linkRepeatError,
+  clearLinkRepeatError,
 }: {
   mainContent: string;
   updateMainContent: React.ChangeEventHandler<HTMLTextAreaElement>;
@@ -20,6 +21,7 @@ function CreateMainPost({
   updateMainContentLinks: Function;
   linkQuantityError: boolean;
   linkRepeatError: boolean;
+  clearLinkRepeatError: Function;
 }) {
   const [linkText, setLinkText] = useState("");
   const [linkLink, setLinkLink] = useState("");
@@ -69,7 +71,7 @@ function CreateMainPost({
       </section>
       <section className={styles.linkDisplay}>{displayLinks}</section>
       <section className={styles.linkSection}>
-        <h3 className={styles.h3}>Add Link</h3>
+        <h3>Add Link</h3>
         <form onSubmit={addLink} className={styles.addLinksForm}>
           <label htmlFor="linkText">Link Text</label>
           <input
@@ -77,7 +79,10 @@ function CreateMainPost({
             placeholder="add link text"
             name="linkText"
             value={linkText}
-            onChange={(e) => setLinkText(e.target.value)}
+            onChange={(e) => {
+              clearLinkRepeatError();
+              setLinkText(e.target.value);
+            }}
           />
           <label htmlFor="hyperlink">Hyperlink</label>
           <input
@@ -85,16 +90,23 @@ function CreateMainPost({
             placeholder="add hyerplink"
             name="hyperlink"
             value={linkLink}
-            onChange={(e) => setLinkLink(e.target.value)}
+            onChange={(e) => {
+              clearLinkRepeatError();
+              setLinkLink(e.target.value);
+            }}
           />
           <input
             type="submit"
             value="Add Link"
             className={styles.addLinkButton}
           />
+          {linkQuantityError ? (
+            <p className={styles.linkError}>5 links maximum</p>
+          ) : null}
+          {linkRepeatError ? (
+            <p className={styles.linkError}>link must be unique</p>
+          ) : null}
         </form>
-        {linkQuantityError ? <p>Cannot add more than 5 links</p> : null}
-        {linkRepeatError ? <p>Each link must be unique</p> : null}
       </section>
     </section>
   );
