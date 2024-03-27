@@ -1,0 +1,12 @@
+.main {
+  width: 100%;
+  grid-row: 2;
+  text-align: center;
+  margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
+}

@@ -6,6 +6,7 @@
   grid-row: 3;
   border-top: solid 1px;
   border-color: #999999;
+  background-color: var(--background-color);
 }
 
 .nav {

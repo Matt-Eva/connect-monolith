@@ -32,17 +32,25 @@
 
 .postsContainer {
   grid-row: 4;
-  height: 100%;
+  height: calc(100% - 5px);
   overflow: scroll;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
   gap: 15px;
   margin-top: 20px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 @media (min-width: 768px) {
   .main {
     grid-column: 2;
+    margin-bottom: 5px;
+  }
+
+  .postsContainer {
+    margin-bottom: 5px;
+    padding-bottom: 0px;
   }
 }
