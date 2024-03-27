@@ -1,3 +1,7 @@
+.sidebar {
+  display: none;
+}
+
 .footer {
   grid-row: 3;
   border-top: solid 1px;
@@ -10,4 +14,34 @@
   padding-top: 0.2rem;
   grid-template-columns: 33% 34% 33%;
   justify-items: center;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    display: none;
+  }
+
+  .sidebar {
+    grid-column: 1;
+    display: block;
+    background-color: var(--input-color);
+    margin: 5px 0px 5px 5px;
+    border-radius: 5px;
+  }
+
+  .sidenav ul {
+    list-style-type: none;
+  }
+
+  .outerList {
+    padding: 5px;
+  }
+
+  .outerList li {
+    margin-top: 6px;
+  }
+
+  .innerList {
+    padding-left: 20px;
+  }
 }

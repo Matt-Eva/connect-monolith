@@ -6,6 +6,7 @@
 
 @media (min-width: 768px) {
   .root {
-    grid-template-columns: 15rem calc(100% - 20rem);
+    grid-template-columns: 10rem calc(100% - 10rem);
+    grid-template-rows: 2rem calc(100% - 2rem);
   }
 }
