@@ -128,7 +128,7 @@ function ProfilePage() {
       <main className={styles.main}>
         {renderIconDisplay({ profileImg: user.profileImg, name: user.name })}
         <h2 className={styles.name}>{user.name}</h2>
-        {displayPosts}
+        <div className={styles.postsContainer}>{displayPosts}</div>
       </main>
     );
   }
@@ -190,7 +190,7 @@ function ProfilePage() {
           </button>
         </div>
       )}
-      {displayPosts}
+      <div className={styles.postsContainer}>{displayPosts}</div>
     </main>
   );
 }

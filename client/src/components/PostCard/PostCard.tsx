@@ -1,6 +1,8 @@
-import { useState, ReactNode } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../reduxHooks";
+
+import CardImageIcon from "../CardImageIcon/CardImageIcon";
 
 import styles from "./PostCard.module.css";
 
@@ -32,11 +34,26 @@ function PostCard({
   const navigate = useNavigate();
 
   const linkArray = post.mainPostLinksText.map((text, index) => {
-    return (
-      <a key={text} href={post.mainPostLinksLinks[index]}>
-        {text}
-      </a>
-    );
+    const href = post.mainPostLinksLinks[index];
+    if (
+      post.mainPostLinksText.length === 1 ||
+      index === post.mainPostLinksText.length - 1
+    ) {
+      return (
+        <a href={href} key={href}>
+          {text}
+        </a>
+      );
+    } else {
+      return (
+        <>
+          <a href={href} key={href}>
+            {text}
+          </a>
+          <span>|</span>
+        </>
+      );
+    }
   });
 
   const handleSecondaryContent = async () => {
@@ -78,16 +95,42 @@ function PostCard({
     recursivelyRenderSecondaryPostContent(secondaryContent);
 
   return (
-    <article>
-      <h3>{username}</h3>
-      {/* {editable ? <button onClick={edit}>edit</button> : null} */}
-      {editable ? <button onClick={deletePost}>delete</button> : null}
-      <p>{post.mainPostContent}</p>
-      <div>{linkArray}</div>
-      {post.isSecondaryContent ? (
-        <button onClick={handleSecondaryContent}>read more</button>
+    <article className={styles.card}>
+      <section className={styles.userInfo}>
+        <CardImageIcon
+          users={[{ name: username, uId: userId, profileImg: "" }]}
+        />
+        <h3 className={styles.username}>{username}</h3>
+        {editable ? (
+          <button onClick={deletePost} className={styles.deleteButton}>
+            delete
+          </button>
+        ) : null}
+      </section>
+      <p className={styles.mainPost}>{post.mainPostContent}</p>
+      {linkArray.length !== 0 ? (
+        <section className={styles.postLinks}>{linkArray}</section>
       ) : null}
-      {showSecondaryContent ? displaySecondaryContent : null}
+      {post.isSecondaryContent ? (
+        <div className={styles.readMoreButtonContainer}>
+          {showSecondaryContent ? (
+            <button
+              onClick={handleSecondaryContent}
+              className={styles.readMore}
+            >
+              hide
+            </button>
+          ) : (
+            <button
+              onClick={handleSecondaryContent}
+              className={styles.readMore}
+            >
+              read more
+            </button>
+          )}
+        </div>
+      ) : null}
+      {showSecondaryContent ? <div>{displaySecondaryContent}</div> : null}
     </article>
   );
 }

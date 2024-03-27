@@ -1,0 +1,53 @@
+.card {
+  display: grid;
+  grid-template-rows: 2rem 1fr;
+  width: 100%;
+  background-color: var(--input-color);
+  gap: 5px;
+}
+
+.deleteButton {
+  justify-self: end;
+}
+
+.userInfo {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2rem calc(100% - 6rem) 4rem;
+  align-items: center;
+}
+
+.username {
+  font-size: 1rem;
+  margin-left: 5px;
+}
+
+.mainPost {
+  width: 100%;
+  background-color: var(--input-color);
+}
+
+.postLinks {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  border-top: solid 1px var(--border-color);
+}
+
+.postLinks a {
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.readMoreButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  border-top: solid 1px var(--border-color);
+}
+
+.readMore {
+  background-color: var(--input-color);
+  text-decoration: underline;
+}
