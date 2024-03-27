@@ -1,12 +1,8 @@
+import styles from "./GetApp.module.css";
+
 function GetApp() {
   return (
-    <main
-      style={{
-        padding: "5px",
-        fontStyle: "italic",
-        textAlign: "center",
-      }}
-    >
+    <main className={styles.main}>
       <p>App Download currently disabled.</p>
       <p>Hey users! This feature is currently unavailable. Coming soon!</p>
     </main>

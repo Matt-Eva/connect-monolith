@@ -1,6 +1,13 @@
 .main {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-rows: calc(100% - 2.2rem) 2.2rem;
+  height: 100%;
+  width: 100%;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: calc(100% - 2.2rem) 2.2rem;
+}
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
 }

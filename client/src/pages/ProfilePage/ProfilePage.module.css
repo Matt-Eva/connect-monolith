@@ -1,5 +1,6 @@
 .main {
   display: grid;
+  grid-row: 2;
   grid-template-rows: 30% 3rem 2rem;
   padding: 5px;
   align-items: center;
@@ -38,4 +39,10 @@
   align-content: flex-start;
   gap: 15px;
   margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
 }

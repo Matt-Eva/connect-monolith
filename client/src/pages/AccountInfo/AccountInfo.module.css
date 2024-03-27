@@ -1,4 +1,5 @@
 .main {
+  grid-row: 2;
   height: 100%;
   display: grid;
   grid-template-rows: 30% 2rem 2rem 2rem 2rem 3rem calc(70% - 9rem);
@@ -36,4 +37,10 @@
   justify-self: start;
   align-self: start;
   height: 2rem;
+}
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
 }

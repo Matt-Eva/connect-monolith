@@ -1,8 +1,14 @@
 .nav {
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    justify-items: center;
-    align-items: center;
-    border-top: #999999 solid 1px;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-items: center;
+  align-items: center;
+  border-top: #999999 solid 1px;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: none;
+  }
 }

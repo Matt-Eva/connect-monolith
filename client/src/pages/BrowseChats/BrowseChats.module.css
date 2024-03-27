@@ -1,7 +1,13 @@
-.main{
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: calc(100% - 2.2rem) 2.2rem;
-    width: 100%;
+.main {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: calc(100% - 2.2rem) 2.2rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
 }

@@ -1,31 +1,38 @@
 .main {
-    height: 100%;
-    display: grid;
-    grid-template-rows: 3rem 30% 3rem 3rem calc(70% - 10rem);
-    align-items: center;
-    padding: 5px;
+  height: 100%;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: 3rem 30% 3rem 3rem calc(70% - 10rem);
+  align-items: center;
+  padding: 5px;
 }
 
 .main button {
-    height: 2rem;
+  height: 2rem;
 }
 
 .main p {
-    align-self: start;
-    justify-self: center;
-    text-align: center;
+  align-self: start;
+  justify-self: center;
+  text-align: center;
 }
 
-.backButton{
-    justify-self: start;  
+.backButton {
+  justify-self: start;
 }
 
 .image {
-    height: 100%;
-    border-radius: 50%;
-    justify-self: center;
+  height: 100%;
+  border-radius: 50%;
+  justify-self: center;
 }
 
 .imageButton {
-    justify-self: center;
+  justify-self: center;
+}
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
 }

@@ -1,23 +1,29 @@
 .nav {
-    grid-row: 2;
-    justify-self: center;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 30% 37% 33%;
-    align-items: center;
-    border-top: var(--border-color) solid 1px;
+  grid-row: 2;
+  justify-self: center;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 30% 37% 33%;
+  align-items: center;
+  border-top: var(--border-color) solid 1px;
 }
 
 .search {
-    justify-self: start;
-    margin-left: 10px;
+  justify-self: start;
+  margin-left: 10px;
 }
 
 .connections {
-    justify-self: center;
+  justify-self: center;
 }
 
 .invitations {
-    justify-self: end;
-    margin-right: 10px;
+  justify-self: end;
+  margin-right: 10px;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: none;
+  }
 }
