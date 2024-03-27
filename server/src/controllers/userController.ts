@@ -37,7 +37,10 @@ exports.getUser = async (req: Request, res: Response) => {
 
       const postsCollection = mongoClient.db("connect").collection("posts");
 
-      const posts = await postsCollection.find({ user_id: userId }).toArray();
+      const posts = await postsCollection
+        .find({ user_id: userId })
+        .sort({ created_at: -1 })
+        .toArray();
 
       res.status(200).send({ user, posts });
     } else {

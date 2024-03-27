@@ -146,6 +146,7 @@ exports.getPosts = async (req: Request, res: Response) => {
     const query = `
       MATCH (u:User {uId: $userId}) - [:CONNECTED] - (c:User) - [:POSTED] -> (p:Post)
       RETURN p AS post, c.name AS username, c.uId AS userId
+      ORDER BY p.createdAt DESC
       LIMIT 100 
     `;
 
