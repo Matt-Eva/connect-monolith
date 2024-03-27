@@ -1,11 +1,12 @@
 .container {
   justify-self: center;
   display: grid;
-  grid-template-rows: 2rem 21rem 16rem 3rem;
+  grid-template-rows: 2rem 22rem 1fr;
   padding: 5px;
   overflow: auto;
   width: 100%;
   max-width: 40rem;
+  margin-bottom: 10px;
 }
 
 .title {
