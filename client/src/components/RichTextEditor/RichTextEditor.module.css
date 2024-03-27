@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-rows: 2rem 2rem 2rem 10rem;
+  grid-template-rows: 2rem 2rem 2rem 1fr;
 }
 
 .buttonContainer button {
@@ -20,6 +20,7 @@
 
 .editor {
   background-color: var(--input-color);
+  overflow: auto;
   grid-row: 4;
 }
 
