@@ -22,3 +22,9 @@
   padding: 10px;
   line-height: 1.5rem;
 }
+
+@media (min-width: 768px) {
+  .main {
+    grid-column: 2;
+  }
+}
