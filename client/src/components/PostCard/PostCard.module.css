@@ -4,6 +4,8 @@
   width: 100%;
   background-color: var(--input-color);
   gap: 5px;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .deleteButton {

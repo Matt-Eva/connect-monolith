@@ -32,7 +32,7 @@ function Feed() {
       userId={post.userId}
     />
   ));
-  return <div>{postCards}</div>;
+  return <section className={styles.feed}>{postCards}</section>;
 }
 
 export default Feed;
