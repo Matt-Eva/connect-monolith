@@ -47,6 +47,10 @@ exports.createChat = async (req, res) => {
     const participants = [...req.body.participants];
     const userId = req.session.user.uId;
     const uIds = participants.map((participant) => participant.uId);
+    if (uIds.length === 0) {
+        res.status(422).send({ error: "no participants selected" });
+        return;
+    }
     const session = neo4jConfig_js_1.default.session();
     try {
         const result = await session.executeWrite(async (tx) => {
@@ -59,7 +63,9 @@ exports.createChat = async (req, res) => {
                   WHERE count = size($uIds)
                   RETURN chat
                   `, { uIds, userId });
+            console.log("existing chat records", existingChat.records);
             if (existingChat.records.length !== 0) {
+                console.log("getting properties");
                 return existingChat.records[0].get("chat").properties;
             }
             const newChat = await tx.run(`

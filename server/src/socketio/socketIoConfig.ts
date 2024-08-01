@@ -44,7 +44,17 @@ if (process.env.NODE_ENV === "development") {
   io = new Server(server);
 }
 
-io.adapter(createAdapter(redisClient, redisClient.duplicate()));
+const pubClient = redisClient;
+const subClient = pubClient.duplicate();
+pubClient.on("error", (err) => {
+  console.log(err.message);
+});
+
+subClient.on("error", (err) => {
+  console.log(err.message);
+});
+
+io.adapter(createAdapter(pubClient, subClient));
 
 io.engine.use(sessionMiddleware);
 

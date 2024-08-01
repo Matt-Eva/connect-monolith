@@ -23,7 +23,15 @@ if (process.env.NODE_ENV === "development") {
 else {
     exports.io = io = new socket_io_1.Server(appConfig_js_1.server);
 }
-io.adapter((0, redis_adapter_1.createAdapter)(redisConfig_js_1.default, redisConfig_js_1.default.duplicate()));
+const pubClient = redisConfig_js_1.default;
+const subClient = pubClient.duplicate();
+pubClient.on("error", (err) => {
+    console.log(err.message);
+});
+subClient.on("error", (err) => {
+    console.log(err.message);
+});
+io.adapter((0, redis_adapter_1.createAdapter)(pubClient, subClient));
 io.engine.use(sessionConfig_js_1.default);
 const handleConnection = async (socket) => {
     if (!socket.request.session.user)
