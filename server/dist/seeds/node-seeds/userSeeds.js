@@ -23,7 +23,7 @@ const createUsersWithConnections = async (session, user1, user2) => {
       `, { email: user1.email });
             if (newUser1.records.length === 0) {
                 newUser1 = await tx.run(`
-          CREATE(u:User {uId: $uId, email: $email, name: $name, firstName: $firstName, lastName: $lastName, password: $password, profileImg: $profileImg}) RETURN u
+          CREATE(u:User {uId: $uId, email: $email, name: $name, firstName: $firstName, lastName: $lastName, password: $password}) RETURN u
         `, { ...user1, ["password"]: user1Password });
             }
             let newUser2 = await tx.run(`
@@ -31,7 +31,7 @@ const createUsersWithConnections = async (session, user1, user2) => {
       `, { email: user2.email });
             if (newUser2.records.length === 0) {
                 newUser2 = await tx.run(`
-          CREATE(u:User {uId: $uId, email: $email, name: $name, firstName: $firstName, lastName: $lastName, password: $password, profileImg: $profileImg}) RETURN u
+          CREATE(u:User {uId: $uId, email: $email, name: $name, firstName: $firstName, lastName: $lastName, password: $password}) RETURN u
         `, { ...user2, ["password"]: user2Password });
             }
             const newConnection = await tx.run(`
